@@ -4,16 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 //@Entity
 public class Request {
 
-    private Long id;
-    private Long ownerId;
+    private Long requestId;
+    private String ownerId;
     private Type type;
-    private Status status;
     private String comment;
-//    data złożenia, przedział czasu, data akceptacji/odrzucenia
+    private Date registrationDate;
+    private Date startDate;
+    private Date endDate;
+    private Date approvalDate;
+    private Status status;
 }

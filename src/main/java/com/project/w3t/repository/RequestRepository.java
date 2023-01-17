@@ -1,4 +1,7 @@
 package com.project.w3t.repository;
 
-public class RequestRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RequestRepository {
 }

@@ -1,6 +1,8 @@
 package com.project.w3t.controller;
 
 import com.project.w3t.model.Request;
+import com.project.w3t.repository.RequestStorage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/requests")
-@Component
 public class RequestsController {
+
+    @Autowired
+    RequestStorage requestStorage;
 
     @GetMapping
     public List<Request> getAll() {
-        List<Request> templist = new ArrayList<>();
-        return templist;
+        return requestStorage.getUserRequestList();
     }
 }
