@@ -1,4 +1,4 @@
-package com.czlowieki.w3t;
+package com.project.w3t;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

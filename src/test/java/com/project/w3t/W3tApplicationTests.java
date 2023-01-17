@@ -1,4 +1,4 @@
-package com.czlowieki.w3t;
+package com.project.w3t;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
