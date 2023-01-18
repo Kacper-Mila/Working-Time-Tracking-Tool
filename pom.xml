@@ -8,7 +8,7 @@
 		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.czlowieki</groupId>
+	<groupId>com.project</groupId>
 	<artifactId>w3t</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>w3t</name>
