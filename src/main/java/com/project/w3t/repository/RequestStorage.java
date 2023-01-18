@@ -60,4 +60,16 @@ public class RequestStorage implements RequestRepository {
         requestToUpdate.setComment(requestDto.getComment());
         requestToUpdate.setStatus(Status.PENDING);
     }
+
+    @Override
+    public void deleteRequest(Long requestId) throws InvalidRequestId {
+        Request requestToDelete = userRequestList.stream()
+                .filter(request -> request.getRequestId().equals(requestId))
+                .findAny()
+                .orElse(null);
+        if (requestToDelete == null) {
+            throw new InvalidRequestId();
+        }
+        userRequestList.remove(requestToDelete);
+    }
 }

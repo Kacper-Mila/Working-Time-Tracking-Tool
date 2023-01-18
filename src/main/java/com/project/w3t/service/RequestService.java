@@ -35,4 +35,11 @@ public class RequestService {
     }
 
 
+    public void deleteRequest(Long requestId) {
+        try {
+            requestRepository.deleteRequest(requestId);
+        } catch (InvalidRequestId e) {
+            System.out.println("Invalid request Id!");
+        }
+    }
 }
