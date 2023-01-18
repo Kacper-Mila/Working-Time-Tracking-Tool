@@ -39,7 +39,7 @@ public class RequestsController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{requestId}")
     @ResponseBody
     public Request getRequestById(@PathVariable Long requestId){
         return requestStorage.getRequestById(requestId);
