@@ -1,5 +1,9 @@
 package com.project.w3t.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +16,10 @@ import java.util.Date;
 //@Entity
 public class Request {
 
-    private Long requestId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long requestId = 1L;
+
     private String ownerId;
     private Type type;
     private String comment;
@@ -21,4 +28,5 @@ public class Request {
     private Date endDate;
     private Date approvalDate;
     private Status status;
+
 }
