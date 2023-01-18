@@ -24,14 +24,15 @@ public class RequestStorage {
         userRequestList.add(request);
     }
 
-    public List<Request> getUserRequestListByType(String requestTypeString) {
+    public List<Request> getUserRequestListByType(Type requestType) {
 
-        Type requestType = null;
-        for (Type value : Type.values()) {
-            if (value.toString().equals(requestTypeString.toUpperCase())) {
-                requestType = value;
-            }
-        }
+//        Type requestType = null;
+//        for (Type value : Type.values()) {
+//            if (value.toString().equals(requestTypeString)) {
+//                requestType = value;
+//            }
+//        }
+
 
         return switch (requestType) {
             case HOLIDAY -> userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());

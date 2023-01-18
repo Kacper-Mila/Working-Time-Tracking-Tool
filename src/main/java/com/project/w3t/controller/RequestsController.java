@@ -29,7 +29,7 @@ public class RequestsController {
     }
 
     @GetMapping("/{type}")
-    public List<Request> getAllByType(@PathVariable("type")String requestType) {
+    public List<Request> getAllByType(@PathVariable("type")Type requestType) {
         return requestStorage.getUserRequestListByType(requestType);
     }
 }
