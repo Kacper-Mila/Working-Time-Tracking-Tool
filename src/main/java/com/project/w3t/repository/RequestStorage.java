@@ -4,14 +4,13 @@ import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.model.Request;
+import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Status;
-import com.project.w3t.model.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class RequestStorage implements RequestRepository {
         return request.getComment().length() <= COMMENT_MAX_LENGTH;
     }
 
-    public void updateRequest(Long id, Type type, LocalDate startDate, LocalDate endDate, String comment) throws InvalidRequestId {
+    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestId {
         Request requestToUpdate = userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(id))
                 .findAny()
@@ -55,10 +54,10 @@ public class RequestStorage implements RequestRepository {
         if (requestToUpdate == null) {
             throw new InvalidRequestId();
         }
-        requestToUpdate.setType(type);
-        requestToUpdate.setStartDate(startDate);
-        requestToUpdate.setEndDate(endDate);
-        requestToUpdate.setComment(comment);
+        requestToUpdate.setType(requestDto.getType());
+        requestToUpdate.setStartDate(requestDto.getStartDate());
+        requestToUpdate.setEndDate(requestDto.getEndDate());
+        requestToUpdate.setComment(requestDto.getComment());
         requestToUpdate.setStatus(Status.PENDING);
     }
 }
