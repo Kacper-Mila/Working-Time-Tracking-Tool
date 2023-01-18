@@ -6,9 +6,9 @@ import com.project.w3t.repository.RequestStorage;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +36,8 @@ public class RequestsController {
         requestService.addRequest(request);
     }
 
-    @PutMapping("{id}")
-    public void update(@PathVariable Long id, @RequestBody RequestDto requestDto) {
-        requestService.updateRequest(id, requestDto);
+    @PatchMapping("{requestId}")
+    public void update(@PathVariable Long requestId, @RequestBody RequestDto requestDto) {
+        requestService.updateRequest(requestId, requestDto);
     }
 }
