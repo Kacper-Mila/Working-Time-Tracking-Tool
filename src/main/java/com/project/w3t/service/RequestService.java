@@ -9,6 +9,14 @@ import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.Request;
+import com.project.w3t.repository.RequestRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
 public class RequestService {
     private final RequestRepository requestRepository;
 
@@ -41,5 +49,8 @@ public class RequestService {
         } catch (InvalidRequestId e) {
             System.out.println("Invalid request Id!");
         }
+    }
+    private Optional<Request> getRequestById(Long requestId) throws InvalidRequestIdException {
+        return Optional.ofNullable(requestRepository.getRequestById(requestId));
     }
 }
