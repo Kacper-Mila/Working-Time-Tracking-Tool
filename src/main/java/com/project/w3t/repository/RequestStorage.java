@@ -2,12 +2,16 @@ package com.project.w3t.repository;
 
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.model.Request;
+import com.project.w3t.model.Status;
+import com.project.w3t.model.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,4 +47,18 @@ public class RequestStorage {
         return request.getComment().length() <= COMMENT_MAX_LENGTH;
     }
 
+    public void updateRequest(Long id, Type type, LocalDate startDate, LocalDate endDate, String comment) throws InvalidRequestId {
+        Request requestToUpdate = userRequestList.stream()
+                .filter(request -> request.getRequestId().equals(id))
+                .findAny()
+                .orElse(null);
+        if (requestToUpdate == null) {
+            throw new InvalidRequestId();
+        }
+        requestToUpdate.setType(type);
+        requestToUpdate.setStartDate(startDate);
+        requestToUpdate.setEndDate(endDate);
+        requestToUpdate.setComment(comment);
+        requestToUpdate.setStatus(Status.PENDING);
+    }
 }
