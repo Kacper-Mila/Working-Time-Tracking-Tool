@@ -2,11 +2,14 @@ package com.project.w3t.controller;
 
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.model.Request;
 import com.project.w3t.repository.RequestStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,19 +24,28 @@ public class RequestsController {
     RequestStorage requestStorage;
 
 
-    @GetMapping("")
+    @GetMapping
     public List<Request> getAll() {
         return requestStorage.getUserRequestList();
     }
 
-    @PostMapping("")
-    public void addRequest(@RequestBody Request request) {
+    @PostMapping
+    public void add(@RequestBody Request request) {
         try {
             requestStorage.addRequest(request);
         } catch (InvalidDateRangeException e) {
             System.out.println("Invalid date range!");
         } catch (InvalidCommentLength e) {
             System.out.println("Your comment is too long!");
+        }
+    }
+
+    @PutMapping("{id}")
+    public void update(@PathVariable Long id, @RequestBody Request request) {
+        try {
+            requestStorage.updateRequest(id, request.getType(), request.getStartDate(), request.getEndDate(), request.getComment());
+        } catch (InvalidRequestId e) {
+            System.out.println("Invalid request Id!");
         }
     }
 }
