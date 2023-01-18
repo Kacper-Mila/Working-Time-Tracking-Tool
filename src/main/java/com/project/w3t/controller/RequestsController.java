@@ -31,9 +31,6 @@ public class RequestsController {
         this.requestService = requestService;
     }
 
-
-
-
     @GetMapping
     public List<Request> getAll() {
         return requestStorage.getUserRequestList();
@@ -53,7 +50,6 @@ public class RequestsController {
     public void delete(@PathVariable Long requestId) {
         requestService.deleteRequest(requestId);
     }
-
 
     @GetMapping("/{type}")
     public List<Request> getAllByType(@PathVariable("type")Type requestType) {

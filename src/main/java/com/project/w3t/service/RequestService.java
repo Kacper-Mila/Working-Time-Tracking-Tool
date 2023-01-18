@@ -3,12 +3,12 @@ package com.project.w3t.service;
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestId;
+import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
-
-@Service
+import java.util.Optional;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.repository.RequestRepository;
@@ -42,7 +42,6 @@ public class RequestService {
         }
     }
 
-
     public void deleteRequest(Long requestId) {
         try {
             requestRepository.deleteRequest(requestId);
@@ -53,4 +52,5 @@ public class RequestService {
     private Optional<Request> getRequestById(Long requestId) throws InvalidRequestIdException {
         return Optional.ofNullable(requestRepository.getRequestById(requestId));
     }
+
 }
