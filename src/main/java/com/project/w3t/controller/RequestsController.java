@@ -2,10 +2,10 @@ package com.project.w3t.controller;
 
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.repository.RequestStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +41,12 @@ public class RequestsController {
 
     @GetMapping("/{requestId}")
     @ResponseBody
-    public Request getRequestById(@PathVariable Long requestId){
-        return requestStorage.getRequestById(requestId);
+    public Object getRequestById(@PathVariable Long requestId){
+        try{
+            return requestStorage.getRequestById(requestId);
+        }catch (InvalidRequestIdException e){
+            System.out.println("Wrong request ID!");
+            return null;
+        }
     }
 }

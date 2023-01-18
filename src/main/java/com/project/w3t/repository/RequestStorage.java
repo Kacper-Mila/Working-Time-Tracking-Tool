@@ -2,6 +2,7 @@ package com.project.w3t.repository;
 
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.service.RequestService;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,14 @@ public class RequestStorage implements RequestRepository{
         return request.getComment().length() <= COMMENT_MAX_LENGTH;
     }
 
-    public Request getRequestById(Long requestId){
-        return userRequestList.stream().filter(request -> request.getRequestId().equals(requestId)).findAny().get();
+    public boolean checkRequestId(Long requestId){
+        return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
+    }
+    public Request getRequestById(Long requestId) throws InvalidRequestIdException {
+        if (checkRequestId(requestId)){
+            return userRequestList.stream().filter(request -> request.getRequestId().equals(requestId)).findAny().get();
+        }else {
+            throw new InvalidRequestIdException();
+        }
     }
 }
