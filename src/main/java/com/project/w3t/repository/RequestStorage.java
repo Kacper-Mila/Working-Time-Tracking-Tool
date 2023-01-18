@@ -46,6 +46,6 @@ public class RequestStorage implements RequestRepository{
     }
 
     public Request getRequestById(Long requestId){
-        return userRequestList.get(requestId.intValue());
+        return userRequestList.stream().filter(request -> request.getRequestId().equals(requestId)).findAny().get();
     }
 }
