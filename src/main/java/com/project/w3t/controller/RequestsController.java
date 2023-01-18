@@ -1,11 +1,14 @@
 package com.project.w3t.controller;
 
 import com.project.w3t.model.Request;
+import com.project.w3t.model.RequestDto;
 import com.project.w3t.repository.RequestStorage;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +37,7 @@ public class RequestsController {
     }
 
     @PutMapping("{id}")
-    public void update(@PathVariable Long id, @RequestBody Request request) {
-        try {
-            requestStorage.updateRequest(id, request.getType(), request.getStartDate(), request.getEndDate(), request.getComment());
-        } catch (InvalidRequestId e) {
-            System.out.println("Invalid request Id!");
-        }
+    public void update(@PathVariable Long id, @RequestBody RequestDto requestDto) {
+        requestService.updateRequest(id, requestDto);
     }
 }
