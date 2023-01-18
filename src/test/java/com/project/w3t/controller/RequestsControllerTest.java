@@ -10,8 +10,8 @@ import java.util.List;
 class RequestsControllerTest {
 
 
-    RequestsController requestsController = new RequestsController();
     RequestStorage requestStorage = new RequestStorage();
+    RequestsController requestsController = new RequestsController(requestStorage);
 
 
     @Test

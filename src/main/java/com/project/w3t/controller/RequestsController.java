@@ -2,10 +2,16 @@ package com.project.w3t.controller;
 
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
+import com.project.w3t.model.Type;
 import com.project.w3t.repository.RequestStorage;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -13,11 +19,15 @@ import java.util.List;
 @RequestMapping("api/v1/requests")
 public class RequestsController {
 
+    private final RequestStorage requestStorage;
+    private final RequestService requestService;
     @Autowired
-    RequestStorage requestStorage;
+    public RequestsController(RequestStorage requestStorage, RequestService requestService) {
+        this.requestStorage = requestStorage;
+        this.requestService = requestService;
+    }
 
-    @Autowired
-    RequestService requestService;
+
 
 
     @GetMapping
@@ -40,4 +50,9 @@ public class RequestsController {
         requestService.deleteRequest(requestId);
     }
 
+
+    @GetMapping("/{type}")
+    public List<Request> getAllByType(@PathVariable("type")Type requestType) {
+        return requestStorage.getUserRequestListByType(requestType);
+    }
 }
