@@ -1,15 +1,11 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidCommentLength;
-import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.model.Request;
 import com.project.w3t.repository.RequestStorage;
+import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +19,9 @@ public class RequestsController {
     @Autowired
     RequestStorage requestStorage;
 
+    @Autowired
+    RequestService requestService;
+
 
     @GetMapping
     public List<Request> getAll() {
@@ -30,14 +29,8 @@ public class RequestsController {
     }
 
     @PostMapping
-    public void add(@RequestBody Request request) {
-        try {
-            requestStorage.addRequest(request);
-        } catch (InvalidDateRangeException e) {
-            System.out.println("Invalid date range!");
-        } catch (InvalidCommentLength e) {
-            System.out.println("Your comment is too long!");
-        }
+    public void addRequest(@RequestBody Request request) {
+        requestService.addRequest(request);
     }
 
     @PutMapping("{id}")
