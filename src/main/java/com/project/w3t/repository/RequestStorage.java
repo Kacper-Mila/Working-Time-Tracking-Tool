@@ -1,15 +1,13 @@
 package com.project.w3t.repository;
 
-import com.project.w3t.exceptions.InvalidCommentLength;
+import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.DateRange;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.Type;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Status;
-import com.project.w3t.service.RequestService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,12 +34,12 @@ public class RequestStorage implements RequestRepository {
     }
 
     //    TODO hours for overtime and remote
-    public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength {
+    public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         if (checkRequest(request)) {
             if (checkCommentLength(request.getComment())) {
                 userRequestList.add(request);
             } else {
-                throw new InvalidCommentLength();
+                throw new InvalidCommentLengthException();
             }
         } else {
             throw new InvalidDateRangeException();
@@ -76,13 +74,13 @@ public class RequestStorage implements RequestRepository {
     }
 
     public void updateRequest(Long id, RequestDto requestDto)
-            throws InvalidRequestId, InvalidCommentLength, InvalidDateRangeException {
+            throws InvalidRequestIdException, InvalidCommentLengthException, InvalidDateRangeException {
         Request requestToUpdate = userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(id))
                 .findAny()
                 .orElse(null);
         if (requestToUpdate == null) {
-            throw new InvalidRequestId();
+            throw new InvalidRequestIdException();
         }
         List<LocalDate> dateRange = DateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
@@ -90,7 +88,7 @@ public class RequestStorage implements RequestRepository {
             throw new InvalidDateRangeException();
         } else {
             if (!checkCommentLength(comment)) {
-                throw new InvalidCommentLength();
+                throw new InvalidCommentLengthException();
             }
             requestToUpdate.setType(requestDto.getType());
             requestToUpdate.setStartDate(requestDto.getStartDate());
@@ -101,13 +99,13 @@ public class RequestStorage implements RequestRepository {
     }
 
     @Override
-    public void deleteRequest(Long requestId) throws InvalidRequestId {
+    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
         Request requestToDelete = userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(requestId))
                 .findAny()
                 .orElse(null);
         if (requestToDelete == null) {
-            throw new InvalidRequestId();
+            throw new InvalidRequestIdException();
         }
         userRequestList.remove(requestToDelete);
     }
