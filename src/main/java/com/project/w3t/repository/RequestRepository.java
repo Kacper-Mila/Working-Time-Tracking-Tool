@@ -1,6 +1,6 @@
 package com.project.w3t.repository;
 
-import com.project.w3t.exceptions.InvalidCommentLength;
+import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
@@ -14,9 +14,9 @@ import java.util.List;
 public interface RequestRepository {
     List<Request> getAllRequests();
 
-    void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength;
+    void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException;
 
-    void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException;
+    void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException;
 
     void deleteRequest(Long requestId) throws InvalidRequestIdException;
 

@@ -1,5 +1,8 @@
 package com.project.w3t.controller;
 
+import com.project.w3t.exceptions.InvalidCommentLengthException;
+import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Type;
@@ -29,12 +32,12 @@ public class RequestController {
     }
 
     @PostMapping
-    public void addRequest(@RequestBody Request request) {
+    public void addRequest(@RequestBody Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         requestService.addRequest(request);
     }
 
     @PatchMapping("/update")
-    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) {
+    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
         requestService.updateRequest(requestId, requestDto);
     }
 
