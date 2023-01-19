@@ -31,6 +31,10 @@ public class RequestService {
             requestRepository.updateRequest(id, requestDto);
         } catch (InvalidRequestId e) {
             System.out.println("Invalid request Id!");
+        } catch (InvalidCommentLength e) {
+            System.out.println("Your comment is too long!");
+        } catch (InvalidDateRangeException e) {
+            System.out.println("Invalid date range!");
         }
     }
 
