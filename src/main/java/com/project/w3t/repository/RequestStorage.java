@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class RequestStorage implements RequestRepository{
+public class RequestStorage implements RequestRepository {
 
     private List<Request> userRequestList = new ArrayList<>();
     private static int COMMENT_MAX_LENGTH = 250;
