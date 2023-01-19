@@ -53,11 +53,6 @@ public class RequestsController {
     @GetMapping("/id/{requestId}")
     @ResponseBody
     public Object getRequestById(@PathVariable Long requestId){
-        try{
-            return requestService.getRequestById(requestId);
-        }catch (InvalidRequestIdException e){
-            System.out.println("Wrong request ID!");
-            return null;
-        }
+        return requestService.getRequestById(requestId);
     }
 }
