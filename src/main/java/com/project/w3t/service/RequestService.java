@@ -1,13 +1,13 @@
 package com.project.w3t.service;
 
-import com.project.w3t.exceptions.InvalidCommentLength;
+import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.model.Request;
-import com.project.w3t.repository.RequestRepository;
-import org.springframework.stereotype.Service;
 import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Type;
+import com.project.w3t.repository.RequestRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,22 +24,12 @@ public class RequestService {
         return requestRepository.getAllRequests();
     }
 
-    public void addRequest(Request request) {
-        try {
+    public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
             requestRepository.addRequest(request);
-        } catch (InvalidDateRangeException e) {
-            System.out.println("Invalid date range!");
-        } catch (InvalidCommentLength e) {
-            System.out.println("Your comment is too long!");
-        }
     }
 
-    public void updateRequest(Long id, RequestDto requestDto) {
-        try {
+    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
             requestRepository.updateRequest(id, requestDto);
-        } catch (InvalidRequestIdException e) {
-            System.out.println("Invalid request Id!");
-        }
     }
 
     public void deleteRequest(Long requestId) {
