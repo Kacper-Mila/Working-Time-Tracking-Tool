@@ -43,7 +43,7 @@ public class RequestController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteRequest(@RequestParam Long requestId) {
+    public void deleteRequest(@RequestParam Long requestId) throws InvalidRequestIdException {
         requestService.deleteRequest(requestId);
     }
 

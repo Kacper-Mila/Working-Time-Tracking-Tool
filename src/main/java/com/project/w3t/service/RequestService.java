@@ -32,21 +32,12 @@ public class RequestService {
             requestRepository.updateRequest(id, requestDto);
     }
 
-    public void deleteRequest(Long requestId) {
-        try {
+    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
             requestRepository.deleteRequest(requestId);
-        } catch (InvalidRequestIdException e) {
-            System.out.println("Invalid request Id!");
-        }
     }
 
-    public Optional<List<Request>> getAllRequestsByType(String requestType) {
-        try {
+    public Optional<List<Request>> getAllRequestsByType(String requestType) throws NullPointerException {
             return Optional.ofNullable(requestRepository.getAllRequestsByType(requestType));
-        } catch (NullPointerException e) {
-            System.out.println("Wrong request type.");
-            return Optional.empty();
-        }
     }
 
     public Optional<Request> getRequestById(Long requestId) {
