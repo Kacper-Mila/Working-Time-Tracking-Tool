@@ -17,7 +17,7 @@ public interface RequestRepository {
 
     void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength;
 
-    void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestId;
+    void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestId, InvalidCommentLength, InvalidDateRangeException;
 
     void deleteRequest(Long requestId) throws InvalidRequestId;
 
