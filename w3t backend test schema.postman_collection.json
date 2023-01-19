@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "db11236e-4bef-4be3-8fdb-acaf5f14670c",
+		"_postman_id": "4f398fce-e400-4ed5-9ca5-f8ceca57ec7c",
 		"name": "w3t backend test schema",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24872497"
+		"_exporter_id": "25344541"
 	},
 	"item": [
 		{
@@ -63,7 +63,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/requests/id/1",
+					"raw": "http://localhost:8080/api/v1/requests/id?requestId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -73,8 +73,13 @@
 						"api",
 						"v1",
 						"requests",
-						"id",
-						"1"
+						"id"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -86,7 +91,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/requests/type/REMOTE",
+					"raw": "http://localhost:8080/api/v1/requests/type?requestType=REMOTE",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -96,8 +101,13 @@
 						"api",
 						"v1",
 						"requests",
-						"type",
-						"REMOTE"
+						"type"
+					],
+					"query": [
+						{
+							"key": "requestType",
+							"value": "REMOTE"
+						}
 					]
 				}
 			},
@@ -118,7 +128,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/requests/7",
+					"raw": "http://localhost:8080/api/v1/requests/update?requestId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -128,7 +138,13 @@
 						"api",
 						"v1",
 						"requests",
-						"7"
+						"update"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -149,7 +165,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/requests/3",
+					"raw": "http://localhost:8080/api/v1/requests/delete?requestId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -159,7 +175,13 @@
 						"api",
 						"v1",
 						"requests",
-						"3"
+						"delete"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "1"
+						}
 					]
 				}
 			},
