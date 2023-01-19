@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/requests")
@@ -44,7 +45,7 @@ public class RequestController {
     }
 
     @GetMapping("/type")
-    public List<Request> getAllRequestsByType(@RequestParam Type requestType) {
+    public Optional<List<Request>> getAllRequestsByType(@RequestParam String requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
