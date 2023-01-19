@@ -60,11 +60,11 @@ public class RequestService {
     }
 
     public Optional<Request> getRequestById(Long requestId) {
-        try{
+        try {
             return Optional.ofNullable(requestRepository.getRequestById(requestId));
-        }catch (InvalidRequestIdException e){
+        } catch (InvalidRequestIdException e) {
             System.out.println("Request with ID " + requestId + " does not exist!");
             return Optional.empty();
         }
-
+    }
 }
