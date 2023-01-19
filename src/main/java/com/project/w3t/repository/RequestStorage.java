@@ -2,13 +2,11 @@ package com.project.w3t.repository;
 
 import com.project.w3t.exceptions.InvalidCommentLength;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.Type;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Status;
-import com.project.w3t.service.RequestService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,13 +54,13 @@ public class RequestStorage implements RequestRepository {
         return request.getComment().length() <= COMMENT_MAX_LENGTH;
     }
 
-    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestId {
+    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException {
         Request requestToUpdate = userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(id))
                 .findAny()
                 .orElse(null);
         if (requestToUpdate == null) {
-            throw new InvalidRequestId();
+            throw new InvalidRequestIdException();
         }
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
@@ -72,13 +70,13 @@ public class RequestStorage implements RequestRepository {
     }
 
     @Override
-    public void deleteRequest(Long requestId) throws InvalidRequestId {
+    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
         Request requestToDelete = userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(requestId))
                 .findAny()
                 .orElse(null);
         if (requestToDelete == null) {
-            throw new InvalidRequestId();
+            throw new InvalidRequestIdException();
         }
         userRequestList.remove(requestToDelete);
     }
