@@ -6,14 +6,12 @@ import com.project.w3t.exceptions.InvalidRequestId;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
+import com.project.w3t.model.Type;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
-import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.Request;
-import com.project.w3t.repository.RequestRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +20,10 @@ public class RequestService {
 
     public RequestService(RequestRepository requestRepository) {
         this.requestRepository = requestRepository;
+    }
+
+    public List<Request> getAllRequests() {
+        return requestRepository.getAllRequests();
     }
 
     public void addRequest(Request request) {
@@ -49,7 +51,13 @@ public class RequestService {
             System.out.println("Invalid request Id!");
         }
     }
-    private Optional<Request> getRequestById(Long requestId) throws InvalidRequestIdException {
+
+    public List<Request> getAllRequestsByType(Type requestType) {
+        return requestRepository.getAllRequestsByType(requestType);
+    }
+
+    public Optional<Request> getRequestById(Long requestId) throws InvalidRequestIdException {
         return Optional.ofNullable(requestRepository.getRequestById(requestId));
     }
+
 }

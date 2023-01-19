@@ -27,6 +27,11 @@ public class RequestStorage implements RequestRepository {
     private List<Request> userRequestList = new ArrayList<>();
     private static int COMMENT_MAX_LENGTH = 250;
 
+    @Override
+    public List<Request> getAllRequests() {
+        return userRequestList;
+    }
+
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength {
         if (!checkDateRange(request)) {
             if (checkCommentLength(request)) {
@@ -78,7 +83,7 @@ public class RequestStorage implements RequestRepository {
     }
 
 //    TODO frontend string switch to type if needed or onclick scroll list.
-    public List<Request> getUserRequestListByType(Type requestType) {
+    public List<Request> getAllRequestsByType(Type requestType) {
 
 //        Type requestType = null;
 //        for (Type value : Type.values()) {
