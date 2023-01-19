@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 @Data
 @AllArgsConstructor
@@ -49,7 +49,6 @@ public class RequestStorage implements RequestRepository {
                 .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
                 .filter(req -> req.getType().equals(request.getType())).toList();
     }
-
     public boolean checkRequest(Request request) {
         return checkRange(userRequestList, request.getRequestDateRange());
     }
@@ -77,6 +76,8 @@ public class RequestStorage implements RequestRepository {
                 .findAny()
                 .orElse(null);
     }
+
+
 
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
         Request requestToUpdate = getRequestToUpdate(id);
@@ -116,7 +117,15 @@ public class RequestStorage implements RequestRepository {
     //    TODO frontend string to enum switch, onclick scroll list,
 //     collective get by body elements driven in request logic,
 //     exceptions.
-    public List<Request> getAllRequestsByType(Type requestType) {
+    public List<Request> getAllRequestsByType(String requestTypeString) {
+
+        Type requestType = null;
+        for (Type value : Type.values()) {
+            if (value.toString().equals(requestTypeString.toUpperCase())) {
+                requestType = value;
+            }
+        }
+
         return switch (requestType) {
             case HOLIDAY ->
                     userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());

@@ -20,7 +20,7 @@ public interface RequestRepository {
 
     void deleteRequest(Long requestId) throws InvalidRequestIdException;
 
-    public List<Request> getAllRequestsByType(Type requestType);
+    List<Request> getAllRequestsByType(String requestType);
 
     Request getRequestById(Long requestId) throws InvalidRequestIdException;
 }
