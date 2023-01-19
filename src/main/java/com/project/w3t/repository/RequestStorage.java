@@ -1,19 +1,22 @@
 package com.project.w3t.repository;
 
-import com.project.w3t.exceptions.InvalidCommentLength;
+import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.DateRange;
 import com.project.w3t.model.Request;
-import com.project.w3t.model.Type;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Status;
+import com.project.w3t.model.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,37 +34,66 @@ public class RequestStorage implements RequestRepository {
     }
 
     //    TODO hours for overtime and remote
-    public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength {
-        if (!checkDateRange(request)) {
-            if (checkCommentLength(request)) {
-                userRequestList.add(request);
-            } else {
-                throw new InvalidCommentLength();
-            }
-        } else {
+    public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
+        if (!checkRequest(request)) {
             throw new InvalidDateRangeException();
         }
+        if (request.getComment() == null || !isCommentLengthValid(request.getComment())) {
+            throw new InvalidCommentLengthException();
+        }
+        userRequestList.add(request);
     }
 
-    public boolean checkDateRange(Request request) {
+    private List<Request> getRequestsToCheckDateRange(Request request) {
         return userRequestList.stream()
-                .filter(req -> req.getType().equals(request.getType()))
-                .anyMatch(req -> (req.getRequestDateRange().contains(request.getStartDate())
-                        || (req.getRequestDateRange().contains(request.getEndDate()))));
+                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
+                .filter(req -> req.getType().equals(request.getType())).toList();
     }
 
-    public boolean checkCommentLength(Request request) {
-        return request.getComment().length() <= COMMENT_MAX_LENGTH;
+    public boolean checkRequest(Request request) {
+        return checkRange(userRequestList, request.getRequestDateRange());
     }
 
-    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException {
-        Request requestToUpdate = userRequestList.stream()
+    private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
+        return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
+    }
+
+    private boolean checkRange(List<Request> requests, List<LocalDate> dateRange) {
+        for (LocalDate date : dateRange) {
+            if (!checkDateAvailability(requests, date)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isCommentLengthValid(String comment) {
+        return comment.length() <= COMMENT_MAX_LENGTH;
+    }
+
+    public Request getRequestToUpdate(Long id) {
+        return userRequestList.stream()
                 .filter(request -> request.getRequestId().equals(id))
                 .findAny()
                 .orElse(null);
+    }
+
+    public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
+        Request requestToUpdate = getRequestToUpdate(id);
         if (requestToUpdate == null) {
             throw new InvalidRequestIdException();
         }
+        List<LocalDate> dateRange = DateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
+        String comment = requestDto.getComment();
+
+        if (!checkRange(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
+            throw new InvalidDateRangeException();
+        }
+
+        if (!isCommentLengthValid(comment)) {
+            throw new InvalidCommentLengthException();
+        }
+
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
         requestToUpdate.setEndDate(requestDto.getEndDate());
