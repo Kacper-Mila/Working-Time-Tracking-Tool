@@ -1,24 +1,37 @@
 package com.project.w3t.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 //@Entity
 public class Request {
-
+    private static Long ID = 1L;
     private Long requestId;
     private String ownerId;
     private Type type;
     private String comment;
-    private Date registrationDate;
-    private Date startDate;
-    private Date endDate;
-    private Date approvalDate;
+    private LocalDate registrationDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate approvalDate;
     private Status status;
+
+    public Request() {
+        this.requestId = ID++;
+        this.registrationDate = LocalDate.now();
+        this.status = Status.PENDING;
+    }
+
+    public List<LocalDate> getRequestDateRange() {
+        return DateRange.getDateRange(getStartDate(), getEndDate());
+    }
 }
