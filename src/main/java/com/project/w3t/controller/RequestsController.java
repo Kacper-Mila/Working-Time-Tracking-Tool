@@ -35,24 +35,24 @@ public class RequestsController {
         requestService.addRequest(request);
     }
 
-    @PatchMapping("{requestId}")
-    public void updateRequest(@PathVariable Long requestId, @RequestBody RequestDto requestDto) {
+    @PatchMapping("/update")
+    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) {
         requestService.updateRequest(requestId, requestDto);
     }
 
-    @DeleteMapping("{requestId}")
-    public void deleteRequest(@PathVariable Long requestId) {
+    @DeleteMapping("/delete")
+    public void deleteRequest(@RequestParam Long requestId) {
         requestService.deleteRequest(requestId);
 }
 
-    @GetMapping("/type/{type}")
-    public List<Request> getAllRequestsByType(@PathVariable("type")Type requestType) {
+    @GetMapping("/type")
+    public List<Request> getAllRequestsByType(@RequestParam("type")Type requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
-    @GetMapping("/id/{requestId}")
+    @GetMapping("/id")
     @ResponseBody
-    public Object getRequestById(@PathVariable Long requestId){
+    public Object getRequestById(@RequestParam Long requestId){
         return requestService.getRequestById(requestId);
     }
 }
