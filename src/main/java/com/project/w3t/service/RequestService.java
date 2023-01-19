@@ -7,12 +7,8 @@ import com.project.w3t.model.Request;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Type;
-import com.project.w3t.repository.RequestRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;

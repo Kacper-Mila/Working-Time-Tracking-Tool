@@ -1,10 +1,8 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.RequestDto;
 import com.project.w3t.model.Type;
-import com.project.w3t.repository.RequestStorage;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/requests")
-public class RequestsController {
+public class RequestController {
 
     private final RequestService requestService;
     @Autowired
-    public RequestsController(RequestService requestService) {
+    public RequestController(RequestService requestService) {
         this.requestService = requestService;
     }
 
