@@ -7,7 +7,6 @@ import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +17,7 @@ import java.util.List;
 public class RequestController {
 
     private final RequestService requestService;
+
     @Autowired
     public RequestController(RequestService requestService) {
         this.requestService = requestService;
@@ -41,7 +41,7 @@ public class RequestController {
     @DeleteMapping("/delete")
     public void deleteRequest(@RequestParam Long requestId) {
         requestService.deleteRequest(requestId);
-}
+    }
 
     @GetMapping("/type")
     public List<Request> getAllRequestsByType(@RequestParam Type requestType) {
@@ -50,7 +50,7 @@ public class RequestController {
 
     @GetMapping("/id")
     @ResponseBody
-    public Object getRequestById(@RequestParam Long requestId){
+    public Object getRequestById(@RequestParam Long requestId) {
         return requestService.getRequestById(requestId);
     }
 }

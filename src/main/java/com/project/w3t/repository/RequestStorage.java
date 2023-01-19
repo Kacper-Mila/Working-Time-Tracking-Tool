@@ -32,6 +32,7 @@ public class RequestStorage implements RequestRepository {
         return userRequestList;
     }
 
+    //    TODO hours for overtime and remote
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLength {
         if (!checkDateRange(request)) {
             if (checkCommentLength(request)) {
@@ -82,32 +83,29 @@ public class RequestStorage implements RequestRepository {
         userRequestList.remove(requestToDelete);
     }
 
-//    TODO frontend string switch to type if needed or onclick scroll list.
+    //    TODO frontend string to enum switch, onclick scroll list,
+//     collective get by body elements driven in request logic,
+//     exceptions.
     public List<Request> getAllRequestsByType(Type requestType) {
-
-//        Type requestType = null;
-//        for (Type value : Type.values()) {
-//            if (value.toString().equals(requestTypeString)) {
-//                requestType = value;
-//            }
-//        }
-
-
         return switch (requestType) {
-            case HOLIDAY -> userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());
-            case OVERTIME -> userRequestList.stream().filter(request -> request.getType().equals(Type.OVERTIME)).collect(Collectors.toList());
-            case REMOTE ->userRequestList.stream().filter(request -> request.getType().equals(Type.REMOTE)).collect(Collectors.toList());
+            case HOLIDAY ->
+                    userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());
+            case OVERTIME ->
+                    userRequestList.stream().filter(request -> request.getType().equals(Type.OVERTIME)).collect(Collectors.toList());
+            case REMOTE ->
+                    userRequestList.stream().filter(request -> request.getType().equals(Type.REMOTE)).collect(Collectors.toList());
         };
     }
 
-    public boolean checkRequestId(Long requestId){
-        return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
-    }
     public Request getRequestById(Long requestId) throws InvalidRequestIdException {
-        if (checkRequestId(requestId)){
+        if (checkRequestId(requestId)) {
             return userRequestList.stream().filter(request -> request.getRequestId().equals(requestId)).findAny().get();
-        }else {
+        } else {
             throw new InvalidRequestIdException();
         }
+    }
+
+    public boolean checkRequestId(Long requestId) {
+        return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
     }
 }
