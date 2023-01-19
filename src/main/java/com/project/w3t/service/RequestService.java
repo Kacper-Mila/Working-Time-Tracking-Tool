@@ -55,8 +55,13 @@ public class RequestService {
         }
     }
 
-    public List<Request> getAllRequestsByType(Type requestType) {
-        return requestRepository.getAllRequestsByType(requestType);
+    public Optional<List<Request>> getAllRequestsByType(String requestType) {
+        try {
+            return Optional.ofNullable(requestRepository.getAllRequestsByType(requestType));
+        } catch (NullPointerException e) {
+            System.out.println("Wrong request type.");
+            return Optional.empty();
+        }
     }
 
     public Optional<Request> getRequestById(Long requestId) {

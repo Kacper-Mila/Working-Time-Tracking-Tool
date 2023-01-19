@@ -115,7 +115,15 @@ public class RequestStorage implements RequestRepository {
     //    TODO frontend string to enum switch, onclick scroll list,
 //     collective get by body elements driven in request logic,
 //     exceptions.
-    public List<Request> getAllRequestsByType(Type requestType) {
+    public List<Request> getAllRequestsByType(String requestTypeString) {
+
+        Type requestType = null;
+        for (Type value : Type.values()) {
+            if (value.toString().equals(requestTypeString.toUpperCase())) {
+                requestType = value;
+            }
+        }
+
         return switch (requestType) {
             case HOLIDAY ->
                     userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());

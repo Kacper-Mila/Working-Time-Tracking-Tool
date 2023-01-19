@@ -21,7 +21,7 @@ public interface RequestRepository {
 
     void deleteRequest(Long requestId) throws InvalidRequestId;
 
-    public List<Request> getAllRequestsByType(Type requestType);
+    List<Request> getAllRequestsByType(String requestType);
 
     Request getRequestById(Long requestId) throws InvalidRequestIdException;
 }
