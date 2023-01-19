@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class UserStorage {
+public class UserStorage implements UserRepository {
 
     private List<User> userList = new ArrayList<>();
 
