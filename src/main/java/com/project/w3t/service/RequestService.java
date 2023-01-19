@@ -52,5 +52,4 @@ public class RequestService {
     private Optional<Request> getRequestById(Long requestId) throws InvalidRequestIdException {
         return Optional.ofNullable(requestRepository.getRequestById(requestId));
     }
-
 }

@@ -77,6 +77,7 @@ public class RequestStorage implements RequestRepository {
         userRequestList.remove(requestToDelete);
     }
 
+//    TODO frontend string switch to type if needed or onclick scroll list.
     public List<Request> getUserRequestListByType(Type requestType) {
 
 //        Type requestType = null;
@@ -93,6 +94,7 @@ public class RequestStorage implements RequestRepository {
             case REMOTE ->userRequestList.stream().filter(request -> request.getType().equals(Type.REMOTE)).collect(Collectors.toList());
         };
     }
+
     public boolean checkRequestId(Long requestId){
         return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
     }

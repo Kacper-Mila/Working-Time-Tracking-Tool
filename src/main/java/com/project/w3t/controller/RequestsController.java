@@ -23,12 +23,12 @@ import java.util.List;
 @RequestMapping("api/v1/requests")
 public class RequestsController {
 
-    private final RequestStorage requestStorage;
     private final RequestService requestService;
+    private final RequestStorage requestStorage;
     @Autowired
     public RequestsController(RequestStorage requestStorage, RequestService requestService) {
-        this.requestStorage = requestStorage;
         this.requestService = requestService;
+        this.requestStorage = requestStorage;
     }
 
     @GetMapping
@@ -51,12 +51,12 @@ public class RequestsController {
         requestService.deleteRequest(requestId);
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("/type/{type}")
     public List<Request> getAllByType(@PathVariable("type")Type requestType) {
         return requestStorage.getUserRequestListByType(requestType);
     }
 
-    @GetMapping("/{requestId}")
+    @GetMapping("/id/{requestId}")
     @ResponseBody
     public Object getRequestById(@PathVariable Long requestId){
         try{
