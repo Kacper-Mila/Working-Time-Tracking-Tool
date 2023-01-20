@@ -3,6 +3,9 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestStatus;
+import com.project.w3t.model.request.RequestType;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.Status;
 import com.project.w3t.model.Type;
@@ -27,7 +30,7 @@ class RequestStorageTest {
     private final Request request1 = new Request(1L, "123", Type.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
             LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
-            Status.PENDING );
+            RequestStatus.PENDING );
 
     private final Request request2 = new Request(5L, "1233", Type.OVERTIME,
             "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),

@@ -1,11 +1,11 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.model.Request;
+import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestStorage;
 import org.junit.jupiter.api.Test;
 
-//@WebMvcTest(RequestsController.class)
-public class RequestsControllerTest {
+class RequestsControllerTest {
+
 
     RequestStorage requestStorage = new RequestStorage();
 //    RequestsController requestsController = new RequestsController(requestStorage);
