@@ -49,6 +49,19 @@ public class RequestServiceTest {
     }
 
     @Test
+    void shouldAddRequest() throws InvalidCommentLengthException {
+        requestService.addRequest(request);
+
+        ArgumentCaptor<Request> argumentCaptor = ArgumentCaptor.forClass(Request.class);
+
+        verify(requestRepository).addRequest(argumentCaptor.capture());
+
+        Request capturedRequest = argumentCaptor.getValue();
+
+        assertThat(capturedRequest).isEqualTo(request);
+    }
+
+    @Test
     void shouldDeleteRequest() throws InvalidRequestIdException {
         Long requestId = 1L;
 
