@@ -33,7 +33,7 @@ public class RequestStorage implements RequestRepository {
         return userRequestList;
     }
 
-    //    TODO hours for overtime and remote, validate type..
+//    TODO hours for overtime and remote, validate type..
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         if (checkRequest(request)) {
             if (checkCommentLength(request.getComment())) {
@@ -73,6 +73,7 @@ public class RequestStorage implements RequestRepository {
         return comment.length() <= COMMENT_MAX_LENGTH;
     }
 
+//    TODO validate type on first when same date on both change.
     public void updateRequest(Long id, RequestDto requestDto)
             throws InvalidRequestIdException, InvalidCommentLengthException, InvalidDateRangeException {
         Request requestToUpdate = userRequestList.stream()
