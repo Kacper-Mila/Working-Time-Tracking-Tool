@@ -64,7 +64,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldGetAllRequestsByType() {
+    void shouldGetAllRequestsByType() throws InvalidCommentLengthException {
         String type = "holiday";
         requestService.getAllRequestsByType(type);
 
@@ -84,5 +84,14 @@ public class RequestServiceTest {
 
         RequestDto capturedRequestDto = requestDtoArgumentCaptor.getValue();
         assertThat(capturedRequestDto).isEqualTo(requestDto);
+    }
+
+    @Test
+    void shouldRetrieveRequestWithSpecificId() throws InvalidRequestIdException {
+        Long ID = 2137L;
+
+        requestService.getRequestById(ID);
+
+        verify(requestRepository).getRequestById(ID);
     }
 }
