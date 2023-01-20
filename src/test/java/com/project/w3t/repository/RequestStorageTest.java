@@ -6,9 +6,6 @@ import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.Status;
-import com.project.w3t.model.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,20 +24,20 @@ class RequestStorageTest {
     private List<Request> userRequestList;
     private static final int COMMENT_MAX_LENGTH = 250;
 
-    private final Request request1 = new Request(1L, "123", Type.HOLIDAY,
+    private final Request request1 = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
             LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
             RequestStatus.PENDING );
 
-    private final Request request2 = new Request(5L, "1233", Type.OVERTIME,
+    private final Request request2 = new Request(5L, "1233", RequestType.OVERTIME,
             "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
             LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-            Status.PENDING );
+            RequestStatus.PENDING );
 
-    private final Request request3 = new Request(5L, "1233", Type.REMOTE,
+    private final Request request3 = new Request(21L, "1233", RequestType.REMOTE,
             "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
             LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-            Status.PENDING );
+            RequestStatus.PENDING );
     @BeforeEach
     void setUp() throws InvalidCommentLengthException {
         userRequestList = new ArrayList<>();
@@ -104,9 +101,7 @@ class RequestStorageTest {
         //TODO Use created list in BeforeEach, add requests in BeforeEach
 
         List<Request> expected = new ArrayList<>();
-
         expected.add(request2);
-
 
         assertThat(requestStorage.getAllRequestsByType("overtime")).isEqualTo(expected);
     }
@@ -128,9 +123,7 @@ class RequestStorageTest {
         //TODO Use created list in BeforeEach, add requests in BeforeEach
 
         List<Request> expected = new ArrayList<>();
-
         expected.add(request1);
-        expected.add(request2);
 
         assertThat(requestStorage.getAllRequestsByType("holiday")).isEqualTo(expected);
     }
@@ -164,9 +157,13 @@ class RequestStorageTest {
         assertThatThrownBy(() -> requestStorage.getAllRequestsByType(""))
                 .isInstanceOf(NullPointerException.class);
     }
-
+    //ID TESTS
     @Test
     void shouldReturnRequestById() throws InvalidRequestIdException {
-        //assertThat(requestStorage.getRequestById(1L)).isEqualTo()
+        assertThat(requestStorage.getRequestById(21L)).isEqualTo(request3);
+    }
+    @Test
+    void shouldThrowInvalidRequestIdException(){
+        assertThatThrownBy(() -> requestStorage.getRequestById(2137L)).isInstanceOf(Exception.class);
     }
 }
