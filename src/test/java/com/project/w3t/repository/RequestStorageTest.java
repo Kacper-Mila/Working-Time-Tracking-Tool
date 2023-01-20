@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 class RequestStorageTest {
     RequestStorage requestStorage = new RequestStorage();
     private List<Request> userRequestList;
