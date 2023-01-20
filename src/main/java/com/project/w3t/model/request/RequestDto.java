@@ -11,7 +11,7 @@ public class RequestDto {
     private RequestType type;
     private String comment;
 
-    public RequestDto(LocalDate startDate, LocalDate endDate, Type type, String comment) {
+    public RequestDto(LocalDate startDate, LocalDate endDate, RequestType type, String comment) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
