@@ -2,12 +2,12 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.model.Request;
+import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Type;
+import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.RequestType;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +54,7 @@ public class RequestService {
         }
     }
 
-    public List<Request> getAllRequestsByType(Type requestType) {
+    public List<Request> getAllRequestsByType(RequestType requestType) {
         return requestRepository.getAllRequestsByType(requestType);
     }
 

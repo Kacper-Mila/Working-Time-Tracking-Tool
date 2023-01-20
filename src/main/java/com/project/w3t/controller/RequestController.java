@@ -1,8 +1,8 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.model.Request;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Type;
+import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +44,7 @@ public class RequestController {
     }
 
     @GetMapping("/type")
-    public List<Request> getAllRequestsByType(@RequestParam Type requestType) {
+    public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 

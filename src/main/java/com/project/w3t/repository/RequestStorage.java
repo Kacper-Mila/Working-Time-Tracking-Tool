@@ -3,11 +3,11 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.DateRange;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.Type;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Status;
+import com.project.w3t.model.request.RequestDateRange;
+import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestType;
+import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +33,7 @@ public class RequestStorage implements RequestRepository {
         return userRequestList;
     }
 
-    //    TODO hours for overtime and remote
+    //    TODO hours for overtime and remote, validate type..
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         if (checkRequest(request)) {
             if (checkCommentLength(request.getComment())) {
@@ -46,18 +46,8 @@ public class RequestStorage implements RequestRepository {
         }
     }
 
-    private List<Request> getRequestsToCheckDateRange(Request request) {
-        return userRequestList.stream()
-                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
-                .filter(req -> req.getType().equals(request.getType())).toList();
-    }
-
     private boolean checkRequest(Request request) {
         return checkRange(getRequestsToCheckDateRange(request), request.getRequestDateRange());
-    }
-
-    private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
-        return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
     }
 
     private boolean checkRange(List<Request> requests, List<LocalDate> dateRange) {
@@ -67,6 +57,16 @@ public class RequestStorage implements RequestRepository {
             }
         }
         return true;
+    }
+
+    private List<Request> getRequestsToCheckDateRange(Request request) {
+        return userRequestList.stream()
+                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
+                .filter(req -> req.getType().equals(request.getType())).toList();
+    }
+
+    private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
+        return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
     }
 
     private boolean checkCommentLength(String comment) {
@@ -82,7 +82,7 @@ public class RequestStorage implements RequestRepository {
         if (requestToUpdate == null) {
             throw new InvalidRequestIdException();
         }
-        List<LocalDate> dateRange = DateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
+        List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
         if (!checkRange(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
             throw new InvalidDateRangeException();
@@ -94,7 +94,7 @@ public class RequestStorage implements RequestRepository {
             requestToUpdate.setStartDate(requestDto.getStartDate());
             requestToUpdate.setEndDate(requestDto.getEndDate());
             requestToUpdate.setComment(requestDto.getComment());
-            requestToUpdate.setStatus(Status.PENDING);
+            requestToUpdate.setStatus(RequestStatus.PENDING);
         }
     }
 
@@ -111,16 +111,16 @@ public class RequestStorage implements RequestRepository {
     }
 
     //    TODO frontend string to enum switch, onclick scroll list,
-//     collective get by body elements driven in request logic,
-//     exceptions.
-    public List<Request> getAllRequestsByType(Type requestType) {
+    //     collective get by body elements driven in request logic,
+    //     exceptions.
+    public List<Request> getAllRequestsByType(RequestType requestType) {
         return switch (requestType) {
             case HOLIDAY ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.HOLIDAY)).collect(Collectors.toList());
             case OVERTIME ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.OVERTIME)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.OVERTIME)).collect(Collectors.toList());
             case REMOTE ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.REMOTE)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.REMOTE)).collect(Collectors.toList());
         };
     }
 
@@ -132,7 +132,7 @@ public class RequestStorage implements RequestRepository {
         }
     }
 
-    public boolean checkRequestId(Long requestId) {
+    private boolean checkRequestId(Long requestId) {
         return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
     }
 }

@@ -1,11 +1,13 @@
 package com.project.w3t.service;
 
+import com.project.w3t.exceptions.*;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -22,7 +24,13 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        userRepository.addUser(user);
+        try {
+            userRepository.addUser(user);
+        } catch (InvalidUserIdException e) {
+            System.out.println("Invalid user id.");
+        } catch (InvalidEmailException e) {
+            System.out.println("Invalid email address.");
+        }
     }
 
     public void updateUser(String userId, UserDto userDto) {
@@ -30,14 +38,23 @@ public class UserService {
     }
 
     public void deleteUser(String userId) {
-        userRepository.deleteUser(userId);
+        try {
+            userRepository.deleteUser(userId);
+        } catch (UserNotFoundException e) {
+            System.out.println("User not found.");
+        }
     }
 
     public List<User> getAllUsersByManager(String managerId) {
         return userRepository.getAllUsersByManager(managerId);
     }
 
-    public Object getUserById(String userId) {
-        return userRepository.getUserById(userId);
+    public Optional<User> getUserByUserId(String userId) {
+        try {
+            return Optional.ofNullable(userRepository.getUserByUserId(userId));
+        } catch (UserNotFoundException e) {
+            System.out.println("User not found.");
+            return Optional.empty();
+        }
     }
 }

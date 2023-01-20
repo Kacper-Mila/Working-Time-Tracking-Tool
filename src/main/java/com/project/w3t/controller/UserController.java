@@ -42,14 +42,14 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @GetMapping("/type")
+    @GetMapping("/manager")
     public List<User> getAllUsersByManager(@RequestParam String managerId) {
         return userService.getAllUsersByManager(managerId);
     }
 
-    @GetMapping("/id")
+    @GetMapping("/userid")
     @ResponseBody
-    public Object getUserById(@RequestParam String userId) {
-        return userService.getUserById(userId);
+    public Object getUserByUserId(@RequestParam String userId) {
+        return userService.getUserByUserId(userId);
     }
 }

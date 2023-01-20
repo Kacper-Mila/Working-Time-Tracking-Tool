@@ -2,10 +2,10 @@ package com.project.w3t.repository;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.RequestDto;
+import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.Type;
+import com.project.w3t.model.request.RequestType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface RequestRepository {
 
     void deleteRequest(Long requestId) throws InvalidRequestIdException;
 
-    public List<Request> getAllRequestsByType(Type requestType);
+    public List<Request> getAllRequestsByType(RequestType requestType);
 
     Request getRequestById(Long requestId) throws InvalidRequestIdException;
 }
