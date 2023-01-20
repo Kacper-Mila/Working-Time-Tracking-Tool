@@ -4,6 +4,7 @@ import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class RequestStorageTest {
     RequestStorage requestStorage = new RequestStorage();
     private List<Request> userRequestList;
-    private static final int COMMENT_MAX_LENGTH = 250;
+    RequestStorage requestStorage = new RequestStorage();
 
     private final Request request1 = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
@@ -38,6 +39,10 @@ class RequestStorageTest {
             "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
             LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
             RequestStatus.PENDING );
+
+    private final RequestDto requestDto = new RequestDto(LocalDate.of(2022, 3, 1),
+            LocalDate.of(2022, 3, 3), RequestType.OVERTIME, "comment");
+
     @BeforeEach
     void setUp() throws InvalidCommentLengthException {
         userRequestList = new ArrayList<>();
@@ -48,7 +53,7 @@ class RequestStorageTest {
     }
 
     @Test
-    void canAddRequest() throws InvalidDateRangeException, InvalidCommentLengthException {
+    void shouldAddRequest() throws InvalidDateRangeException, InvalidCommentLengthException {
         int startSize = requestStorage.getAllRequests().size();
         requestStorage.addRequest(request1);
 
@@ -66,13 +71,22 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLong() {
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForAddMethod() {
         request1.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
 
-        assertThatThrownBy(() -> requestStorage.addRequest(request1))
+        assertThatThrownBy(() -> requestStorage.addRequest(request))
+                .isInstanceOf(InvalidCommentLengthException.class)
+                .hasMessageContaining("Your comment is invalid!");
+
+    }
+
+    @Test
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsNullForAddMethod() {
+        request1.setComment(null);
+        assertThatThrownBy(() -> requestStorage.addRequest(request))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
 
@@ -89,7 +103,7 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidRequestIdExceptionWhenInvalidRequestIdForDeleteRequestMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request1);
+        requestStorage.addRequest(request);
 
         assertThatThrownBy(() -> requestStorage.deleteRequest(2L))
                 .isInstanceOf(InvalidRequestIdException.class)
@@ -157,6 +171,107 @@ class RequestStorageTest {
         assertThatThrownBy(() -> requestStorage.getAllRequestsByType(""))
                 .isInstanceOf(NullPointerException.class);
     }
+
+    @Test
+    void shouldUpdateRequestType() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        requestStorage.addRequest(request);
+        requestStorage.updateRequest(id, requestDto);
+
+        RequestType expectedRequestType = RequestType.OVERTIME;
+
+        assertThat(requestStorage.getRequestById(id).getType()).isEqualTo(expectedRequestType);
+    }
+
+    @Test
+    void shouldUpdateRequestStartDate() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        requestStorage.addRequest(request);
+        requestStorage.updateRequest(id, requestDto);
+
+        LocalDate expectedStartDate = requestDto.getStartDate();
+
+        assertThat(requestStorage.getRequestById(id).getStartDate()).isEqualTo(expectedStartDate);
+    }
+
+    @Test
+    void shouldUpdateRequestEndDate() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        requestStorage.addRequest(request);
+        requestStorage.updateRequest(id, requestDto);
+
+        LocalDate expectedEndDate = requestDto.getEndDate();
+
+        assertThat(requestStorage.getRequestById(id).getEndDate()).isEqualTo(expectedEndDate);
+    }
+
+    @Test
+    void shouldUpdateRequestComment() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        requestStorage.addRequest(request);
+        requestStorage.updateRequest(id, requestDto);
+
+        String expectedComment = requestDto.getComment();
+
+        assertThat(requestStorage.getRequestById(id).getComment()).isEqualTo(expectedComment);
+    }
+
+    @Test
+    void shouldUpdateRequestStatusToPending() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        requestStorage.addRequest(request);
+        requestStorage.updateRequest(id, requestDto);
+
+        RequestStatus expectedStatus = RequestStatus.PENDING;
+
+        assertThat(requestStorage.getRequestById(id).getStatus()).isEqualTo(expectedStatus);
+    }
+
+    @Test
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForUpdateMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        requestDto.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
+                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
+                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
+
+        assertThatThrownBy(() -> requestStorage.updateRequest(1L, requestDto))
+                .isInstanceOf(InvalidCommentLengthException.class)
+                .hasMessageContaining("Your comment is invalid!");
+    }
+
+    @Test
+    void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForUpdateMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
+                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
+                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
+                RequestStatus.PENDING );
+        requestStorage.addRequest(request2);
+        requestDto.setStartDate(request2.getStartDate());
+        requestDto.setEndDate(request2.getEndDate());
+
+        assertThatThrownBy(() -> requestStorage.updateRequest(1L, requestDto))
+                .isInstanceOf(InvalidDateRangeException.class)
+                .hasMessageContaining("Invalid date range!");
+    }
+
+    @Test
+    void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForUpdateMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        assertThatThrownBy(() -> requestStorage.updateRequest(3L, requestDto))
+                .isInstanceOf(InvalidRequestIdException.class)
+                .hasMessageContaining("Invalid request Id!");
+    }
+
+    @Test
+    void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForGetRequestByIdMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        assertThatThrownBy(() -> requestStorage.getRequestById(3L))
+                .isInstanceOf(InvalidRequestIdException.class)
+                .hasMessageContaining("Invalid request Id!");
+    }
+
     //ID TESTS
     @Test
     void shouldReturnRequestById() throws InvalidRequestIdException {

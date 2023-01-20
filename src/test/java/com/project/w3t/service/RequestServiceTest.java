@@ -3,6 +3,7 @@ package com.project.w3t.service;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
@@ -23,7 +24,7 @@ public class RequestServiceTest {
     @Mock
     private RequestRepository requestRepository;
     private RequestService requestService;
-    private Request request = new Request(1L, "123", RequestType.HOLIDAY,
+    private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
             LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
             RequestStatus.PENDING );
@@ -63,10 +64,25 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldGetAllRequestsByType() throws InvalidCommentLengthException {
+    void shouldGetAllRequestsByType() {
         String type = "holiday";
         requestService.getAllRequestsByType(type);
 
         verify(requestRepository).getAllRequestsByType(type);
+    }
+
+    @Test
+    void shouldUpdateRequest() throws InvalidCommentLengthException, InvalidRequestIdException {
+        Long id = 1L;
+        RequestDto requestDto = new RequestDto(LocalDate.of(2022, 3, 1),
+                LocalDate.of(2022, 3, 3), RequestType.OVERTIME, "comment");
+
+        requestService.updateRequest(id, requestDto);
+        ArgumentCaptor<RequestDto> requestDtoArgumentCaptor = ArgumentCaptor.forClass(RequestDto.class);
+
+        verify(requestRepository).updateRequest(eq(id), requestDtoArgumentCaptor.capture());
+
+        RequestDto capturedRequestDto = requestDtoArgumentCaptor.getValue();
+        assertThat(capturedRequestDto).isEqualTo(requestDto);
     }
 }
