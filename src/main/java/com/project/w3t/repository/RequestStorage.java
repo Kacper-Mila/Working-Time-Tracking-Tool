@@ -31,19 +31,17 @@ public class RequestStorage implements RequestRepository {
 
     //    TODO hours for overtime and remote, validate type..
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
-        if (checkRequest(request)) {
-            if (checkCommentLength(request.getComment())) {
-                userRequestList.add(request);
-            } else {
-                throw new InvalidCommentLengthException();
-            }
-        } else {
+        if (!checkRequest(request)) {
             throw new InvalidDateRangeException();
         }
+        if (request.getComment() == null || !isCommentLengthValid(request.getComment())) {
+            throw new InvalidCommentLengthException();
+        }
+        userRequestList.add(request);
     }
 
     private boolean checkRequest(Request request) {
-        return checkRange(getRequestsToCheckDateRange(request), request.getRequestDateRange());
+        return checkRange(userRequestList, request.getRequestDateRange());
     }
 
     private boolean checkRange(List<Request> requests, List<LocalDate> dateRange) {
@@ -65,9 +63,6 @@ public class RequestStorage implements RequestRepository {
         return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
     }
 
-    private boolean checkCommentLength(String comment) {
-        return comment.length() <= COMMENT_MAX_LENGTH;
-    }
 
     //    TODO validate type on first when same date on both change.
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
