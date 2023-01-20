@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RequestService {
@@ -32,21 +33,12 @@ public class RequestService {
             requestRepository.updateRequest(id, requestDto);
     }
 
-    public void deleteRequest(Long requestId) {
-        try {
+    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
             requestRepository.deleteRequest(requestId);
-        } catch (InvalidRequestIdException e) {
-            System.out.println("Invalid request Id!");
-        }
     }
 
-    public Optional<List<Request>> getAllRequestsByType(String requestType) {
-        try {
-            return Optional.ofNullable(requestRepository.getAllRequestsByType(requestType));
-        } catch (NullPointerException e) {
-            System.out.println("Wrong request type.");
-            return Optional.empty();
-        }
+    public List<Request> getAllRequestsByType(String requestType) throws NullPointerException {
+            return requestRepository.getAllRequestsByType(requestType);
     }
 
     public Optional<Request> getRequestById(Long requestId) {

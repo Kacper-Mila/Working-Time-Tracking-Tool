@@ -2,26 +2,35 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.Request;
 import com.project.w3t.model.Status;
 import com.project.w3t.model.Type;
+import com.project.w3t.repository.RequestRepository;
 import com.project.w3t.repository.RequestStorage;
+import org.checkerframework.checker.nullness.Opt;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RequestServiceTest {
 
-    private RequestStorage requestStorage = new RequestStorage();
+    @Mock
+    private RequestRepository requestRepository;
     private RequestService requestService;
-
     private Request request = new Request(1L, "123", Type.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
             LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
@@ -29,38 +38,44 @@ public class RequestServiceTest {
 
     @BeforeEach
     void setUp() {
-        requestService = new RequestService(requestStorage);
+        requestService = new RequestService(requestRepository);
     }
 
     @Test
-    void canAddRequest() throws InvalidDateRangeException, InvalidCommentLengthException {
-        int startSize = requestService.getAllRequests().size();
+    void shouldGetAllRequests() {
+        requestService.getAllRequests();
+
+        verify(requestRepository).getAllRequests();
+    }
+
+    @Test
+    void shouldAddRequest() throws InvalidCommentLengthException {
         requestService.addRequest(request);
 
-        assertThat(requestService.getAllRequests().size()).isEqualTo(startSize + 1);
+        ArgumentCaptor<Request> argumentCaptor = ArgumentCaptor.forClass(Request.class);
+
+        verify(requestRepository).addRequest(argumentCaptor.capture());
+
+        Request capturedRequest = argumentCaptor.getValue();
+
+        assertThat(capturedRequest).isEqualTo(request);
     }
 
     @Test
-    void shouldThrowWhenDateRangeIsWrong() throws InvalidCommentLengthException {
-        requestService.addRequest(request);
+    void shouldDeleteRequest() throws InvalidRequestIdException {
+        Long requestId = 1L;
 
-        assertThatThrownBy(() -> requestService.addRequest(request))
-                .isInstanceOf(InvalidDateRangeException.class)
-                .hasMessageContaining("Invalid date range!");
+        requestService.deleteRequest(requestId);
 
+        verify(requestRepository).deleteRequest(requestId);
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLong() {
-        request.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
-                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
-                "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
+    void shouldGetAllRequestsByType() throws InvalidCommentLengthException {
+        String type = "holiday";
+        requestService.getAllRequestsByType(type);
 
-        assertThatThrownBy(() -> requestService.addRequest(request))
-                .isInstanceOf(InvalidCommentLengthException.class)
-                .hasMessageContaining("Your comment is invalid!");
-
+        verify(requestRepository).getAllRequestsByType(type);
     }
 
 }
