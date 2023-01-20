@@ -21,38 +21,49 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class RequestStorageTest {
-
-    private List<Request> userRequestList;
     RequestStorage requestStorage = new RequestStorage();
-
-    private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
-            "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
-            LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
+    private List<Request> userRequestList;
+    private final Request request1 = new Request(1L, "123", RequestType.HOLIDAY,
+            "comment", LocalDate.now(),LocalDate.of(2022, 1, 1),
+            LocalDate.of(2022, 1, 3),LocalDate.of(2022, 1, 10),
             RequestStatus.PENDING );
 
-    private final RequestDto requestDto = new RequestDto(LocalDate.of(2022, 3, 1),
-            LocalDate.of(2022, 3, 3), RequestType.OVERTIME, "comment");
+    private final Request request2 = new Request(5L, "1233", RequestType.OVERTIME,
+            "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
+            LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
+            RequestStatus.PENDING );
+
+    private final Request request3 = new Request(21L, "1233", RequestType.REMOTE,
+            "comment", LocalDate.now(),LocalDate.of(2023, 3, 1),
+            LocalDate.of(2023, 3, 3),LocalDate.of(2023, 3, 10),
+            RequestStatus.PENDING );
+    private final Request request4 = new Request(20L, "1233", RequestType.HOLIDAY,
+            "comment", LocalDate.now(),LocalDate.of(2023, 10, 1),
+            LocalDate.of(2023, 10, 3),LocalDate.of(2023, 10, 10),
+            RequestStatus.PENDING );
+
+    private final RequestDto requestDto = new RequestDto(LocalDate.of(2022, 4, 1),
+            LocalDate.of(2022, 4, 3), RequestType.OVERTIME, "updated comment");
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws InvalidCommentLengthException {
         userRequestList = new ArrayList<>();
+        //TODO add requests to list in here
+        requestStorage.addRequest(request1);
+        requestStorage.addRequest(request2);
+        requestStorage.addRequest(request3);
     }
 
     @Test
     void shouldAddRequest() throws InvalidDateRangeException, InvalidCommentLengthException {
         int startSize = requestStorage.getAllRequests().size();
-        requestStorage.addRequest(request);
+        requestStorage.addRequest(request4);
 
         assertThat(requestStorage.getAllRequests().size()).isEqualTo(startSize + 1);
     }
 
     @Test
-    void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForAddMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
-        Request request1 = new Request(2L, "123", RequestType.HOLIDAY,
-                "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
-                LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
-                RequestStatus.PENDING );
+    void shouldThrowWhenDateRangeIsWrong() throws InvalidCommentLengthException {
 
         assertThatThrownBy(() -> requestStorage.addRequest(request1))
                 .isInstanceOf(InvalidDateRangeException.class)
@@ -62,12 +73,12 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForAddMethod() {
-        request.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+        request4.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
 
-        assertThatThrownBy(() -> requestStorage.addRequest(request))
+        assertThatThrownBy(() -> requestStorage.addRequest(request4))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
 
@@ -75,8 +86,8 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidCommentLengthExceptionWhenCommentIsNullForAddMethod() {
-        request.setComment(null);
-        assertThatThrownBy(() -> requestStorage.addRequest(request))
+        request4.setComment(null);
+        assertThatThrownBy(() -> requestStorage.addRequest(request4))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
 
@@ -84,7 +95,6 @@ class RequestStorageTest {
 
     @Test
     void shouldDeleteRequest() throws InvalidCommentLengthException, InvalidRequestIdException {
-        requestStorage.addRequest(request);
         int requestsAmount = requestStorage.getAllRequests().size();
         requestStorage.deleteRequest(1L);
 
@@ -93,7 +103,6 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidRequestIdExceptionWhenInvalidRequestIdForDeleteRequestMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
 
         assertThatThrownBy(() -> requestStorage.deleteRequest(2L))
                 .isInstanceOf(InvalidRequestIdException.class)
@@ -101,50 +110,33 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldReturnAllRequestsByOvertimeType() throws InvalidCommentLengthException {
+    void shouldReturnAllRequestsByOvertimeType() {
+        //TODO Use created list in BeforeEach, add requests in BeforeEach
+
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", RequestType.OVERTIME,
-                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                RequestStatus.PENDING );
-
-        requestStorage.addRequest(request);
-        requestStorage.addRequest(request2);
         expected.add(request2);
-
 
         assertThat(requestStorage.getAllRequestsByType("overtime")).isEqualTo(expected);
     }
 
     @Test
-    void shouldReturnAllRequestsByRemoteType() throws InvalidCommentLengthException {
-        List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", RequestType.REMOTE,
-                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                RequestStatus.PENDING );
+    void shouldReturnAllRequestsByRemoteType() {
+        //TODO Use created list in BeforeEach, add requests in BeforeEach
 
-        requestStorage.addRequest(request);
-        requestStorage.addRequest(request2);
-        expected.add(request2);
+        List<Request> expected = new ArrayList<>();
+
+        expected.add(request3);
 
 
         assertThat(requestStorage.getAllRequestsByType("remote")).isEqualTo(expected);
     }
 
     @Test
-    void shouldReturnAllRequestsByHolidayType() throws InvalidCommentLengthException {
+    void shouldReturnAllRequestsByHolidayType() {
+        //TODO Use created list in BeforeEach, add requests in BeforeEach
+
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
-                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                RequestStatus.PENDING );
-
-        requestStorage.addRequest(request);
-        requestStorage.addRequest(request2);
-        expected.add(request);
-        expected.add(request2);
-
+        expected.add(request1);
 
         assertThat(requestStorage.getAllRequestsByType("holiday")).isEqualTo(expected);
     }
@@ -155,15 +147,12 @@ class RequestStorageTest {
     // MA TO SENS? MA TO SENS? MA TO SENS???
     // MA TO SENS? MA TO SENS? MA TO SENS???
     @Test
-    void shouldReturnAllRequestsByTypeNegative() throws InvalidCommentLengthException {
-        List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
-                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                RequestStatus.PENDING );
+    void shouldReturnAllRequestsByTypeNegative() {
+        //TODO Use created list in BeforeEach, add requests in BeforeEach
 
-        requestStorage.addRequest(request);
-        expected.add(request);
+        List<Request> expected = new ArrayList<>();
+
+        expected.add(request1);
         expected.add(request2);
 
         assertThat(requestStorage.getAllRequestsByType("holiday"))
@@ -185,7 +174,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestType() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request);
         requestStorage.updateRequest(id, requestDto);
 
         RequestType expectedRequestType = RequestType.OVERTIME;
@@ -196,7 +184,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestStartDate() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request);
         requestStorage.updateRequest(id, requestDto);
 
         LocalDate expectedStartDate = requestDto.getStartDate();
@@ -207,7 +194,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestEndDate() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request);
         requestStorage.updateRequest(id, requestDto);
 
         LocalDate expectedEndDate = requestDto.getEndDate();
@@ -218,7 +204,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestComment() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request);
         requestStorage.updateRequest(id, requestDto);
 
         String expectedComment = requestDto.getComment();
@@ -229,7 +214,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestStatusToPending() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request);
         requestStorage.updateRequest(id, requestDto);
 
         RequestStatus expectedStatus = RequestStatus.PENDING;
@@ -239,7 +223,6 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForUpdateMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
         requestDto.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
@@ -252,14 +235,9 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForUpdateMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
-        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
-                "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-                LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                RequestStatus.PENDING );
-        requestStorage.addRequest(request2);
-        requestDto.setStartDate(request2.getStartDate());
-        requestDto.setEndDate(request2.getEndDate());
+        requestStorage.addRequest(request4);
+        requestDto.setStartDate(request4.getStartDate());
+        requestDto.setEndDate(request4.getEndDate());
 
         assertThatThrownBy(() -> requestStorage.updateRequest(1L, requestDto))
                 .isInstanceOf(InvalidDateRangeException.class)
@@ -268,7 +246,6 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForUpdateMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
         assertThatThrownBy(() -> requestStorage.updateRequest(3L, requestDto))
                 .isInstanceOf(InvalidRequestIdException.class)
                 .hasMessageContaining("Invalid request Id!");
@@ -276,20 +253,18 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForGetRequestByIdMethod() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request);
         assertThatThrownBy(() -> requestStorage.getRequestById(3L))
                 .isInstanceOf(InvalidRequestIdException.class)
                 .hasMessageContaining("Invalid request Id!");
     }
 
+    //ID TESTS
     @Test
-    void shouldReturnRequestById() throws InvalidCommentLengthException, InvalidRequestIdException {
-        List<Request> expected = new ArrayList<>();
-
-        requestStorage.addRequest(request);
-        expected.add(request);
-
-        assertThat(requestStorage.getRequestById(1L)).isEqualTo(expected.get(0));
+    void shouldReturnRequestById() throws InvalidRequestIdException {
+        assertThat(requestStorage.getRequestById(21L)).isEqualTo(request3);
     }
-
+    @Test
+    void shouldThrowInvalidRequestIdException(){
+        assertThatThrownBy(() -> requestStorage.getRequestById(2137L)).isInstanceOf(Exception.class);
+    }
 }

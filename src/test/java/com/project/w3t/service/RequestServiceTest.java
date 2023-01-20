@@ -64,7 +64,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldGetAllRequestsByType() {
+    void shouldGetAllRequestsByType() throws InvalidCommentLengthException {
         String type = "holiday";
         requestService.getAllRequestsByType(type);
 
