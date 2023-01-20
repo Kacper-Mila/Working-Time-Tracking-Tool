@@ -3,16 +3,9 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.DateRange;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Status;
-import com.project.w3t.model.Type;
-import com.project.w3t.model.request.RequestDateRange;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.model.request.RequestDto;
-import com.project.w3t.model.request.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +31,7 @@ public class RequestStorage implements RequestRepository {
         return userRequestList;
     }
 
-//    TODO hours for overtime and remote, validate type..
+    //    TODO hours for overtime and remote, validate type..
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         if (checkRequest(request)) {
             if (checkCommentLength(request.getComment())) {
@@ -78,14 +71,13 @@ public class RequestStorage implements RequestRepository {
         return comment.length() <= COMMENT_MAX_LENGTH;
     }
 
-//    TODO validate type on first when same date on both change.
-public Request getRequestToUpdate(Long id) {
-    return userRequestList.stream()
-            .filter(request -> request.getRequestId().equals(id))
-            .findAny()
-            .orElse(null);
-}
-
+    //    TODO validate type on first when same date on both change.
+    public Request getRequestToUpdate(Long id) {
+        return userRequestList.stream()
+                .filter(request -> request.getRequestId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
 
 
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
@@ -123,7 +115,7 @@ public Request getRequestToUpdate(Long id) {
         userRequestList.remove(requestToDelete);
     }
 
-    //    TODO frontend string to enum switch, onclick scroll list,
+//    TODO frontend string to enum switch, onclick scroll list,
 //     collective get by body elements driven in request logic,
 //     exceptions.
     public List<Request> getAllRequestsByType(String requestTypeString) {
