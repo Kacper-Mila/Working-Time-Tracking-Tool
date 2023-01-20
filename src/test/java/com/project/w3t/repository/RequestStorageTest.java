@@ -24,8 +24,8 @@ class RequestStorageTest {
     RequestStorage requestStorage = new RequestStorage();
     private List<Request> userRequestList;
     private final Request request1 = new Request(1L, "123", RequestType.HOLIDAY,
-            "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
-            LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
+            "comment", LocalDate.now(),LocalDate.of(2022, 1, 1),
+            LocalDate.of(2022, 1, 3),LocalDate.of(2022, 1, 10),
             RequestStatus.PENDING );
 
     private final Request request2 = new Request(5L, "1233", RequestType.OVERTIME,
@@ -34,12 +34,16 @@ class RequestStorageTest {
             RequestStatus.PENDING );
 
     private final Request request3 = new Request(21L, "1233", RequestType.REMOTE,
-            "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
-            LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
+            "comment", LocalDate.now(),LocalDate.of(2023, 3, 1),
+            LocalDate.of(2023, 3, 3),LocalDate.of(2023, 3, 10),
+            RequestStatus.PENDING );
+    private final Request request4 = new Request(20L, "1233", RequestType.HOLIDAY,
+            "comment", LocalDate.now(),LocalDate.of(2023, 10, 1),
+            LocalDate.of(2023, 10, 3),LocalDate.of(2023, 10, 10),
             RequestStatus.PENDING );
 
-    private final RequestDto requestDto = new RequestDto(LocalDate.of(2022, 3, 1),
-            LocalDate.of(2022, 3, 3), RequestType.OVERTIME, "comment");
+    private final RequestDto requestDto = new RequestDto(LocalDate.of(2022, 4, 1),
+            LocalDate.of(2022, 4, 3), RequestType.OVERTIME, "updated comment");
 
     @BeforeEach
     void setUp() throws InvalidCommentLengthException {
@@ -53,14 +57,13 @@ class RequestStorageTest {
     @Test
     void shouldAddRequest() throws InvalidDateRangeException, InvalidCommentLengthException {
         int startSize = requestStorage.getAllRequests().size();
-        requestStorage.addRequest(request1);
+        requestStorage.addRequest(request4);
 
         assertThat(requestStorage.getAllRequests().size()).isEqualTo(startSize + 1);
     }
 
     @Test
     void shouldThrowWhenDateRangeIsWrong() throws InvalidCommentLengthException {
-        requestStorage.addRequest(request1);
 
         assertThatThrownBy(() -> requestStorage.addRequest(request1))
                 .isInstanceOf(InvalidDateRangeException.class)
@@ -70,12 +73,12 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForAddMethod() {
-        request1.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+        request4.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
 
-        assertThatThrownBy(() -> requestStorage.addRequest(request1))
+        assertThatThrownBy(() -> requestStorage.addRequest(request4))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
 
@@ -83,8 +86,8 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidCommentLengthExceptionWhenCommentIsNullForAddMethod() {
-        request1.setComment(null);
-        assertThatThrownBy(() -> requestStorage.addRequest(request1))
+        request4.setComment(null);
+        assertThatThrownBy(() -> requestStorage.addRequest(request4))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
 
@@ -171,7 +174,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestType() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request1);
         requestStorage.updateRequest(id, requestDto);
 
         RequestType expectedRequestType = RequestType.OVERTIME;
@@ -182,7 +184,6 @@ class RequestStorageTest {
     @Test
     void shouldUpdateRequestStartDate() throws InvalidCommentLengthException, InvalidRequestIdException {
         Long id = 1L;
-        requestStorage.addRequest(request1);
         requestStorage.updateRequest(id, requestDto);
 
         LocalDate expectedStartDate = requestDto.getStartDate();
@@ -234,8 +235,9 @@ class RequestStorageTest {
 
     @Test
     void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForUpdateMethod() throws InvalidCommentLengthException {
-        requestDto.setStartDate(request2.getStartDate());
-        requestDto.setEndDate(request2.getEndDate());
+        requestStorage.addRequest(request4);
+        requestDto.setStartDate(request4.getStartDate());
+        requestDto.setEndDate(request4.getEndDate());
 
         assertThatThrownBy(() -> requestStorage.updateRequest(1L, requestDto))
                 .isInstanceOf(InvalidDateRangeException.class)
