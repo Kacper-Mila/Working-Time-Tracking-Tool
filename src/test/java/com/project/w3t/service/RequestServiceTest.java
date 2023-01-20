@@ -8,13 +8,12 @@ import com.project.w3t.model.Status;
 import com.project.w3t.model.Type;
 import com.project.w3t.repository.RequestRepository;
 import com.project.w3t.repository.RequestStorage;
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -31,7 +30,6 @@ public class RequestServiceTest {
 
     @Mock
     private RequestRepository requestRepository;
-    private AutoCloseable autoCloseable;
     private RequestService requestService;
     private Request request = new Request(1L, "123", Type.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
@@ -40,13 +38,7 @@ public class RequestServiceTest {
 
     @BeforeEach
     void setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this);
         requestService = new RequestService(requestRepository);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
     }
 
     @Test
@@ -61,12 +53,15 @@ public class RequestServiceTest {
     @Test
     void shouldGetAllRequestsByType() throws InvalidCommentLengthException {
         String type = "holiday";
-        requestService.addRequest(request);
-//        when(requestService.getAllRequestsByType(type)).thenReturn()
+        List<Request> requestList = new ArrayList<>();
+        requestList.add(request);
 
-//        doReturn(requestService.getAllRequestsByType(type)).when(requestService.getAllRequestsByType(type));
+        when(requestRepository.getAllRequestsByType(type)).thenReturn(requestList);
 
-//        when(requestService.getAllRequestsByType(type)).thenReturn(requestService.getAllRequestsByType(type));
+        List<Request> actualList = new ArrayList<>();
+        actualList = requestRepository.getAllRequestsByType(type);
+
+        assertThat(requestList.equals(actualList));
     }
 
 }

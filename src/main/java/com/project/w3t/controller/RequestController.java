@@ -48,7 +48,7 @@ public class RequestController {
     }
 
     @GetMapping("/type")
-    public Optional<List<Request>> getAllRequestsByType(@RequestParam String requestType) {
+    public List<Request> getAllRequestsByType(@RequestParam String requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RequestService {
@@ -36,8 +37,8 @@ public class RequestService {
             requestRepository.deleteRequest(requestId);
     }
 
-    public Optional<List<Request>> getAllRequestsByType(String requestType) throws NullPointerException {
-            return Optional.ofNullable(requestRepository.getAllRequestsByType(requestType));
+    public List<Request> getAllRequestsByType(String requestType) throws NullPointerException {
+            return requestRepository.getAllRequestsByType(requestType);
     }
 
     public Optional<Request> getRequestById(Long requestId) {
