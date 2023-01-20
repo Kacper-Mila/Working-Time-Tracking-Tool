@@ -25,22 +25,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RequestsController.class)
 public class RequestsControllerTest {
 
+    RequestStorage requestStorage = new RequestStorage();
+//    RequestsController requestsController = new RequestsController(requestStorage);
 
-//    @Test
-//    public void shouldReturnAllRequestHistory() {
-////      given
-//        Request tempRequest = new Request();
-//        Request tempRequest1 = new Request();
-//        Request tempRequest2 = new Request();
-//        Request tempRequest3 = new Request();
+
+    @Test
+    public void shouldReturnAllRequestHistory() {
+//      given
+        Request tempRequest = new Request();
+        Request tempRequest1 = new Request();
+        Request tempRequest2 = new Request();
+        Request tempRequest3 = new Request();
 //        requestStorage.addRequest(tempRequest);
 //        requestStorage.addRequest(tempRequest1);
 //        requestStorage.addRequest(tempRequest2);
 //        requestStorage.addRequest(tempRequest3);
-////      when request route
+//      when request route
 //        List<Request> requests = requestsController.getAll();
-////      then return list of requests
+//      then return list of requests
 //        Assertions.assertThat(requests.contains(tempRequest));
 //        Assertions.assertThat(requests.size() == 4);
-//    }
+    }
 }
