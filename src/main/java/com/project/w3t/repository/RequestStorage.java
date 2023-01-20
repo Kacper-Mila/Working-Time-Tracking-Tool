@@ -3,9 +3,7 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.request.Request;
-import com.project.w3t.model.request.RequestType;
-import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -72,20 +70,12 @@ public class RequestStorage implements RequestRepository {
     }
 
     //    TODO validate type on first when same date on both change.
-    public Request getRequestToUpdate(Long id) {
-        return userRequestList.stream()
-                .filter(request -> request.getRequestId().equals(id))
-                .findAny()
-                .orElse(null);
-    }
-
-
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
         Request requestToUpdate = getRequestToUpdate(id);
         if (requestToUpdate == null) {
             throw new InvalidRequestIdException();
         }
-        List<LocalDate> dateRange = DateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
+        List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
         if (!checkRange(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
@@ -100,7 +90,18 @@ public class RequestStorage implements RequestRepository {
         requestToUpdate.setStartDate(requestDto.getStartDate());
         requestToUpdate.setEndDate(requestDto.getEndDate());
         requestToUpdate.setComment(requestDto.getComment());
-        requestToUpdate.setStatus(Status.PENDING);
+        requestToUpdate.setStatus(RequestStatus.PENDING);
+    }
+
+    public Request getRequestToUpdate(Long id) {
+        return userRequestList.stream()
+                .filter(request -> request.getRequestId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
+
+    public boolean isCommentLengthValid(String comment) {
+        return comment.length() <= COMMENT_MAX_LENGTH;
     }
 
     @Override

@@ -3,11 +3,9 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Status;
-import com.project.w3t.model.Type;
-import com.project.w3t.service.RequestService;
+import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestStatus;
+import com.project.w3t.model.request.RequestType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class RequestStorageTest {
@@ -29,10 +25,10 @@ class RequestStorageTest {
     private static final int COMMENT_MAX_LENGTH = 250;
     RequestStorage requestStorage = new RequestStorage();
 
-    private Request request = new Request(1L, "123", Type.HOLIDAY,
+    private Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
             LocalDate.of(2022, 2, 3),LocalDate.of(2022, 2, 10),
-            Status.PENDING );
+            RequestStatus.PENDING );
 
     @BeforeEach
     void setUp() {
@@ -91,10 +87,10 @@ class RequestStorageTest {
     @Test
     void shouldReturnAllRequestsByOvertimeType() throws InvalidCommentLengthException {
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", Type.OVERTIME,
+        Request request2 = new Request(5L, "1233", RequestType.OVERTIME,
                 "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
                 LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                Status.PENDING );
+                RequestStatus.PENDING );
 
         requestStorage.addRequest(request);
         requestStorage.addRequest(request2);
@@ -107,10 +103,10 @@ class RequestStorageTest {
     @Test
     void shouldReturnAllRequestsByRemoteType() throws InvalidCommentLengthException {
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", Type.REMOTE,
+        Request request2 = new Request(5L, "1233", RequestType.REMOTE,
                 "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
                 LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                Status.PENDING );
+                RequestStatus.PENDING );
 
         requestStorage.addRequest(request);
         requestStorage.addRequest(request2);
@@ -123,10 +119,10 @@ class RequestStorageTest {
     @Test
     void shouldReturnAllRequestsByHolidayType() throws InvalidCommentLengthException {
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", Type.HOLIDAY,
+        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
                 LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                Status.PENDING );
+                RequestStatus.PENDING );
 
         requestStorage.addRequest(request);
         requestStorage.addRequest(request2);
@@ -145,10 +141,10 @@ class RequestStorageTest {
     @Test
     void shouldReturnAllRequestsByTypeNegative() throws InvalidCommentLengthException {
         List<Request> expected = new ArrayList<>();
-        Request request2 = new Request(5L, "1233", Type.HOLIDAY,
+        Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
                 LocalDate.of(2023, 2, 3),LocalDate.of(2023, 2, 10),
-                Status.PENDING );
+                RequestStatus.PENDING );
 
         requestStorage.addRequest(request);
         expected.add(request);
