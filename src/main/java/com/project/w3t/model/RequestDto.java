@@ -10,4 +10,11 @@ public class RequestDto {
     private LocalDate endDate;
     private Type type;
     private String comment;
+
+    public RequestDto(LocalDate startDate, LocalDate endDate, Type type, String comment) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.type = type;
+        this.comment = comment;
+    }
 }
