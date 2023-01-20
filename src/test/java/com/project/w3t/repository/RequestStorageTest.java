@@ -47,7 +47,7 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldThrowWhenDateRangeIsWrongForAddMethod() throws InvalidCommentLengthException {
+    void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForAddMethod() throws InvalidCommentLengthException {
         requestStorage.addRequest(request);
         Request request1 = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),LocalDate.of(2022, 2, 1),
@@ -61,12 +61,21 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLongForAddMethod() {
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForAddMethod() {
         request.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
 
+        assertThatThrownBy(() -> requestStorage.addRequest(request))
+                .isInstanceOf(InvalidCommentLengthException.class)
+                .hasMessageContaining("Your comment is invalid!");
+
+    }
+
+    @Test
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsNullForAddMethod() {
+        request.setComment(null);
         assertThatThrownBy(() -> requestStorage.addRequest(request))
                 .isInstanceOf(InvalidCommentLengthException.class)
                 .hasMessageContaining("Your comment is invalid!");
@@ -229,7 +238,7 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLongForUpdateMethod() throws InvalidCommentLengthException {
+    void shouldThrowInvalidCommentLengthExceptionWhenCommentIsTooLongForUpdateMethod() throws InvalidCommentLengthException {
         requestStorage.addRequest(request);
         requestDto.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
@@ -242,7 +251,7 @@ class RequestStorageTest {
     }
 
     @Test
-    void shouldThrowWhenDateRangeIsWrongForUpdateMethod() throws InvalidCommentLengthException {
+    void shouldThrowInvalidDateRangeExceptionWhenDateRangeIsWrongForUpdateMethod() throws InvalidCommentLengthException {
         requestStorage.addRequest(request);
         Request request2 = new Request(5L, "1233", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),LocalDate.of(2023, 2, 1),
@@ -255,6 +264,32 @@ class RequestStorageTest {
         assertThatThrownBy(() -> requestStorage.updateRequest(1L, requestDto))
                 .isInstanceOf(InvalidDateRangeException.class)
                 .hasMessageContaining("Invalid date range!");
+    }
+
+    @Test
+    void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForUpdateMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        assertThatThrownBy(() -> requestStorage.updateRequest(3L, requestDto))
+                .isInstanceOf(InvalidRequestIdException.class)
+                .hasMessageContaining("Invalid request Id!");
+    }
+
+    @Test
+    void shouldThrowInvalidRequestIdExceptionWhenIdIsInvalidForGetRequestByIdMethod() throws InvalidCommentLengthException {
+        requestStorage.addRequest(request);
+        assertThatThrownBy(() -> requestStorage.getRequestById(3L))
+                .isInstanceOf(InvalidRequestIdException.class)
+                .hasMessageContaining("Invalid request Id!");
+    }
+
+    @Test
+    void shouldReturnRequestById() throws InvalidCommentLengthException, InvalidRequestIdException {
+        List<Request> expected = new ArrayList<>();
+
+        requestStorage.addRequest(request);
+        expected.add(request);
+
+        assertThat(requestStorage.getRequestById(1L)).isEqualTo(expected.get(0));
     }
 
 }
