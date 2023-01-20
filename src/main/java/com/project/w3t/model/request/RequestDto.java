@@ -1,4 +1,4 @@
-package com.project.w3t.model;
+package com.project.w3t.model.request;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class RequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
-    private Type type;
+    private RequestType type;
     private String comment;
 
     public RequestDto(LocalDate startDate, LocalDate endDate, Type type, String comment) {
