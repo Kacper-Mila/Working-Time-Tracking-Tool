@@ -42,6 +42,13 @@ public class RequestServiceTest {
     }
 
     @Test
+    void shouldGetAllRequests() {
+        requestService.getAllRequests();
+
+        verify(requestRepository).getAllRequests();
+    }
+
+    @Test
     void shouldDeleteRequest() throws InvalidRequestIdException {
         Long requestId = 1L;
 
