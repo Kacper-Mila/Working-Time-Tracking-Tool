@@ -2,6 +2,12 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.Request;
+import com.project.w3t.model.RequestDto;
+import com.project.w3t.model.Type;
+import com.project.w3t.repository.RequestRepository;
+import org.springframework.stereotype.Service;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
@@ -54,8 +60,13 @@ public class RequestService {
         }
     }
 
-    public List<Request> getAllRequestsByType(RequestType requestType) {
-        return requestRepository.getAllRequestsByType(requestType);
+    public Optional<List<Request>> getAllRequestsByType(String requestType) {
+        try {
+            return Optional.ofNullable(requestRepository.getAllRequestsByType(requestType));
+        } catch (NullPointerException e) {
+            System.out.println("Wrong request type.");
+            return Optional.empty();
+        }
     }
 
     public Optional<Request> getRequestById(Long requestId) {

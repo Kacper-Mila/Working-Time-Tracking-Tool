@@ -1,5 +1,11 @@
 package com.project.w3t.controller;
 
+import com.project.w3t.exceptions.InvalidCommentLengthException;
+import com.project.w3t.exceptions.InvalidDateRangeException;
+import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.model.Request;
+import com.project.w3t.model.RequestDto;
+import com.project.w3t.model.Type;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestType;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/requests")
@@ -29,12 +36,12 @@ public class RequestController {
     }
 
     @PostMapping
-    public void addRequest(@RequestBody Request request) {
+    public void addRequest(@RequestBody Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         requestService.addRequest(request);
     }
 
     @PatchMapping("/update")
-    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) {
+    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
         requestService.updateRequest(requestId, requestDto);
     }
 
@@ -44,7 +51,7 @@ public class RequestController {
     }
 
     @GetMapping("/type")
-    public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
+    public Optional<List<Request>> getAllRequestsByType(@RequestParam String requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
