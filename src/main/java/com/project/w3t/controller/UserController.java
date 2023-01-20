@@ -1,41 +1,55 @@
-//package com.project.w3t.controller;
-//
-//import com.project.w3t.model.Request;
-//import com.project.w3t.model.RequestDto;
-//import com.project.w3t.repository.UserStorage;
-//import com.project.w3t.service.UserService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api/v1/users")
-//public class UserController {
-//
-//    private final UserService userService;
-//    @Autowired
-//    public UserController(UserService userService, UserStorage userStorage) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping
-//    public List<Request> getAll() {
-//        return userService.getUserRequestList();
-//    }
-//
-//    @PostMapping
-//    public void addRequest(@RequestBody Request request) {
-//        requestService.addRequest(request);
-//    }
-//
-//    @PatchMapping("{requestId}")
-//    public void update(@PathVariable Long requestId, @RequestBody RequestDto requestDto) {
-//        requestService.updateRequest(requestId, requestDto);
-//    }
-//
-//    @DeleteMapping("{requestId}")
-//    public void delete(@PathVariable Long requestId) {
-//        requestService.deleteRequest(requestId);
-//    }
-//}
+package com.project.w3t.controller;
+
+import com.project.w3t.model.user.User;
+import com.project.w3t.model.user.UserDto;
+import com.project.w3t.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("api/v1/users")
+public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping
+    public void addUser(@RequestBody User user) {
+        userService.addUser(user);
+    }
+
+    @PatchMapping("/update")
+    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
+        userService.updateUser(userId, userDto);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteUser(@RequestParam String userId) {
+        userService.deleteUser(userId);
+    }
+
+    @GetMapping("/manager")
+    public List<User> getAllUsersByManager(@RequestParam String managerId) {
+        return userService.getAllUsersByManager(managerId);
+    }
+
+    @GetMapping("/userid")
+    @ResponseBody
+    public Object getUserByUserId(@RequestParam String userId) {
+        return userService.getUserByUserId(userId);
+    }
+}

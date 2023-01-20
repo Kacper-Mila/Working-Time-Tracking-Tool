@@ -3,11 +3,7 @@ package com.project.w3t.repository;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.model.DateRange;
-import com.project.w3t.model.Request;
-import com.project.w3t.model.RequestDto;
-import com.project.w3t.model.Status;
-import com.project.w3t.model.Type;
+import com.project.w3t.model.request.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,28 +29,21 @@ public class RequestStorage implements RequestRepository {
         return userRequestList;
     }
 
-    //    TODO hours for overtime and remote
+    //    TODO hours for overtime and remote, validate type..
     public void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
-        if (!checkRequest(request)) {
+        if (checkRequest(request)) {
+            if (checkCommentLength(request.getComment())) {
+                userRequestList.add(request);
+            } else {
+                throw new InvalidCommentLengthException();
+            }
+        } else {
             throw new InvalidDateRangeException();
         }
-        if (request.getComment() == null || !isCommentLengthValid(request.getComment())) {
-            throw new InvalidCommentLengthException();
-        }
-        userRequestList.add(request);
     }
 
-    private List<Request> getRequestsToCheckDateRange(Request request) {
-        return userRequestList.stream()
-                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
-                .filter(req -> req.getType().equals(request.getType())).toList();
-    }
-    public boolean checkRequest(Request request) {
-        return checkRange(userRequestList, request.getRequestDateRange());
-    }
-
-    private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
-        return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
+    private boolean checkRequest(Request request) {
+        return checkRange(getRequestsToCheckDateRange(request), request.getRequestDateRange());
     }
 
     private boolean checkRange(List<Request> requests, List<LocalDate> dateRange) {
@@ -66,25 +55,27 @@ public class RequestStorage implements RequestRepository {
         return true;
     }
 
-    public boolean isCommentLengthValid(String comment) {
+    private List<Request> getRequestsToCheckDateRange(Request request) {
+        return userRequestList.stream()
+                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
+                .filter(req -> req.getType().equals(request.getType())).toList();
+    }
+
+    private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
+        return requests.stream().noneMatch(req -> req.getRequestDateRange().contains(date));
+    }
+
+    private boolean checkCommentLength(String comment) {
         return comment.length() <= COMMENT_MAX_LENGTH;
     }
 
-    public Request getRequestToUpdate(Long id) {
-        return userRequestList.stream()
-                .filter(request -> request.getRequestId().equals(id))
-                .findAny()
-                .orElse(null);
-    }
-
-
-
+    //    TODO validate type on first when same date on both change.
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
         Request requestToUpdate = getRequestToUpdate(id);
         if (requestToUpdate == null) {
             throw new InvalidRequestIdException();
         }
-        List<LocalDate> dateRange = DateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
+        List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
         if (!checkRange(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
@@ -99,7 +90,18 @@ public class RequestStorage implements RequestRepository {
         requestToUpdate.setStartDate(requestDto.getStartDate());
         requestToUpdate.setEndDate(requestDto.getEndDate());
         requestToUpdate.setComment(requestDto.getComment());
-        requestToUpdate.setStatus(Status.PENDING);
+        requestToUpdate.setStatus(RequestStatus.PENDING);
+    }
+
+    public Request getRequestToUpdate(Long id) {
+        return userRequestList.stream()
+                .filter(request -> request.getRequestId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
+
+    public boolean isCommentLengthValid(String comment) {
+        return comment.length() <= COMMENT_MAX_LENGTH;
     }
 
     @Override
@@ -114,13 +116,13 @@ public class RequestStorage implements RequestRepository {
         userRequestList.remove(requestToDelete);
     }
 
-    //    TODO frontend string to enum switch, onclick scroll list,
+//    TODO frontend string to enum switch, onclick scroll list,
 //     collective get by body elements driven in request logic,
 //     exceptions.
     public List<Request> getAllRequestsByType(String requestTypeString) throws NullPointerException{
 
-        Type requestType = null;
-        for (Type value : Type.values()) {
+        RequestType requestType = null;
+        for (RequestType value : RequestType.values()) {
             if (value.toString().equals(requestTypeString.toUpperCase())) {
                 requestType = value;
             }
@@ -128,11 +130,11 @@ public class RequestStorage implements RequestRepository {
 
         return switch (requestType) {
             case HOLIDAY ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.HOLIDAY)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.HOLIDAY)).collect(Collectors.toList());
             case OVERTIME ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.OVERTIME)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.OVERTIME)).collect(Collectors.toList());
             case REMOTE ->
-                    userRequestList.stream().filter(request -> request.getType().equals(Type.REMOTE)).collect(Collectors.toList());
+                    userRequestList.stream().filter(request -> request.getType().equals(RequestType.REMOTE)).collect(Collectors.toList());
         };
     }
 
@@ -144,7 +146,7 @@ public class RequestStorage implements RequestRepository {
         }
     }
 
-    public boolean checkRequestId(Long requestId) {
+    private boolean checkRequestId(Long requestId) {
         return userRequestList.stream().anyMatch(request -> request.getRequestId().equals(requestId));
     }
 }

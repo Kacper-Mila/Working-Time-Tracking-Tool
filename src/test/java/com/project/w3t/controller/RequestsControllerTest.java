@@ -1,11 +1,8 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.model.Request;
+import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestStorage;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 class RequestsControllerTest {
 
