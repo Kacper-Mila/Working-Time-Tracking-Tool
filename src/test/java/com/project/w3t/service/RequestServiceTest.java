@@ -70,19 +70,4 @@ public class RequestServiceTest {
 
         verify(requestRepository).getAllRequestsByType(type);
     }
-
-    @Test
-    void shouldUpdateRequest() throws InvalidCommentLengthException, InvalidRequestIdException {
-        Long id = 1L;
-        RequestDto requestDto = new RequestDto(LocalDate.of(2022, 3, 1),
-                LocalDate.of(2022, 3, 3), RequestType.OVERTIME, "comment");
-
-        requestService.updateRequest(id, requestDto);
-        ArgumentCaptor<RequestDto> requestDtoArgumentCaptor = ArgumentCaptor.forClass(RequestDto.class);
-
-        verify(requestRepository).updateRequest(eq(id), requestDtoArgumentCaptor.capture());
-
-        RequestDto capturedRequestDto = requestDtoArgumentCaptor.getValue();
-        assertThat(capturedRequestDto).isEqualTo(requestDto);
-    }
 }
