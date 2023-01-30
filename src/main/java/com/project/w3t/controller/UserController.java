@@ -1,5 +1,6 @@
 package com.project.w3t.controller;
 
+import com.project.w3t.exceptions.InvalidEmailException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
@@ -27,10 +28,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @PostMapping
-//    public void addUser(@RequestBody User user) {
-//        userService.addUser(user);
-//    }
+    @PostMapping
+    public void addUser(@RequestBody User user) throws InvalidEmailException {
+        userService.addUser(user);
+    }
 //
 //    @PatchMapping("/update")
 //    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {

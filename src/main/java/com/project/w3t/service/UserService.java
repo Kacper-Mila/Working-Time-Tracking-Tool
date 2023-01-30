@@ -23,15 +23,23 @@ public class UserService {
         return userRepository.findAll();
     }
 
-//    public void addUser(User user) {
-//        try {
+    public void addUser(User user) throws InvalidEmailException {
+        Optional<Long> testId = Optional.ofNullable(user.getId());
+        if (testId.isPresent() && userRepository.existsById(testId.get())) user.setId(null);
+        if (userRepository.findAll().stream().noneMatch(u -> u.getEmail().equals(user.getEmail()))) {
+            userRepository.save(user);
+        }
+        else throw new InvalidEmailException();
+
+
+        //        try {
 //            userRepository.addUser(user);
 //        } catch (InvalidUserIdException e) {
 //            System.out.println("Invalid user id.");
 //        } catch (InvalidEmailException e) {
 //            System.out.println("Invalid email address.");
 //        }
-//    }
+    }
 //
 //    public void updateUser(String userId, UserDto userDto) {
 //        userRepository.updateUser(userId, userDto);
