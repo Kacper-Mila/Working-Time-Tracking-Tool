@@ -21,43 +21,6 @@
 //public class UserStorage{
 //
 //    private List<User> userList = new ArrayList<>();
-//
-//
-//    @Override
-//    public List<User> getAllUsers() {
-//        return userList;
-//    }
-//
-//    @Override
-//    public void addUser(User user) throws InvalidEmailException, InvalidUserIdException {
-//        if (!isEmailPresent(user)) {
-//            if (!isUserIdPresent(user)) {
-//                userList.add(user);
-//            } else {
-//                throw new InvalidUserIdException();
-//            }
-//        } else {
-//            throw new InvalidEmailException();
-//        }
-//    }
-//
-//    //    TODO refactor with generics wildcard to merge checkers?
-//    private boolean isEmailPresent(User user) {
-//        Optional<User> tempUser = userList.stream()
-//                .filter(u -> u.getEmail().equals(user.getEmail()))
-//                .findFirst();
-//        if (tempUser.isPresent()) return true;
-//        else return false;
-//    }
-//
-//    private boolean isUserIdPresent(User user) {
-//        Optional<User> tempUser = userList.stream()
-//                .filter(u -> u.getUserId().equals(user.getUserId()))
-//                .findFirst();
-//        if (tempUser.isPresent()) return true;
-//        else return false;
-//    }
-//
 //    @Override
 //    public void updateUser(String userId, UserDto userDto) {
 ////TODO to implement.

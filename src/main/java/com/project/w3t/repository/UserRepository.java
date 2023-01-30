@@ -24,4 +24,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    public List<User> getAllUsersByManager(String managerId);
 //
 //    public User getUserByUserId(String userId) throws UserNotFoundException;
+
+    boolean existsByEmail(String email);
+    boolean existsByUserId(String userId);
+    void deleteByUserId(String userId);
+    User findByUserId(String userId);
+    List<User> findAllByManagerId(String managerId);
 }
