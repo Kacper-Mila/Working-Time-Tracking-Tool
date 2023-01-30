@@ -20,41 +20,41 @@ public class UserService {
 
 
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return userRepository.findAll();
     }
 
-    public void addUser(User user) {
-        try {
-            userRepository.addUser(user);
-        } catch (InvalidUserIdException e) {
-            System.out.println("Invalid user id.");
-        } catch (InvalidEmailException e) {
-            System.out.println("Invalid email address.");
-        }
-    }
-
-    public void updateUser(String userId, UserDto userDto) {
-        userRepository.updateUser(userId, userDto);
-    }
-
-    public void deleteUser(String userId) {
-        try {
-            userRepository.deleteUser(userId);
-        } catch (UserNotFoundException e) {
-            System.out.println("User not found.");
-        }
-    }
-
-    public List<User> getAllUsersByManager(String managerId) {
-        return userRepository.getAllUsersByManager(managerId);
-    }
-
-    public Optional<User> getUserByUserId(String userId) {
-        try {
-            return Optional.ofNullable(userRepository.getUserByUserId(userId));
-        } catch (UserNotFoundException e) {
-            System.out.println("User not found.");
-            return Optional.empty();
-        }
-    }
+//    public void addUser(User user) {
+//        try {
+//            userRepository.addUser(user);
+//        } catch (InvalidUserIdException e) {
+//            System.out.println("Invalid user id.");
+//        } catch (InvalidEmailException e) {
+//            System.out.println("Invalid email address.");
+//        }
+//    }
+//
+//    public void updateUser(String userId, UserDto userDto) {
+//        userRepository.updateUser(userId, userDto);
+//    }
+//
+//    public void deleteUser(String userId) {
+//        try {
+//            userRepository.deleteUser(userId);
+//        } catch (UserNotFoundException e) {
+//            System.out.println("User not found.");
+//        }
+//    }
+//
+//    public List<User> getAllUsersByManager(String managerId) {
+//        return userRepository.getAllUsersByManager(managerId);
+//    }
+//
+//    public Optional<User> getUserByUserId(String userId) {
+//        try {
+//            return Optional.ofNullable(userRepository.getUserByUserId(userId));
+//        } catch (UserNotFoundException e) {
+//            System.out.println("User not found.");
+//            return Optional.empty();
+//        }
+//    }
 }
