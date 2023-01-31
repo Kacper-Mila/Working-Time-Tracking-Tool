@@ -3,6 +3,7 @@ package com.project.w3t.controller;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.service.RequestService;
@@ -51,7 +52,7 @@ public class RequestController {
 
     @GetMapping("/id")
     @ResponseBody
-    public Object getRequestById(@RequestParam Long requestId) {
+    public Object getRequestById(@RequestParam Long requestId) throws RequestNotFoundException {
         return requestService.getRequestByRequestId(requestId);
     }
 }

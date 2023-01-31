@@ -2,6 +2,7 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
+import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.repository.RequestRepository;
@@ -50,11 +51,9 @@ public class RequestService {
 //            return Optional.empty();
 //        }
 //    }
-    public Request getRequestByRequestId(Long id){
-        Optional<Request> tmpRequest = requestRepository.findById(id);
-
-        if (tmpRequest.isEmpty()) throw new RuntimeException();
-        return tmpRequest.get();
+    public Request getRequestByRequestId(Long id) throws RequestNotFoundException {
+        if (!requestRepository.existsById(id)) throw new RequestNotFoundException();
+        return requestRepository.getById(id);
     }
     public List<Request> getAllRequests(){
         List<Request> tmpRequestList = requestRepository.findAll();
