@@ -1,10 +1,15 @@
 package com.project.w3t.model.request;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
@@ -25,6 +30,7 @@ public class Request {
     @GeneratedValue
     private Long requestId;
     private String ownerId;
+    @Enumerated(EnumType.STRING)
     private RequestType type;
     private String comment;
     private LocalDate registrationDate;
