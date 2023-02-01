@@ -1,8 +1,5 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidEmailException;
-import com.project.w3t.exceptions.InvalidUserIdException;
-import com.project.w3t.exceptions.UserNotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
@@ -31,17 +28,17 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@RequestBody User user) throws InvalidEmailException, InvalidUserIdException {
+    public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
-//
-//    @PatchMapping("/update")
-//    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
-//        userService.updateUser(userId, userDto);
-//    }
-//
+
+    @PatchMapping("/update")
+    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
+        userService.updateUser(userId, userDto);
+    }
+
     @DeleteMapping("/delete")
-    public void deleteUser(@RequestParam String userId) throws UserNotFoundException {
+    public void deleteUser(@RequestParam String userId) {
         userService.deleteUser(userId);
     }
 
@@ -52,7 +49,7 @@ public class UserController {
 
     @GetMapping("/userid")
     @ResponseBody
-    public User getUserByUserId(@RequestParam String userId) throws UserNotFoundException {
+    public Object getUserByUserId(@RequestParam String userId) {
         return userService.getUserByUserId(userId);
     }
 }

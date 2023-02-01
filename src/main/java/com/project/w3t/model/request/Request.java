@@ -1,25 +1,16 @@
 package com.project.w3t.model.request;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
-@Entity
-@Table(name = "requests")
-//@DynamicInsert
-//@DynamicUpdate
+//@Entity
 public class Request {
-
-    @Id
-    @GeneratedValue
+    private static Long ID = 1L;
     private Long requestId;
     private String ownerId;
     private RequestType type;
@@ -31,24 +22,12 @@ public class Request {
     private RequestStatus status;
 
     public Request() {
+        this.requestId = ID++;
         this.registrationDate = LocalDate.now();
         this.status = RequestStatus.PENDING;
     }
 
     public List<LocalDate> getRequestDateRange() {
         return RequestDateRange.getDateRange(getStartDate(), getEndDate());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Request request = (Request) o;
-        return requestId != null && Objects.equals(requestId, request.requestId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

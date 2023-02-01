@@ -3,10 +3,8 @@ package com.project.w3t.controller;
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
-import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,25 +34,25 @@ public class RequestController {
     public void addRequest(@RequestBody Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
         requestService.addRequest(request);
     }
-//
-//    @PatchMapping("/update")
-//    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
-//        requestService.updateRequest(requestId, requestDto);
-//    }
-//
+
+    @PatchMapping("/update")
+    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException {
+        requestService.updateRequest(requestId, requestDto);
+    }
+
     @DeleteMapping("/delete")
-    public void deleteRequest(@RequestParam Long requestId) throws RequestNotFoundException {
+    public void deleteRequest(@RequestParam Long requestId) throws InvalidRequestIdException {
         requestService.deleteRequest(requestId);
     }
 
     @GetMapping("/type")
-    public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
+    public List<Request> getAllRequestsByType(@RequestParam String requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
     @GetMapping("/id")
     @ResponseBody
-    public Object getRequestById(@RequestParam Long requestId) throws RequestNotFoundException {
-        return requestService.getRequestByRequestId(requestId);
+    public Object getRequestById(@RequestParam Long requestId) {
+        return requestService.getRequestById(requestId);
     }
 }
