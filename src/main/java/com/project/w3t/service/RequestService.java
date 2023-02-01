@@ -51,7 +51,6 @@ public class RequestService {
         List<Request> userRequestsFilteredByType = requestRepository.findAllByType(request.getType());
         return (isDateRangeValid(request) && isDateRangeAvailable(userRequestsFilteredByType, request.getRequestDateRange()));
     }
-
     private boolean isDateRangeValid(Request request) {
         return (request.getStartDate() != null && request.getEndDate() != null
                 && isStartDateBeforeEndDate(request.getStartDate(), request.getEndDate()));
@@ -116,13 +115,17 @@ public class RequestService {
                 .collect(Collectors.toList());
     }
 
-//    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
-//        requestRepository.deleteRequest(requestId);
-//    }
-//
-    public List<Request> getAllRequestsByType(RequestType requestType) throws NullPointerException {
+    public void deleteRequest(Long requestId) throws RequestNotFoundException {
+        if (!requestRepository.existsById(requestId)) {
+            throw new RequestNotFoundException();
+        }
+        requestRepository.deleteById(requestId);
+    }
+
+    public List<Request> getAllRequestsByType(RequestType requestType) {
         return requestRepository.findAllByType(requestType);
     }
+
 
     public Optional<Request> getRequestByRequestId(Long id) throws RequestNotFoundException {
         if (!requestRepository.existsById(id)) throw new RequestNotFoundException();

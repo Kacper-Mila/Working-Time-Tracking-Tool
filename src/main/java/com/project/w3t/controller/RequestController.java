@@ -42,10 +42,10 @@ public class RequestController {
         requestService.updateRequest(requestId, requestDto);
     }
 //
-//    @DeleteMapping("/delete")
-//    public void deleteRequest(@RequestParam Long requestId) throws InvalidRequestIdException {
-//        requestService.deleteRequest(requestId);
-//    }
+    @DeleteMapping("/delete")
+    public void deleteRequest(@RequestParam Long requestId) throws RequestNotFoundException {
+        requestService.deleteRequest(requestId);
+    }
 
     @GetMapping("/type")
     public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
