@@ -1,6 +1,6 @@
 package com.project.w3t.service;
 
-import com.project.w3t.exceptions.ApiRequestException;
+import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestRepository;
 import org.springframework.stereotype.Service;
@@ -21,16 +21,16 @@ public class RequestService {
     public List<Request> getAllRequests(){
         List<Request> tmpRequestList = requestRepository.findAll();
 
-        if (tmpRequestList.isEmpty()) throw new ApiRequestException("Could not find any requests.");
+        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
         return tmpRequestList;
     }
 
     public void addRequest(Request request) {
         if (request.getStartDate() == null || request.getEndDate() == null || !isRequestValid(request)) {
-            throw new ApiRequestException("Invalid date range.");
+            throw new BadRequestException("Invalid date range.");
         }
         if (!isCommentLengthValid(request.getComment())) {
-            throw new ApiRequestException("Comment is too long.");
+            throw new BadRequestException("Comment is too long.");
         }
         requestRepository.save(request);
     }
@@ -87,7 +87,7 @@ public class RequestService {
 //    }
 
     public Optional<Request> getRequestByRequestId(Long id)  {
-        if (!requestRepository.existsById(id)) throw new ApiRequestException("Request with this id does not exists.");
+        if (!requestRepository.existsById(id)) throw new BadRequestException("Request with this id does not exists.");
 
         return requestRepository.findById(id);
     }
