@@ -2,7 +2,6 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDateRange;
@@ -39,7 +38,7 @@ public class RequestService {
     }
 
     public void addRequest(Request request) throws InvalidCommentLengthException, InvalidDateRangeException {
-        if (request.getStartDate() == null || request.getEndDate() == null || !isRequestValid(request)) {
+        if (!isRequestValid(request)) {
             throw new InvalidDateRangeException();
         }
         if (!isCommentLengthValid(request.getComment())) {
@@ -50,13 +49,15 @@ public class RequestService {
 
     private boolean isRequestValid(Request request) {
         List<Request> userRequestsFilteredByType = requestRepository.findAllByType(request.getType());
-        return checkRange(userRequestsFilteredByType, request.getRequestDateRange());
+        return (isDateRangeValid(request) && isDateRangeAvailable(userRequestsFilteredByType, request.getRequestDateRange()));
     }
 
-    private boolean checkRange(List<Request> requests, List<LocalDate> dateRange) {
-        if (!isStartDateBeforeEndDate(dateRange)) {
-            throw new InvalidDateRangeException();
-        }
+    private boolean isDateRangeValid(Request request) {
+        return (request.getStartDate() != null && request.getEndDate() != null
+                && isStartDateBeforeEndDate(request.getStartDate(), request.getEndDate()));
+    }
+
+    private boolean isDateRangeAvailable(List<Request> requests, List<LocalDate> dateRange) {
         for (LocalDate date : dateRange) {
             if (!checkDateAvailability(requests, date) || date.isBefore(LocalDate.now())) {
                 return false;
@@ -65,9 +66,8 @@ public class RequestService {
         return true;
     }
 
-    private boolean isStartDateBeforeEndDate(List<LocalDate> dateRange) {
-        return dateRange.get(0).isBefore(dateRange.get(dateRange.size() - 1));
-
+    private boolean isStartDateBeforeEndDate(LocalDate startDate, LocalDate endDate) {
+        return startDate.isBefore(endDate);
     }
 
     private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
@@ -78,24 +78,13 @@ public class RequestService {
         return comment != null && comment.length() <= COMMENT_MAX_LENGTH;
     }
 
-//    private boolean isRequestTypeValid(Request request){
-//        for (RequestType requestType: RequestType.values()) {
-//            if(requestType.getName().equals(request.getType().getName())){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-
-    //
-    public void updateRequest(Long id, RequestDto requestDto) throws InvalidCommentLengthException, InvalidRequestIdException, RequestNotFoundException {
+    public void updateRequest(Long id, RequestDto requestDto) throws InvalidCommentLengthException, RequestNotFoundException {
         Optional<Request> request = getRequestByRequestId(id);
         Request requestToUpdate = request.get();
         List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
-        if (requestDto.getStartDate() == null || requestDto.getEndDate() == null || !checkRange(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
+        if (!isDateRangeAvailable(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
             throw new InvalidDateRangeException();
         }
 
@@ -110,6 +99,14 @@ public class RequestService {
         requestToUpdate.setRegistrationDate(LocalDate.now());
         requestToUpdate.setStatus(RequestStatus.PENDING);
 
+        if (!isDateRangeValid(requestToUpdate)) {
+            throw new InvalidDateRangeException();
+        }
+
+        if (!isDateRangeAvailable(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
+            throw new InvalidDateRangeException();
+        }
+
         requestRepository.save(requestToUpdate);
     }
 
@@ -119,7 +116,6 @@ public class RequestService {
                 .collect(Collectors.toList());
     }
 
-    //
 //    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
 //        requestRepository.deleteRequest(requestId);
 //    }
@@ -127,7 +123,6 @@ public class RequestService {
     public List<Request> getAllRequestsByType(RequestType requestType) throws NullPointerException {
         return requestRepository.findAllByType(requestType);
     }
-//
 
     public Optional<Request> getRequestByRequestId(Long id) throws RequestNotFoundException {
         if (!requestRepository.existsById(id)) throw new RequestNotFoundException();
