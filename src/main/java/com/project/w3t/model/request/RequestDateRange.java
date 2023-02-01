@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class RequestDateRange {
 
     public static List<LocalDate> getDateRange(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
+        if (startDate == null || endDate == null || endDate.isBefore(startDate)) {
             throw new BadRequestException("Invalid date range.");
         }
         return startDate.datesUntil(endDate.plusDays(1)).collect(Collectors.toList());
