@@ -2,6 +2,7 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.model.user.User;
+import com.project.w3t.model.user.UserDto;
 import com.project.w3t.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) throw new BadRequestException("");
         if (userRepository.existsByUserId(user.getUserId())) throw new BadRequestException("");
         userRepository.save(user);
+    }
+
+    public void updateUser(String userId, UserDto userDto) {
+//        TODO implement
     }
 
     @Transactional

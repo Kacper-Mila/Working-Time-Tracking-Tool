@@ -14,7 +14,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @Entity
 @Table(name = "requests")
@@ -35,9 +34,9 @@ public class Request {
     private LocalDate approvalDate;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "userId")
+//    private User user;
 
     public Request() {
         this.registrationDate = LocalDate.now();

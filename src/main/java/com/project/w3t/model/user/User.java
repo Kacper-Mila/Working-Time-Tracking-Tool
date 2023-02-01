@@ -30,8 +30,8 @@ public class User {
     private UserType userType;
     private String managerId;
     private String teamId;
-    @OneToMany(mappedBy = "user")
-    private List<Request> requestList;
+//    @OneToMany(mappedBy = "user")
+//    private List<Request> requestList;
 
     public User() {
         this.userType = UserType.EMPLOYEE;
