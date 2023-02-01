@@ -6,6 +6,7 @@ import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,15 +42,15 @@ public class RequestController {
 //        requestService.updateRequest(requestId, requestDto);
 //    }
 //
-//    @DeleteMapping("/delete")
-//    public void deleteRequest(@RequestParam Long requestId) throws InvalidRequestIdException {
-//        requestService.deleteRequest(requestId);
-//    }
+    @DeleteMapping("/delete")
+    public void deleteRequest(@RequestParam Long requestId) throws RequestNotFoundException {
+        requestService.deleteRequest(requestId);
+    }
 
-//    @GetMapping("/type")
-//    public List<Request> getAllRequestsByType(@RequestParam String requestType) {
-//        return requestService.getAllRequestsByType(requestType);
-//    }
+    @GetMapping("/type")
+    public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
+        return requestService.getAllRequestsByType(requestType);
+    }
 
     @GetMapping("/id")
     @ResponseBody

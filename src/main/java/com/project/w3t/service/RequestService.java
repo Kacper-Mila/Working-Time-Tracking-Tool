@@ -4,6 +4,7 @@ import com.project.w3t.exceptions.InvalidCommentLengthException;
 import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
+import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
 import com.project.w3t.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -77,20 +78,17 @@ public class RequestService {
 //    public void updateRequest(Long id, RequestDto requestDto) throws InvalidCommentLengthException, InvalidRequestIdException {
 //        requestRepository.updateRequest(id, requestDto);
 //    }
-//
-//    public void deleteRequest(Long requestId) throws InvalidRequestIdException {
-//        requestRepository.deleteRequest(requestId);
-//    }
-//
-//    public List<Request> getAllRequestsByType(String requestType) throws NullPointerException {
-//        return requestRepository.getAllRequestsByType(requestType);
-//    }
-//
 
+    public void deleteRequest(Long requestId) throws RequestNotFoundException {
+        if (!requestRepository.existsById(requestId)) {
+            throw new RequestNotFoundException();
+        }
+        requestRepository.deleteById(requestId);
+    }
 
-//    public List<Request> getAllRequestsByType(String requestType) throws NullPointerException {
-//        return requestRepository.getAllRequestsByType(requestType);
-//    }
+    public List<Request> getAllRequestsByType(RequestType requestType) {
+        return requestRepository.findAllByType(requestType);
+    }
 
     public Optional<Request> getRequestByRequestId(Long id) throws RequestNotFoundException {
         if (!requestRepository.existsById(id)) throw new RequestNotFoundException();
