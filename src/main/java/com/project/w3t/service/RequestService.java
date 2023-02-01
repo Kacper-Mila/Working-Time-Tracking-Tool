@@ -48,8 +48,7 @@ public class RequestService {
     }
 
     private boolean isDateRangeValid(Request request) {
-        return (request.getStartDate() != null && request.getEndDate() != null
-                && isStartDateBeforeEndDate(request.getStartDate(), request.getEndDate()));
+        return (request.getStartDate() != null && request.getEndDate() != null);
     }
 
     private boolean isDateRangeAvailable(List<Request> requests, List<LocalDate> dateRange) {
@@ -59,10 +58,6 @@ public class RequestService {
             }
         }
         return true;
-    }
-
-    private boolean isStartDateBeforeEndDate(LocalDate startDate, LocalDate endDate) {
-        return startDate.isBefore(endDate);
     }
 
     private boolean checkDateAvailability(List<Request> requests, LocalDate date) {
@@ -75,8 +70,7 @@ public class RequestService {
 
     @Transactional
     public void updateRequest(Long id, RequestDto requestDto) {
-        Optional<Request> request = getRequestByRequestId(id);
-        Request requestToUpdate = request.get();
+        Request requestToUpdate = getRequestByRequestId(id).get();
         List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
