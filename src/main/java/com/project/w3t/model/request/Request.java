@@ -22,6 +22,7 @@ public class Request {
     @GeneratedValue
     private Long requestId;
     private String ownerId;
+    @Enumerated (EnumType.STRING)
     private RequestType type;
     private String comment;
     private LocalDate registrationDate;

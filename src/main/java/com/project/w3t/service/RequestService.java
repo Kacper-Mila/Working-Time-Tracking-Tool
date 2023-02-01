@@ -11,6 +11,7 @@ import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
 import com.project.w3t.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,6 +52,7 @@ public class RequestService {
         List<Request> userRequestsFilteredByType = requestRepository.findAllByType(request.getType());
         return (isDateRangeValid(request) && isDateRangeAvailable(userRequestsFilteredByType, request.getRequestDateRange()));
     }
+
     private boolean isDateRangeValid(Request request) {
         return (request.getStartDate() != null && request.getEndDate() != null
                 && isStartDateBeforeEndDate(request.getStartDate(), request.getEndDate()));
@@ -77,6 +79,7 @@ public class RequestService {
         return comment != null && comment.length() <= COMMENT_MAX_LENGTH;
     }
 
+    @Transactional
     public void updateRequest(Long id, RequestDto requestDto) throws InvalidCommentLengthException, RequestNotFoundException {
         Optional<Request> request = getRequestByRequestId(id);
         Request requestToUpdate = request.get();
@@ -91,12 +94,7 @@ public class RequestService {
             throw new InvalidCommentLengthException();
         }
 
-        requestToUpdate.setType(requestDto.getType());
-        requestToUpdate.setStartDate(requestDto.getStartDate());
-        requestToUpdate.setEndDate(requestDto.getEndDate());
-        requestToUpdate.setComment(requestDto.getComment());
-        requestToUpdate.setRegistrationDate(LocalDate.now());
-        requestToUpdate.setStatus(RequestStatus.PENDING);
+        updateRequestParameters(requestDto, requestToUpdate);
 
         if (!isDateRangeValid(requestToUpdate)) {
             throw new InvalidDateRangeException();
@@ -109,12 +107,23 @@ public class RequestService {
         requestRepository.save(requestToUpdate);
     }
 
+    private void updateRequestParameters(RequestDto requestDto, Request requestToUpdate) {
+        requestToUpdate.setType(requestDto.getType());
+        requestToUpdate.setStartDate(requestDto.getStartDate());
+        requestToUpdate.setEndDate(requestDto.getEndDate());
+        requestToUpdate.setComment(requestDto.getComment());
+        requestToUpdate.setRegistrationDate(LocalDate.now());
+        requestToUpdate.setStatus(RequestStatus.PENDING);
+    }
+
+
     private List<Request> getRequestsToCheckDateRange(Request request) {
         return getAllRequestsByType(request.getType()).stream()
                 .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void deleteRequest(Long requestId) throws RequestNotFoundException {
         if (!requestRepository.existsById(requestId)) {
             throw new RequestNotFoundException();
