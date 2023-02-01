@@ -26,13 +26,13 @@ public class RequestServiceTest {
     @Mock
     private RequestRepository requestRepository;
     private RequestService requestService;
-    private Request request = new Request(1L, "123", RequestType.HOLIDAY,
+    private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
             LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
             RequestStatus.PENDING);
 
 
-    private RequestDto requestDto = new RequestDto(LocalDate.of(2023, 4, 1),
+    private final RequestDto requestDto = new RequestDto(LocalDate.of(2023, 4, 1),
             LocalDate.of(2023, 4, 3), RequestType.OVERTIME, "comment");
 
     @BeforeEach
