@@ -145,17 +145,6 @@ public class RequestServiceTest {
                 .hasMessageContaining("Comment is too long.");
     }
 
-
-}
-    @Mock
-    RequestRepository requestRepository;
-    RequestService requestService;
-
-    @BeforeEach
-    void setUp() {
-        requestService = new RequestService(requestRepository);
-    }
-
     @Test
     void shouldGetAllRequestsByType() {
         RequestType requestTypeHoliday = RequestType.HOLIDAY;
