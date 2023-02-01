@@ -1,18 +1,25 @@
 package com.project.w3t.model.user;
 
-import com.project.w3t.model.request.RequestStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDate;
-
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
-
+@Entity
+@Table(name = "users")
+//@DynamicInsert
+//@DynamicUpdate
 public class User {
 
-    private static Long ID = 1L;
+    @Id
+    @GeneratedValue
     private Long id;
     private String email;
     private String userId;
@@ -24,7 +31,6 @@ public class User {
     private String teamId;
 
     public User() {
-        this.id = ID++;
         this.userType = UserType.EMPLOYEE;
     }
 }
