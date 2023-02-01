@@ -1,10 +1,6 @@
 package com.project.w3t.repository;
 
-import com.project.w3t.exceptions.InvalidEmailException;
-import com.project.w3t.exceptions.InvalidUserIdException;
-import com.project.w3t.exceptions.UserNotFoundException;
 import com.project.w3t.model.user.User;
-import com.project.w3t.model.user.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

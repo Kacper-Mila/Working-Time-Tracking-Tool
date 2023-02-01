@@ -1,11 +1,8 @@
 package com.project.w3t.service;
 
-import com.project.w3t.exceptions.InvalidCommentLengthException;
-import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.RequestNotFoundException;
+import com.project.w3t.exceptions.ApiRequestException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.repository.RequestRepository;
-import com.project.w3t.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,27 +13,24 @@ import java.util.Optional;
 public class RequestService {
     private final static int COMMENT_MAX_LENGTH = 250;
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
 
-    public RequestService(RequestRepository requestRepository,
-                          UserRepository userRepository) {
+    public RequestService(RequestRepository requestRepository) {
         this.requestRepository = requestRepository;
-        this.userRepository = userRepository;
     }
 
     public List<Request> getAllRequests(){
         List<Request> tmpRequestList = requestRepository.findAll();
 
-        if (tmpRequestList.isEmpty()) throw new RuntimeException();
+        if (tmpRequestList.isEmpty()) throw new ApiRequestException("Could not find any requests.");
         return tmpRequestList;
     }
 
-    public void addRequest(Request request) throws InvalidCommentLengthException, InvalidDateRangeException {
+    public void addRequest(Request request) {
         if (request.getStartDate() == null || request.getEndDate() == null || !isRequestValid(request)) {
-            throw new InvalidDateRangeException();
+            throw new ApiRequestException("Invalid date range.");
         }
         if (!isCommentLengthValid(request.getComment())) {
-            throw new InvalidCommentLengthException();
+            throw new ApiRequestException("Comment is too long.");
         }
         requestRepository.save(request);
     }
@@ -92,8 +86,8 @@ public class RequestService {
 //        return requestRepository.getAllRequestsByType(requestType);
 //    }
 
-    public Optional<Request> getRequestByRequestId(Long id) throws RequestNotFoundException {
-        if (!requestRepository.existsById(id)) throw new RequestNotFoundException();
+    public Optional<Request> getRequestByRequestId(Long id)  {
+        if (!requestRepository.existsById(id)) throw new ApiRequestException("Request with this id does not exists.");
 
         return requestRepository.findById(id);
     }

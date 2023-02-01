@@ -1,16 +1,9 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidEmailException;
-import com.project.w3t.exceptions.InvalidUserIdException;
-import com.project.w3t.exceptions.UserNotFoundException;
 import com.project.w3t.model.user.User;
-import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -31,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@RequestBody User user) throws InvalidEmailException, InvalidUserIdException {
+    public void addUser(@RequestBody User user){
         userService.addUser(user);
     }
 //
@@ -41,7 +34,7 @@ public class UserController {
 //    }
 //
     @DeleteMapping("/delete")
-    public void deleteUser(@RequestParam String userId) throws UserNotFoundException {
+    public void deleteUser(@RequestParam String userId) {
         userService.deleteUser(userId);
     }
 
@@ -52,7 +45,7 @@ public class UserController {
 
     @GetMapping("/userid")
     @ResponseBody
-    public User getUserByUserId(@RequestParam String userId) throws UserNotFoundException {
+    public User getUserByUserId(@RequestParam String userId){
         return userService.getUserByUserId(userId);
     }
 }

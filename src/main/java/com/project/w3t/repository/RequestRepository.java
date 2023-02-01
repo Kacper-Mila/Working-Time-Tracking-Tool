@@ -1,10 +1,6 @@
 package com.project.w3t.repository;
 
-import com.project.w3t.exceptions.InvalidCommentLengthException;
-import com.project.w3t.exceptions.InvalidDateRangeException;
 import com.project.w3t.model.request.Request;
-import com.project.w3t.model.request.RequestDto;
-import com.project.w3t.exceptions.InvalidRequestIdException;
 import com.project.w3t.model.request.RequestType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

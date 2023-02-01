@@ -1,17 +1,9 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidCommentLengthException;
-import com.project.w3t.exceptions.InvalidDateRangeException;
-import com.project.w3t.exceptions.InvalidRequestIdException;
-import com.project.w3t.exceptions.RequestNotFoundException;
 import com.project.w3t.model.request.Request;
-import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -32,7 +24,7 @@ public class RequestController {
     }
 
     @PostMapping
-    public void addRequest(@RequestBody Request request) throws InvalidDateRangeException, InvalidCommentLengthException {
+    public void addRequest(@RequestBody Request request){
         requestService.addRequest(request);
     }
 //
@@ -53,7 +45,7 @@ public class RequestController {
 
     @GetMapping("/id")
     @ResponseBody
-    public Object getRequestById(@RequestParam Long requestId) throws RequestNotFoundException {
+    public Object getRequestById(@RequestParam Long requestId) {
         return requestService.getRequestByRequestId(requestId);
     }
 }
