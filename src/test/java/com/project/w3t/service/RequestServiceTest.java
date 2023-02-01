@@ -147,3 +147,44 @@ public class RequestServiceTest {
 
 
 }
+    @Mock
+    RequestRepository requestRepository;
+    RequestService requestService;
+
+    @BeforeEach
+    void setUp() {
+        requestService = new RequestService(requestRepository);
+    }
+
+    @Test
+    void shouldGetAllRequestsByType() {
+        RequestType requestTypeHoliday = RequestType.HOLIDAY;
+        requestService.getAllRequestsByType(requestTypeHoliday);
+        verify(requestRepository).findAllByType(requestTypeHoliday);
+    }
+
+    @Test
+    void shouldDeleteRequest() {
+        //given
+        Long requestId = 1L;
+        when(requestRepository.existsById(requestId)).thenReturn(true);
+
+        //when
+        requestService.deleteRequest(requestId);
+
+        //then
+        verify(requestRepository).deleteById(requestId);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException{
+        //given
+        Long requestId = 1L;
+        when(requestRepository.existsById(requestId)).thenReturn(false);
+
+        //when //then
+        assertThatThrownBy(() -> requestService.deleteRequest(requestId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Request with this id does not exists.");
+    }
+}
