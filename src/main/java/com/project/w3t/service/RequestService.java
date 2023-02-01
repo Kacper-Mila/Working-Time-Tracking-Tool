@@ -18,7 +18,7 @@ public class RequestService {
         this.requestRepository = requestRepository;
     }
 
-    public List<Request> getAllRequests(){
+    public List<Request> getAllRequests() {
         List<Request> tmpRequestList = requestRepository.findAll();
 
         if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");

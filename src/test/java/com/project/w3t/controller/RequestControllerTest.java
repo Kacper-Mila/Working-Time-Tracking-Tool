@@ -27,13 +27,12 @@ class RequestControllerTest {
     private MockMvc mvc;
 
     @Test
-    @Autowired
     void getAllRequestsThrowsException() throws Exception {
-//        mvc.perform(get("api/v1/requests")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(result -> Assert.assertTrue(result.getResolvedException() instanceof BadRequestException))
-//                .andExpect(result -> Assert.assertEquals("Could not find any requests.", result.getResolvedException().getMessage()));
+        mvc.perform(get("http://localhost:8080/api/v1/requests")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assert.assertTrue(result.getResolvedException() instanceof BadRequestException))
+                .andExpect(result -> Assert.assertEquals("Could not find any requests.", result.getResolvedException().getMessage()));
 
 //        when(requestService.getAllRequests())
     }
