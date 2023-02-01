@@ -1,4 +1,4 @@
-package com.project.w3t.exceptions.BadRequest400;
+package com.project.w3t.exceptions.NotFound404;
 
 import com.project.w3t.exceptions.ApiException;
 import org.springframework.http.HttpStatus;
@@ -10,16 +10,16 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @ControllerAdvice
-public class BadRequestExceptionHandler {
-    @ExceptionHandler(value = {BadRequestException.class})
-    public ResponseEntity<Object> handleBadRequestException(BadRequestException e){
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+public class NotFoundExceptionHandler {
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException e){
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
 
         ApiException apiException = new ApiException(
                 e.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("ECT"))
+                notFound,
+                ZonedDateTime.now(ZoneId.of("ETC"))
         );
-        return new ResponseEntity<>(apiException, badRequest);
+        return new ResponseEntity<>(apiException, notFound);
     }
 }
