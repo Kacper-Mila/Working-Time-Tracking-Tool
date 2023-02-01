@@ -23,6 +23,9 @@ class RequestControllerTest {
     private RequestService requestService;
     RequestController requestController;
     private final Long requestId = 1L;
+    private final String userId = "USER1234";
+    private final String managerId = "MANAGER1234";
+
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
             LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
@@ -73,4 +76,15 @@ class RequestControllerTest {
         verify(requestService).getRequestByRequestId(requestId);
     }
 
+    @Test
+    void shouldReturnRequestsByUserId() {
+        requestController.getRequestsByUserId(userId);
+        verify(requestService).getRequestByUserId(userId);
+    }
+
+    @Test
+    void shouldReturnRequestsByManagerId() {
+        requestController.getRequestsByManagerId(managerId);
+        verify(requestService).getRequestsByManagerId(managerId);
+    }
 }

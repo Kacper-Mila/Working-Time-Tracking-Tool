@@ -1,6 +1,7 @@
 package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
+import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.repository.UserRepository;
@@ -23,21 +24,21 @@ public class UserService {
     public List<User> getAllUsers() {
         List<User> tempList = userRepository.findAll();
 //        TODO proper exception and status code
-        if (tempList.isEmpty()) throw new RuntimeException();
+        if (tempList.isEmpty()) throw new NotFoundException("Unable to process request - users list does not exist.");
         return tempList;
     }
 
     public void addUser(User user) {
 //        TODO check if needed, proper exception and status code
-        if (user == null) throw new BadRequestException("");
+        if (user == null) throw new BadRequestException("Unable to process request - user data is invalid.");
 
 //        TODO can only be user.setId(null).
         Optional<Long> testId = Optional.ofNullable(user.getId());
         if (testId.isPresent() && userRepository.existsById(testId.get())) user.setId(null);
 
 //        TODO throw custom exc - email/user already taken, validation elsewhere (f.ex. email: string + @ + string + . + string).
-        if (userRepository.existsByEmail(user.getEmail())) throw new BadRequestException("");
-        if (userRepository.existsByUserId(user.getUserId())) throw new BadRequestException("");
+        if (userRepository.existsByEmail(user.getEmail())) throw new BadRequestException("Unable to process request - email address is invalid.");
+        if (userRepository.existsByUserId(user.getUserId())) throw new BadRequestException("Unable to process request - user Id is invalid.");
         userRepository.save(user);
     }
 
@@ -48,22 +49,22 @@ public class UserService {
     @Transactional
     public void deleteUser(String userId) {
 //        TODO proper exception and status code
-        if (userId == null) throw new RuntimeException();
-        if (!userRepository.existsByUserId(userId)) throw new BadRequestException("");
+        if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
+        if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
         userRepository.deleteByUserId(userId);
     }
 
     public List<User> getAllUsersByManager(String managerId) {
         List<User> tempList = userRepository.findAllByManagerId(managerId);
 //        TODO proper exception and status code
-        if (tempList.isEmpty()) throw new RuntimeException();
+        if (tempList.isEmpty()) throw new NotFoundException("Unable to process request - users list does not exist.");
         return tempList;
     }
 
     public User getUserByUserId(String userId) {
         //        TODO proper exception and status code
-        if (userId == null) throw new RuntimeException();
-        if (!userRepository.existsByUserId(userId)) throw new BadRequestException("");
+        if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
+        if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
         return userRepository.findByUserId(userId);
     }
 }
