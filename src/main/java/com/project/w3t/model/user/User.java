@@ -1,12 +1,12 @@
 package com.project.w3t.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.project.w3t.model.request.Request;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,9 +26,12 @@ public class User {
     private String firstName;
     private String lastName;
     private Integer holidays;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
     private String managerId;
     private String teamId;
+    @OneToMany(mappedBy = "user")
+    private List<Request> requestList;
 
     public User() {
         this.userType = UserType.EMPLOYEE;

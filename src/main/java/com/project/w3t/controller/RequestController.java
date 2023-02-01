@@ -48,14 +48,26 @@ public class RequestController {
         requestService.deleteRequest(requestId);
     }
 
+//    not needed
     @GetMapping("/type")
     public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
+//    not needed?
     @GetMapping("/id")
     @ResponseBody
     public Object getRequestById(@RequestParam Long requestId) {
         return requestService.getRequestByRequestId(requestId);
+    }
+
+    @GetMapping("/userId")
+    public List<Request> getRequestsByUserId(@RequestParam String userId) {
+        return requestService.getRequestByUserId(userId);
+    }
+
+    @GetMapping("/managerId")
+    public List<Request> getRequestsByManagerId(@RequestParam String managerId) {
+        return requestService.getRequestsByManagerId(managerId);
     }
 }

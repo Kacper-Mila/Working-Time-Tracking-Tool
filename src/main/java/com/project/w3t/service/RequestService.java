@@ -101,6 +101,7 @@ public class RequestService {
         requestRepository.save(requestToUpdate);
     }
 
+//    TODO implement update only when NonNull and not empty string ""
     private void updateRequestParameters(RequestDto requestDto, Request requestToUpdate) {
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
@@ -113,7 +114,7 @@ public class RequestService {
 
     private List<Request> getRequestsToCheckDateRange(Request request) {
         return getAllRequestsByType(request.getType()).stream()
-                .filter(Predicate.not(req -> req.getRequestId().equals(request.getRequestId())))
+                .filter(Predicate.not(req -> req.getId().equals(request.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -134,5 +135,15 @@ public class RequestService {
         if (!requestRepository.existsById(id)) throw new BadRequestException("Request with this id does not exists.");
 
         return requestRepository.findById(id);
+    }
+
+    public List<Request> getRequestByUserId(String userId) {
+//        TODO implement!
+        return null;
+    }
+
+    public List<Request> getRequestsByManagerId(String managerId) {
+//        TODO implement!
+        return null;
     }
 }

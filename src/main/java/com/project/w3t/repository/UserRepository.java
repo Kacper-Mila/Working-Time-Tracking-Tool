@@ -8,19 +8,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-//    public List<User> getAllUsers();
-//
-//    public void addUser(User user) throws InvalidEmailException, InvalidUserIdException;
-//
-//    public void updateUser(String userId, UserDto userDto);
-//
-//    public void deleteUser(String userId) throws UserNotFoundException;
-//
-//    public List<User> getAllUsersByManager(String managerId);
-//
-//    public User getUserByUserId(String userId) throws UserNotFoundException;
-
     boolean existsByEmail(String email);
     boolean existsByUserId(String userId);
     void deleteByUserId(String userId);

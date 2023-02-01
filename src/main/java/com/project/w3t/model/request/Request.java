@@ -1,11 +1,7 @@
 package com.project.w3t.model.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.project.w3t.model.user.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +24,7 @@ public class Request {
 
     @Id
     @GeneratedValue
-    private Long requestId;
+    private Long id;
     private String ownerId;
     @Enumerated(EnumType.STRING)
     private RequestType type;
@@ -37,7 +33,11 @@ public class Request {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate approvalDate;
+    @Enumerated(EnumType.STRING)
     private RequestStatus status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
     public Request() {
         this.registrationDate = LocalDate.now();
@@ -53,7 +53,7 @@ public class Request {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Request request = (Request) o;
-        return requestId != null && Objects.equals(requestId, request.requestId);
+        return id != null && Objects.equals(id, request.id);
     }
 
     @Override

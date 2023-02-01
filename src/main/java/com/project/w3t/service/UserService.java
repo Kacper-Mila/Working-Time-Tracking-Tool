@@ -19,7 +19,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
     public List<User> getAllUsers() {
         List<User> tempList = userRepository.findAll();
 //        TODO proper exception and status code
@@ -41,13 +40,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(String userId) {
 //        TODO proper exception and status code
         if (userId == null) throw new RuntimeException();
         if (!userRepository.existsByUserId(userId)) throw new BadRequestException("");
         userRepository.deleteByUserId(userId);
     }
-
 
     public List<User> getAllUsersByManager(String managerId) {
         List<User> tempList = userRepository.findAllByManagerId(managerId);

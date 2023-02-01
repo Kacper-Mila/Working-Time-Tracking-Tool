@@ -9,16 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-//    List<Request> getAllRequests();
-//
-//    void addRequest(Request request) throws InvalidDateRangeException, InvalidCommentLengthException;
-//
-//    void updateRequest(Long id, RequestDto requestDto) throws InvalidRequestIdException, InvalidDateRangeException, InvalidCommentLengthException;
-//
-//    void deleteRequest(Long requestId) throws InvalidRequestIdException;
-//
-//    List<Request> getAllRequestsByType(String requestType);
-//
-//    Request getRequestById(Long requestId) throws InvalidRequestIdException;
     List<Request> findAllByType(RequestType requestType);
 }
