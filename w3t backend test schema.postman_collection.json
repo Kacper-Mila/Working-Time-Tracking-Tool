@@ -247,7 +247,7 @@
 					"response": []
 				},
 				{
-					"name": "Get user by userId.",
+					"name": "Get request by userId.",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -275,41 +275,13 @@
 					"response": []
 				},
 				{
-					"name": "Get user by managerId.",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/users/manager?managerId=Zenek",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"users",
-								"manager"
-							],
-							"query": [
-								{
-									"key": "managerId",
-									"value": "Zenek"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete user by id.",
+					"name": "Delete request by id. Copy",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ownerId\": \"Klemok\",\r\n    \"type\": \"2\",\r\n    \"comment\": \"comment\",\r\n    \"startDate\": \"2022-01-20\",\r\n    \"endDate\": \"2022-01-23\"\r\n}",
+							"raw": "{\r\n    \"ownerId\": \"123\",\r\n    \"type\": \"2\",\r\n    \"comment\": \"comment\",\r\n    \"startDate\": \"2022-01-20\",\r\n    \"endDate\": \"2022-01-23\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -317,7 +289,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/users/delete?userId=KlemokY",
+							"raw": "http://localhost:8080/api/v1/users/delete?userId=Klemok",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -332,7 +304,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "KlemokY"
+									"value": "Klemok"
 								}
 							]
 						}
