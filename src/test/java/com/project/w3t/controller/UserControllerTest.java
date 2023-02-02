@@ -30,7 +30,8 @@ class UserControllerTest {
             10,
             UserType.EMPLOYEE,
             "MANAGER1234",
-            "UNKNOWN");
+            "UNKNOWN",
+            null);
 
     private final UserDto userDto = new UserDto(
             1L,

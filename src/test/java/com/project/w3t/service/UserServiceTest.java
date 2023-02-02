@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -36,7 +39,8 @@ class UserServiceTest {
             10,
             UserType.EMPLOYEE,
             "MANAGER1234",
-            "UNKNOWN");
+            "UNKNOWN",
+            null);
 
     @BeforeEach
     void setUp() {
@@ -70,7 +74,6 @@ class UserServiceTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Unable to process request - user data is invalid.");
     }
-
     @Test
     void shouldAddUser() {
 //        given user
@@ -92,14 +95,14 @@ class UserServiceTest {
 
     @Test
     void shouldReturnAllUsersByManagerId() {
-        String managerId = "MANAGER1234";
         //given
-        List<User> allUsersByManagerId = new ArrayList<>(Arrays.asList(user));
-        when(userRepository.findAllByManagerId(managerId)).thenReturn(allUsersByManagerId);
+        List<User> tempList = new ArrayList<>();
+        tempList.add(user);
+        when(userRepository.findAllByManagerId(user.getManagerId())).thenReturn(tempList);
         //when
-        userService.getAllUsersByManager(managerId);
+        userService.getAllUsersByManager(user.getManagerId());
         //then
-        verify(userRepository, times(2)).findAllByManagerId(managerId);
+        verify(userRepository).findAllByManagerId(user.getManagerId());
     }
 
     @Test

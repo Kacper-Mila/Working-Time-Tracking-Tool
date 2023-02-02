@@ -39,8 +39,8 @@ public class RequestController {
     }
 
     @PatchMapping("/update")
-    public void updateRequest(@RequestParam Long requestId, @RequestBody RequestDto requestDto) {
-        requestService.updateRequest(requestId, requestDto);
+    public void updateRequest(@RequestParam String userId, @RequestParam Long requestId, @RequestBody RequestDto requestDto) {
+        requestService.updateRequest(userId, requestId, requestDto);
     }
 
     @DeleteMapping("/delete")
