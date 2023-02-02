@@ -1,5 +1,6 @@
 package com.project.w3t.controller;
 
+import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestType;
