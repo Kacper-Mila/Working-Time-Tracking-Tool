@@ -57,6 +57,7 @@ public class RequestService {
         Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
         if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
         request.setUser(userToSet.get());
+        reduceUserAvailableHolidays(request);
         requestRepository.save(request);
     }
 
@@ -91,6 +92,17 @@ public class RequestService {
 
     private boolean isRequestTypeValid(RequestType requestType) {
         return requestType != null;
+    }
+
+    private void reduceUserAvailableHolidays(Request request) {
+        if (request.getType().equals(RequestType.HOLIDAY)) {
+            User user = request.getUser();
+            if (user.getHolidays() < request.getRequestDateRange().size()) {
+                throw new BadRequestException("User does not have enough available holidays");
+            }
+            user.setHolidays(user.getHolidays() - request.getRequestDateRange().size());
+            userRepository.save(user);
+        }
     }
 
     @Transactional
