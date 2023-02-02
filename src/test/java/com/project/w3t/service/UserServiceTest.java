@@ -1,21 +1,23 @@
 package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
+import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserType;
 import com.project.w3t.repository.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +44,25 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException() {
+    void shouldReturnAllUsers() {
+        //given
+        List<User> allUsers = new ArrayList<>(Arrays.asList(user));
+        when(userRepository.findAll()).thenReturn(allUsers);
+        //when
+        userService.getAllUsers();
+        //then
+        verify(userRepository, times(2)).findAll();
+    }
+
+    @Test
+    void shouldThrowWhenUsersListIsEmpty() {
+        Assertions.assertThatThrownBy(() -> userService.getAllUsers())
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Unable to process request - users list does not exist.");
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenUserIsNull() {
 //        given
 //        when
 //        then
@@ -72,12 +92,14 @@ class UserServiceTest {
 
     @Test
     void shouldReturnAllUsersByManagerId() {
+        String managerId = "MANAGER1234";
         //given
-        when(userRepository.existsByManagerId(user.getManagerId())).thenReturn(true);
+        List<User> allUsersByManagerId = new ArrayList<>(Arrays.asList(user));
+        when(userRepository.findAllByManagerId(managerId)).thenReturn(allUsersByManagerId);
         //when
-        userService.getAllUsersByManager(user.getManagerId());
+        userService.getAllUsersByManager(managerId);
         //then
-        verify(userRepository).findAllByManagerId(user.getManagerId());
+        verify(userRepository, times(2)).findAllByManagerId(managerId);
     }
 
     @Test
