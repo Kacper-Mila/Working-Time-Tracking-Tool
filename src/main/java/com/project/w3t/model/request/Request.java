@@ -36,14 +36,11 @@ public class Request {
     @NotBlank
     private String ownerId;
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private RequestType type;
     @NotNull
     private String comment;
     private LocalDate registrationDate;
-    @NotBlank
     private LocalDate startDate;
-    @NotBlank
     private LocalDate endDate;
     private LocalDate approvalDate;
     @Enumerated(EnumType.STRING)
