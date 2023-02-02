@@ -42,16 +42,13 @@ public class RequestService {
     public void addRequest(Request request) {
         Optional<String> userId = Optional.ofNullable(request.getOwnerId());
         if (userId.isEmpty() || userId.get().equals(""))
-            throw new BadRequestException("Unable to process request - request data is invalid.");
-        if (!isOwnerIdValid(request.getOwnerId())) {
-            throw new BadRequestException("Onwer's id is missing");
-        }
+            throw new BadRequestException("Unable to process request - owner's id is invalid.");
 
         if (!isRequestTypeValid(request.getType())) {
             throw new BadRequestException("Invalid request type.");
         }
 
-        if (!isRequestDateRangeValid(request)) {
+        if (!isRequestDateRangeValid(request, userId.get())) {
             throw new BadRequestException("Invalid date range.");
         }
         if (!isCommentLengthValid(request.getComment())) {
@@ -92,10 +89,6 @@ public class RequestService {
         return comment != null && comment.length() <= COMMENT_MAX_LENGTH;
     }
 
-    private boolean isOwnerIdValid(String ownerId) {
-        return ownerId != null && !ownerId.isEmpty();
-    }
-
     private boolean isRequestTypeValid(RequestType requestType) {
         return requestType != null;
     }
@@ -109,7 +102,7 @@ public class RequestService {
         if (!isRequestTypeValid(requestDto.getType())) {
             throw new BadRequestException("Invalid request type.");
         }
-        if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId,requestToUpdate), dateRange)) {
+        if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
 
@@ -146,10 +139,6 @@ public class RequestService {
                 .filter(r -> r.getType().equals(request.getType()))
                 .filter(Predicate.not(req -> req.getId().equals(request.getId())))
                 .collect(Collectors.toList());
-
-//                getAllRequestsByType(request.getType()).stream()
-//                .filter(Predicate.not(req -> req.getId().equals(request.getId())))
-//                .collect(Collectors.toList());
     }
 
     @Transactional
