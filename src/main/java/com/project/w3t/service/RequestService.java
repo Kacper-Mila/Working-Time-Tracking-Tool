@@ -1,12 +1,16 @@
 package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
+import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDateRange;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
+import com.project.w3t.model.user.User;
 import com.project.w3t.repository.RequestRepository;
+import com.project.w3t.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,30 +24,40 @@ import java.util.stream.Collectors;
 public class RequestService {
     private final static int COMMENT_MAX_LENGTH = 250;
     private final RequestRepository requestRepository;
+    private final UserRepository userRepository;
 
-    public RequestService(RequestRepository requestRepository) {
+    public RequestService(RequestRepository requestRepository, UserRepository userRepository) {
         this.requestRepository = requestRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Request> getAllRequests() {
         List<Request> tmpRequestList = requestRepository.findAll();
 
-        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
+//        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
         return tmpRequestList;
     }
 
     public void addRequest(Request request) {
-        if (!isRequestValid(request)) {
+        Optional<String> userId = Optional.ofNullable(request.getOwnerId());
+        if (userId.isEmpty() || userId.get().equals("")) throw new BadRequestException("Unable to process request - request data is invalid.");
+        if (!isRequestValid(request, userId.get())) {
             throw new BadRequestException("Invalid date range.");
         }
         if (!isCommentLengthValid(request.getComment())) {
             throw new BadRequestException("Comment is too long.");
         }
+        Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
+        if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
+        request.setUser(userToSet.get());
         requestRepository.save(request);
     }
 
-    private boolean isRequestValid(Request request) {
-        List<Request> userRequestsFilteredByType = requestRepository.findAllByType(request.getType());
+    private boolean isRequestValid(Request request, String userId) {
+        List<Request> userRequestsFilteredByType = requestRepository.findAllByOwnerId(userId)
+                .stream()
+                .filter(r -> r.getType().equals(request.getType()))
+                .collect(Collectors.toList());
         return (isDateRangeValid(request) && isDateRangeAvailable(userRequestsFilteredByType, request.getRequestDateRange()));
     }
 

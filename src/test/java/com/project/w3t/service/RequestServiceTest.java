@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +29,7 @@ public class RequestServiceTest {
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
             LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-            RequestStatus.PENDING);
+            RequestStatus.PENDING, null);
 
 
     private final RequestDto requestDto = new RequestDto(LocalDate.of(2023, 4, 1),
@@ -37,7 +37,7 @@ public class RequestServiceTest {
 
     @BeforeEach
     void setUp() {
-        requestService = new RequestService(requestRepository);
+        requestService = new RequestService(requestRepository, userRepository);
     }
     @Test
     void shouldThrowWhenRequestsTableIsEmpty() {
@@ -52,7 +52,7 @@ public class RequestServiceTest {
         Request correctRequest = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 5, 1),
                 LocalDate.of(2023, 5, 3), LocalDate.of(2023, 5, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
         //when
         requestService.addRequest(correctRequest);
         //then
@@ -65,7 +65,7 @@ public class RequestServiceTest {
         Request requestWithNullStartDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), null,
                 LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(requestWithNullStartDate))
                 .isInstanceOf(BadRequestException.class)
@@ -78,7 +78,7 @@ public class RequestServiceTest {
         Request requestWithNullEndDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),
                 LocalDate.of(2023, 3, 3), null, LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(requestWithNullEndDate))
                 .isInstanceOf(BadRequestException.class)
@@ -91,7 +91,7 @@ public class RequestServiceTest {
         Request requestWithStartDateAfterEndDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 3, 10),
                 LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(requestWithStartDateAfterEndDate))
                 .isInstanceOf(BadRequestException.class)
@@ -104,7 +104,7 @@ public class RequestServiceTest {
         Request requestWithDateRangeBeforeRegistrationDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 3), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(requestWithDateRangeBeforeRegistrationDate))
                 .isInstanceOf(BadRequestException.class)

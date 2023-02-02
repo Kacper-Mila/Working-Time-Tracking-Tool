@@ -55,7 +55,7 @@ class RequestControllerAdviceTest {
                         "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor",
                 LocalDate.now(), LocalDate.of(2023, 3, 3),
                 LocalDate.of(2023, 3, 10), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
 
         mvc.perform(post("http://localhost:8080/api/v1/requests", exceptionParam)
                         .content(mapper.writeValueAsString(request).getBytes(StandardCharsets.UTF_8))
@@ -74,7 +74,7 @@ class RequestControllerAdviceTest {
                 "comment",
                 LocalDate.now(), LocalDate.of(2023, 3, 10),
                 LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
 
         mvc.perform(post("http://localhost:8080/api/v1/requests", exceptionParam)
                         .content(toJson(request))

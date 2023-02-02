@@ -1,5 +1,6 @@
 package com.project.w3t.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.request.Request;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
@@ -30,8 +30,10 @@ public class User {
     private UserType userType;
     private String managerId;
     private String teamId;
-//    @OneToMany(mappedBy = "user")
-//    private List<Request> requestList;
+//    @JsonIgnore
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Request> requestList;
 
     public User() {
         this.userType = UserType.EMPLOYEE;

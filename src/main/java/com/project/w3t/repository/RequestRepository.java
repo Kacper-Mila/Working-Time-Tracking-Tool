@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByType(RequestType requestType);
+    List<Request> findAllByOwnerId(String ownerId);
 }

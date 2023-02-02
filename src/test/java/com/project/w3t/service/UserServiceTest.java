@@ -34,7 +34,8 @@ class UserServiceTest {
             10,
             UserType.EMPLOYEE,
             "MANAGER1234",
-            "UNKNOWN");
+            "UNKNOWN",
+            null);
 
     @BeforeEach
     void setUp() {
