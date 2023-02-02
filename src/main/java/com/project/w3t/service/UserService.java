@@ -22,10 +22,10 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        List<User> tempList = userRepository.findAll();
 //        TODO proper exception and status code
-        if (tempList.isEmpty()) throw new NotFoundException("Unable to process request - users list does not exist.");
-        return tempList;
+        if (userRepository.findAll().isEmpty())
+            throw new NotFoundException("Unable to process request - users list does not exist.");
+        return userRepository.findAll();
     }
 
     public void addUser(User user) {
@@ -50,21 +50,24 @@ public class UserService {
     public void deleteUser(String userId) {
 //        TODO proper exception and status code
         if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
-        if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
+        if (!userRepository.existsByUserId(userId))
+            throw new NotFoundException("Unable to process request - user does not exist.");
         userRepository.deleteByUserId(userId);
     }
 
     public List<User> getAllUsersByManager(String managerId) {
-        List<User> tempList = userRepository.findAllByManagerId(managerId);
 //        TODO proper exception and status code
-        if (tempList.isEmpty()) throw new NotFoundException("Unable to process request - users list does not exist.");
-        return tempList;
+        if (userRepository.findAllByManagerId(managerId).isEmpty()) {
+            throw new NotFoundException("Unable to process request - users list does not exist.");
+        }
+        return userRepository.findAllByManagerId(managerId);
     }
 
     public User getUserByUserId(String userId) {
         //        TODO proper exception and status code
         if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
-        if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
+        if (!userRepository.existsByUserId(userId))
+            throw new NotFoundException("Unable to process request - user does not exist.");
         return userRepository.findByUserId(userId);
     }
 }
