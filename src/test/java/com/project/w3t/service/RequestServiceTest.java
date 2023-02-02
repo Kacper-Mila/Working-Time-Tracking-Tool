@@ -22,8 +22,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RequestServiceTest {
@@ -51,6 +52,7 @@ public class RequestServiceTest {
     void setUp() {
         requestService = new RequestService(requestRepository, userRepository);
     }
+
     @Test
     void shouldReturnAllRequests() {
         //given
@@ -61,6 +63,7 @@ public class RequestServiceTest {
         //then
         verify(requestRepository, times(2)).findAll();
     }
+
     @Test
     void shouldThrowWhenRequestsListIsEmpty() {
         assertThatThrownBy(() -> requestService.getAllRequests())
@@ -80,6 +83,46 @@ public class RequestServiceTest {
         requestService.addRequest(correctRequest);
         //then
         verify(requestRepository).save(correctRequest);
+    }
+
+    @Test
+    void shouldThrowWhenOwnerIdIsNullForAddingRequest() {
+        //given
+        Request requestWithNullOwnerId = new Request(2L, null, RequestType.HOLIDAY,
+                "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
+                LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
+                RequestStatus.PENDING, null);
+        //when //then
+        assertThatThrownBy(() -> requestService.addRequest(requestWithNullOwnerId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Unable to process request - owner's id is invalid.");
+    }
+
+    @Test
+    void shouldThrowWhenRequestTypeIsNullForAddingRequest() {
+        //given
+        Request requestWithNullRequestType = new Request(2L, "123", null,
+                "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
+                LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
+                RequestStatus.PENDING, null);
+        //when //then
+        assertThatThrownBy(() -> requestService.addRequest(requestWithNullRequestType))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Invalid request type.");
+    }
+
+    @Test
+    void shouldThrowWhenOwnerIdIsEmptyStringForAddingRequest() {
+        //given
+        Request requestWithOwnerIdAsEmptyString = new Request(2L, "", RequestType.HOLIDAY,
+                "comment", LocalDate.now(), null,
+                LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
+                RequestStatus.PENDING, null);
+        //when //then
+        assertThatThrownBy(() -> requestService.addRequest(requestWithOwnerIdAsEmptyString))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Unable to process request - owner's id is invalid.");
+
     }
 
     @Test
@@ -144,7 +187,7 @@ public class RequestServiceTest {
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(request))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Comment is too long.");
+                .hasMessageContaining("Comment is not valid.");
     }
 
     @Test
@@ -154,7 +197,7 @@ public class RequestServiceTest {
         //when //then
         assertThatThrownBy(() -> requestService.addRequest(request))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Comment is too long.");
+                .hasMessageContaining("Comment is not valid.");
     }
 
     @Test
@@ -168,6 +211,19 @@ public class RequestServiceTest {
         requestService.updateRequest(userId, requestId, requestDto);
         //then
         verify(requestRepository).save(request);
+    }
+
+    @Test
+    void shouldThrowWhenRequestTypeIsNullForUpdatingRequest() {
+        //given
+        RequestDto requestDtoWithNullRequestType = new RequestDto(LocalDate.of(2023, 4, 10),
+                LocalDate.of(2023, 4, 13), null, "comment");
+        when(requestRepository.existsById(requestId)).thenReturn(true);
+        when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
+        //when //then
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDtoWithNullRequestType))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Invalid request type.");
     }
 
     @Test
@@ -218,10 +274,11 @@ public class RequestServiceTest {
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setEndDate(null);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId,requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
+
     @Test
     void shouldThrowWhenStartAndEndDateAreNullForUpdatingRequest() {
         //given
@@ -254,13 +311,28 @@ public class RequestServiceTest {
 
     @Test
     void shouldGetAllRequestsByType() {
+        //given
         RequestType requestTypeHoliday = RequestType.HOLIDAY;
         List<Request> tempList = new ArrayList<>();
         Request request = new Request();
         tempList.add(request);
         when(requestRepository.findAllByType(requestTypeHoliday)).thenReturn(tempList);
+        //when
         requestService.getAllRequestsByType(requestTypeHoliday);
+        //then
         verify(requestRepository, times(2)).findAllByType(requestTypeHoliday);
+    }
+
+    @Test
+    void shouldThrowWhenRequestsWithGivenTypeNotExist() {
+        //given
+        RequestType requestTypeHoliday = RequestType.HOLIDAY;
+        List<Request> tempList = new ArrayList<>();
+        when(requestRepository.findAllByType(requestTypeHoliday)).thenReturn(tempList);
+        //when //then
+        assertThatThrownBy(() -> requestService.getAllRequestsByType(requestTypeHoliday))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Could not find any requests by this type.");
     }
 
     @Test
@@ -304,5 +376,47 @@ public class RequestServiceTest {
         assertThatThrownBy(() -> requestService.getRequestByRequestId(requestId))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Request with this id does not exists.");
+    }
+
+    @Test
+    void shouldReturnRequestsByUserId() {
+        //given
+        String userId = user.getUserId();
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        //when
+        requestService.getRequestsByUserId(userId);
+        //then
+        verify(requestRepository).getRequestsByUserUserId(userId);
+    }
+
+    @Test
+    void shouldThrowWhenUserWithGivenIdNotExist() {
+        //given
+        String userId = "9876";
+        //when //then
+        assertThatThrownBy(() -> requestService.getRequestsByUserId(userId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("User with this id does not exist.");
+    }
+
+    @Test
+    void shouldThrowWhenManagerWithGivenIdNotExist() {
+        //given
+        String managerId = "9876";
+        //when //then
+        assertThatThrownBy(() -> requestService.getEmployeesRequestsByManagerId(managerId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Manager with this id does not exist.");
+    }
+
+    @Test
+    void shouldReturnEmployeesRequestsByManagerId() {
+        //given
+        String managerId = user.getManagerId();
+        when(userRepository.existsByManagerId(managerId)).thenReturn(true);
+        //when
+        requestService.getEmployeesRequestsByManagerId(managerId);
+        //then
+        verify(requestRepository).getEmployeesRequestsByManagerIdQuery(managerId);
     }
 }
