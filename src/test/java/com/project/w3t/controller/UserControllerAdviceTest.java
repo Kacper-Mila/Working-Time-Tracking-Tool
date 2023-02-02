@@ -55,13 +55,14 @@ class UserControllerAdviceTest {
                 .andExpect(result -> Assert.assertTrue(result.getResolvedException() instanceof NotFoundException))
                 .andExpect(result -> Assert.assertEquals("Unable to process request - users list does not exist.", result.getResolvedException().getMessage()));
     }
+
     @Test
     void addUserShouldThrowBadRequestIfMailAlreadyExists() throws Exception {
         String exceptionParam = "bad_request";
-        User testUser = new User(1L, "typical@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID");
+        User testUser = new User(1L, "typical@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID", null);
 
         userservice.addUser(testUser);
-        User user = new User(1L, "typical@mail.com", "userIDs", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID");
+        User user = new User(1L, "typical@mail.com", "userIDs", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID", null);
 
         mvc.perform(post("http://localhost:8080/api/v1/users", exceptionParam)
                         .content(mapper.writeValueAsString(user).getBytes(StandardCharsets.UTF_8))
@@ -74,12 +75,12 @@ class UserControllerAdviceTest {
     @Test
     void addUserShouldThrowBadRequestIfUserIdAlreadyExists() throws Exception{
         String exceptionParam = "bad_request";
-        User testUser = new User(1L, "typical@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID");
+        User testUser = new User(1L, "typical@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID", null);
 
         testUser.setEmail("newEmail@mail.com");
         testUser.setUserId("newUserID");
         userservice.addUser(testUser);
-        User user = new User(1L, "completlynewemailadress@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID");
+        User user = new User(1L, "completlynewemailadress@mail.com", "userID", "name", "lastName", 25, UserType.EMPLOYEE, "menagerID", "teamID", null);
 
         mvc.perform(post("http://localhost:8080/api/v1/users", exceptionParam)
                         .content(mapper.writeValueAsString(user).getBytes(StandardCharsets.UTF_8))

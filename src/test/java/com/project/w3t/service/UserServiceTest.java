@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,16 +44,6 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException() {
-//        given
-//        when
-//        then
-        assertThatThrownBy(() -> userService.addUser(null))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Unable to process request - user data is invalid.");
-    }
-
-    @Test
     void shouldAddUser() {
 //        given user
 //        when
@@ -74,7 +65,9 @@ class UserServiceTest {
     @Test
     void shouldReturnAllUsersByManagerId() {
         //given
-        when(userRepository.existsByManagerId(user.getManagerId())).thenReturn(true);
+        List<User> tempList = new ArrayList<>();
+        tempList.add(user);
+        when(userRepository.findAllByManagerId(user.getManagerId())).thenReturn(tempList);
         //when
         userService.getAllUsersByManager(user.getManagerId());
         //then

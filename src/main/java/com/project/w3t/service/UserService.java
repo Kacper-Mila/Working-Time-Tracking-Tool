@@ -29,7 +29,6 @@ public class UserService {
     }
 
     public void addUser(User user) {
-
 //        TODO can only be user.setId(null).
         Optional<Long> testId = Optional.ofNullable(user.getId());
         if (testId.isPresent() && userRepository.existsById(testId.get())) user.setId(null);

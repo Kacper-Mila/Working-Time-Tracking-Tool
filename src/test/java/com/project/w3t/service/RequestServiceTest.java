@@ -5,6 +5,8 @@ import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
+import com.project.w3t.model.user.User;
+import com.project.w3t.model.user.UserType;
 import com.project.w3t.repository.RequestRepository;
 import com.project.w3t.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +16,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RequestServiceTest {
@@ -29,19 +32,25 @@ public class RequestServiceTest {
     @Mock
     private UserRepository userRepository;
     private RequestService requestService;
+    private final String userId = "123";
+    private final String managerId = "MANAGERID";
+    private final User user = new User(1L, "email@email.com", userId, null, null, 10, UserType.EMPLOYEE, managerId, "TEAMID", null);
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
             LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-            RequestStatus.PENDING, null);
+            RequestStatus.PENDING, user);
 
 
     private final RequestDto requestDto = new RequestDto(LocalDate.of(2023, 4, 1),
             LocalDate.of(2023, 4, 3), RequestType.OVERTIME, "comment");
 
+    private final Long requestId = 1L;
+
     @BeforeEach
     void setUp() {
         requestService = new RequestService(requestRepository, userRepository);
     }
+
     @Test
     void shouldThrowWhenRequestsTableIsEmpty() {
         assertThatThrownBy(() -> requestService.getAllRequests())
@@ -57,6 +66,7 @@ public class RequestServiceTest {
                 LocalDate.of(2023, 5, 3), LocalDate.of(2023, 5, 10),
                 RequestStatus.PENDING, null);
         //when
+        when(userRepository.findByUserId(userId)).thenReturn(user);
         requestService.addRequest(correctRequest);
         //then
         verify(requestRepository).save(correctRequest);
@@ -140,11 +150,11 @@ public class RequestServiceTest {
     @Test
     void shouldUpdateRequest() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
         //when
-        requestService.updateRequest(requestId, requestDto);
+        requestService.updateRequest(userId, requestId, requestDto);
         //then
         verify(requestRepository).save(request);
     }
@@ -154,11 +164,10 @@ public class RequestServiceTest {
         //given
         RequestDto requestDtoWithStartDateAfterEndDate = new RequestDto(LocalDate.of(2023, 4, 10),
                 LocalDate.of(2023, 4, 3), RequestType.OVERTIME, "comment");
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDtoWithStartDateAfterEndDate))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDtoWithStartDateAfterEndDate))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -168,12 +177,13 @@ public class RequestServiceTest {
         //given
         RequestDto requestDtoWithDateRangeBeforeRegistrationDate = new RequestDto(LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 3), RequestType.OVERTIME, "comment");
+        when(userRepository.findByUserId(userId)).thenReturn(user);
         requestService.addRequest(request);
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
-        when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
+        when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.of(request));
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDtoWithDateRangeBeforeRegistrationDate))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDtoWithDateRangeBeforeRegistrationDate))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -181,12 +191,11 @@ public class RequestServiceTest {
     @Test
     void shouldThrowWhenStartDateIsNullForUpdatingRequest() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setStartDate(null);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId,requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -194,12 +203,11 @@ public class RequestServiceTest {
     @Test
     void shouldThrowWhenEndDateIsNullForUpdatingRequest() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setEndDate(null);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId,requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -207,15 +215,15 @@ public class RequestServiceTest {
     @Test
     void shouldThrowWhenCommentIsTooLongForUpdatingRequest() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor");
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(userId, requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Comment is too long.");
     }
@@ -223,14 +231,17 @@ public class RequestServiceTest {
     @Test
     void shouldGetAllRequestsByType() {
         RequestType requestTypeHoliday = RequestType.HOLIDAY;
+        List<Request> tempList = new ArrayList<>();
+        Request request = new Request();
+        tempList.add(request);
+        when(requestRepository.findAllByType(requestTypeHoliday)).thenReturn(tempList);
         requestService.getAllRequestsByType(requestTypeHoliday);
-        verify(requestRepository).findAllByType(requestTypeHoliday);
+        verify(requestRepository, times(2)).findAllByType(requestTypeHoliday);
     }
 
     @Test
     void shouldDeleteRequest() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
 
         //when
@@ -241,9 +252,8 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException{
+    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(false);
 
         //when //then
@@ -251,10 +261,10 @@ public class RequestServiceTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Request with this id does not exists.");
     }
+
     @Test
     void shouldReturnRequestById() {
         //given
-        Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
         //when
         requestService.getRequestByRequestId(requestId);

@@ -52,8 +52,8 @@ class RequestControllerTest {
 
     @Test
     void shouldUpdateRequest() {
-        requestController.updateRequest(requestId, requestDto);
-        verify(requestService).updateRequest(requestId, requestDto);
+        requestController.updateRequest(userId, requestId, requestDto);
+        verify(requestService).updateRequest(userId, requestId, requestDto);
     }
 
     @Test
