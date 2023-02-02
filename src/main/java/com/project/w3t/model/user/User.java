@@ -30,7 +30,6 @@ public class User {
     private UserType userType;
     private String managerId;
     private String teamId;
-//    @JsonIgnore
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Request> requestList;
