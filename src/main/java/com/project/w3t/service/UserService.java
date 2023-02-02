@@ -29,8 +29,6 @@ public class UserService {
     }
 
     public void addUser(User user) {
-//        TODO check if needed, proper exception and status code
-        if (user == null) throw new BadRequestException("Unable to process request - user data is invalid.");
 
 //        TODO can only be user.setId(null).
         Optional<Long> testId = Optional.ofNullable(user.getId());
@@ -49,7 +47,6 @@ public class UserService {
     @Transactional
     public void deleteUser(String userId) {
 //        TODO proper exception and status code
-        if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
         if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
         userRepository.deleteByUserId(userId);
     }
@@ -63,7 +60,6 @@ public class UserService {
 
     public User getUserByUserId(String userId) {
         //        TODO proper exception and status code
-        if (userId == null) throw new BadRequestException("Unable to process request - user Id is invalid.");
         if (!userRepository.existsByUserId(userId)) throw new NotFoundException("Unable to process request - user does not exist.");
         return userRepository.findByUserId(userId);
     }

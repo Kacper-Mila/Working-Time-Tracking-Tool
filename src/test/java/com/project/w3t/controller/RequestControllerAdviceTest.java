@@ -6,6 +6,7 @@ import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
+import groovy.json.JsonOutput;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,6 @@ class RequestControllerAdviceTest {
     @Autowired
     private ObjectMapper mapper;
 
-    RequestService requestService;
     @Test
     void getAllRequestsThrowsException() throws Exception {
         String exceptionParam = "bad_request";
