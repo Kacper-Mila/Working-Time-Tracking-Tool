@@ -131,12 +131,12 @@ public class RequestService {
         return requestRepository.findById(id);
     }
 
-    public List<Request> getRequestByUserId(String userId) {
+    public List<Request> getRequestsByUserId(String userId) {
 //        TODO implement!
         return null;
     }
 
-    public List<Request> getRequestsByManagerId(String managerId) {
+    public List<Request> getEmployeesRequestsByManagerId(String managerId) {
 //        TODO implement!
         return null;
     }

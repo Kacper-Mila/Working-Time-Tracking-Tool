@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,12 +78,12 @@ class RequestControllerTest {
     @Test
     void shouldReturnRequestsByUserId() {
         requestController.getRequestsByUserId(userId);
-        verify(requestService).getRequestByUserId(userId);
+        verify(requestService).getRequestsByUserId(userId);
     }
 
     @Test
     void shouldReturnRequestsByManagerId() {
-        requestController.getRequestsByManagerId(managerId);
-        verify(requestService).getRequestsByManagerId(managerId);
+        requestController.getEmployeesRequestsByManagerId(managerId);
+        verify(requestService).getEmployeesRequestsByManagerId(managerId);
     }
 }

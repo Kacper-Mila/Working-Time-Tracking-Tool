@@ -1,6 +1,5 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestType;
@@ -64,11 +63,11 @@ public class RequestController {
 
     @GetMapping("/userId")
     public List<Request> getRequestsByUserId(@RequestParam String userId) {
-        return requestService.getRequestByUserId(userId);
+        return requestService.getRequestsByUserId(userId);
     }
 
     @GetMapping("/managerId")
-    public List<Request> getRequestsByManagerId(@RequestParam String managerId) {
-        return requestService.getRequestsByManagerId(managerId);
+    public List<Request> getEmployeesRequestsByManagerId(@RequestParam String managerId) {
+        return requestService.getEmployeesRequestsByManagerId(managerId);
     }
 }
