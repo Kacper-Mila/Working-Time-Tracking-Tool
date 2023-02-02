@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,8 +42,20 @@ public class RequestServiceTest {
     void setUp() {
         requestService = new RequestService(requestRepository);
     }
+
     @Test
-    void shouldThrowWhenRequestsTableIsEmpty() {
+    void shouldReturnAllRequests() {
+        //given
+        List<Request> allRequests = new ArrayList<>(Arrays.asList(request));
+        when(requestRepository.findAll()).thenReturn(allRequests);
+        //when
+        requestService.getAllRequests();
+        //then
+        verify(requestRepository, times(2)).findAll();
+    }
+
+    @Test
+    void shouldThrowWhenRequestsListIsEmpty() {
         assertThatThrownBy(() -> requestService.getAllRequests())
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Could not find any requests.");
@@ -183,7 +198,7 @@ public class RequestServiceTest {
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setStartDate(null);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId,requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -196,7 +211,21 @@ public class RequestServiceTest {
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
         requestDto.setEndDate(null);
         //when //then
-        assertThatThrownBy(() -> requestService.updateRequest(requestId,requestDto))
+        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDto))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Invalid date range.");
+    }
+
+    @Test
+    void shouldThrowWhenStartAndEndDateAreNullForUpdatingRequest() {
+        //given
+        Long requestId = 1L;
+        when(requestRepository.existsById(requestId)).thenReturn(true);
+        when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
+        requestDto.setStartDate(null);
+        requestDto.setEndDate(null);
+        //when //then
+        assertThatThrownBy(() -> requestService.updateRequest(requestId, requestDto))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Invalid date range.");
     }
@@ -238,7 +267,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException{
+    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException {
         //given
         Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(false);
@@ -248,6 +277,7 @@ public class RequestServiceTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Request with this id does not exists.");
     }
+
     @Test
     void shouldReturnRequestById() {
         //given
