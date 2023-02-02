@@ -33,29 +33,35 @@ public class RequestService {
     }
 
     public List<Request> getAllRequests() {
-        List<Request> tmpRequestList = requestRepository.findAll();
-
-        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
-        return tmpRequestList;
+        if (requestRepository.findAll().isEmpty()) {
+            throw new BadRequestException("Could not find any requests.");
+        }
+        return requestRepository.findAll();
     }
 
     public void addRequest(Request request) {
         Optional<String> userId = Optional.ofNullable(request.getOwnerId());
         if (userId.isEmpty() || userId.get().equals(""))
-            throw new BadRequestException("Unable to process request - request data is invalid.");
-        if (!isRequestValid(request, userId.get())) {
+            throw new BadRequestException("Unable to process request - owner's id is invalid.");
+
+        if (!isRequestTypeValid(request.getType())) {
+            throw new BadRequestException("Invalid request type.");
+        }
+
+        if (!isRequestDateRangeValid(request, userId.get())) {
             throw new BadRequestException("Invalid date range.");
         }
         if (!isCommentLengthValid(request.getComment())) {
-            throw new BadRequestException("Comment is too long.");
+            throw new BadRequestException("Comment is not valid.");
         }
         Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
         if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
         request.setUser(userToSet.get());
+        reduceUserAvailableHolidays(request);
         requestRepository.save(request);
     }
 
-    private boolean isRequestValid(Request request, String userId) {
+    private boolean isRequestDateRangeValid(Request request, String userId) {
         List<Request> userRequestsFilteredByType = requestRepository.findAllByOwnerId(userId)
                 .stream()
                 .filter(r -> r.getType().equals(request.getType()))
@@ -84,12 +90,30 @@ public class RequestService {
         return comment != null && comment.length() <= COMMENT_MAX_LENGTH;
     }
 
+    private boolean isRequestTypeValid(RequestType requestType) {
+        return requestType != null;
+    }
+
+    private void reduceUserAvailableHolidays(Request request) {
+        if (request.getType().equals(RequestType.HOLIDAY)) {
+            User user = request.getUser();
+            if (user.getHolidays() < request.getRequestDateRange().size()) {
+                throw new BadRequestException("User does not have enough available holidays");
+            }
+            user.setHolidays(user.getHolidays() - request.getRequestDateRange().size());
+            userRepository.save(user);
+        }
+    }
+
     @Transactional
     public void updateRequest(String userId, Long id, RequestDto requestDto) {
         Request requestToUpdate = getRequestByRequestId(id).get();
         List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
+        if (!isRequestTypeValid(requestDto.getType())) {
+            throw new BadRequestException("Invalid request type.");
+        }
         if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
@@ -127,20 +151,19 @@ public class RequestService {
                 .filter(r -> r.getType().equals(request.getType()))
                 .filter(Predicate.not(req -> req.getId().equals(request.getId())))
                 .collect(Collectors.toList());
-
-//                getAllRequestsByType(request.getType()).stream()
-//                .filter(Predicate.not(req -> req.getId().equals(request.getId())))
-//                .collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteRequest(Long requestId) {
-        if (!requestRepository.existsById(requestId)) throw new BadRequestException("Request with this id does not exists.");
+        if (!requestRepository.existsById(requestId)) {
+            throw new BadRequestException("Request with this id does not exists.");
+        }
         requestRepository.deleteById(requestId);
     }
 
     public List<Request> getAllRequestsByType(RequestType requestType) {
-        if (requestRepository.findAllByType(requestType).isEmpty()) throw new BadRequestException("Could not find any requests by this type.");
+        if (requestRepository.findAllByType(requestType).isEmpty())
+            throw new BadRequestException("Could not find any requests by this type.");
         return requestRepository.findAllByType(requestType);
     }
 
