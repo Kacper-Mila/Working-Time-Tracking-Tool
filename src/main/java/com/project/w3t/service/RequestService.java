@@ -26,6 +26,7 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
 
+    @Autowired
     public RequestService(RequestRepository requestRepository, UserRepository userRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
@@ -146,12 +147,16 @@ public class RequestService {
     }
 
     public List<Request> getRequestsByUserId(String userId) {
-//        TODO implement!
-        return null;
+        if (!userRepository.existsByUserId(userId)) {
+            throw new BadRequestException("User with this id does not exist.");
+        }
+        return requestRepository.getRequestsByUserUserId(userId);
     }
 
     public List<Request> getEmployeesRequestsByManagerId(String managerId) {
-//        TODO implement!
-        return null;
+        if (!userRepository.existsByManagerId(managerId)) {
+            throw new BadRequestException("Manager with this id does not exist.");
+        }
+        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId);
     }
 }

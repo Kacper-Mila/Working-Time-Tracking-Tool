@@ -6,6 +6,7 @@ import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
+import com.project.w3t.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,8 @@ public class RequestServiceTest {
 
     @Mock
     private RequestRepository requestRepository;
+    @Mock
+    private UserRepository userRepository;
     private RequestService requestService;
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
