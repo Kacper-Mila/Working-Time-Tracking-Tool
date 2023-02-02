@@ -31,7 +31,7 @@ public class User {
     private String managerId;
     private String teamId;
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Request> requestList;
 
     public User() {
