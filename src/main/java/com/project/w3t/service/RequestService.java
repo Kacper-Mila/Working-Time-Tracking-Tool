@@ -114,20 +114,18 @@ public class RequestService {
 
     @Transactional
     public void deleteRequest(Long requestId) {
-        if (!requestRepository.existsById(requestId)) {
-            throw new BadRequestException("Request with this id does not exists.");
-        }
+        if (!requestRepository.existsById(requestId)) throw new BadRequestException("Request with this id does not exists.");
         requestRepository.deleteById(requestId);
     }
 
     public List<Request> getAllRequestsByType(RequestType requestType) {
+        if (requestRepository.findAllByType(requestType).isEmpty()) throw new BadRequestException("Could not find any requests by this type.");
         return requestRepository.findAllByType(requestType);
     }
 
 
     public Optional<Request> getRequestByRequestId(Long id) {
         if (!requestRepository.existsById(id)) throw new BadRequestException("Request with this id does not exists.");
-
         return requestRepository.findById(id);
     }
 
