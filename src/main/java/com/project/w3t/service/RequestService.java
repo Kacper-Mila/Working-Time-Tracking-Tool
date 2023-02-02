@@ -26,23 +26,32 @@ public class RequestService {
     }
 
     public List<Request> getAllRequests() {
-        List<Request> tmpRequestList = requestRepository.findAll();
-
-        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
-        return tmpRequestList;
+        if (requestRepository.findAll().isEmpty()) {
+            throw new BadRequestException("Could not find any requests.");
+        }
+        return requestRepository.findAll();
     }
 
     public void addRequest(Request request) {
-        if (!isRequestValid(request)) {
+        if (!isOwnerIdValid(request.getOwnerId())) {
+            throw new BadRequestException("Onwer's id is missing");
+        }
+
+        if (!isRequestTypeValid(request.getType())) {
+            throw new BadRequestException("Invalid request type.");
+        }
+
+        if (!isRequestDateRangeValid(request)) {
             throw new BadRequestException("Invalid date range.");
         }
+
         if (!isCommentLengthValid(request.getComment())) {
-            throw new BadRequestException("Comment is too long.");
+            throw new BadRequestException("Comment is not valid.");
         }
         requestRepository.save(request);
     }
 
-    private boolean isRequestValid(Request request) {
+    private boolean isRequestDateRangeValid(Request request) {
         List<Request> userRequestsFilteredByType = requestRepository.findAllByType(request.getType());
         return (isDateRangeValid(request) && isDateRangeAvailable(userRequestsFilteredByType, request.getRequestDateRange()));
     }
@@ -68,11 +77,23 @@ public class RequestService {
         return comment != null && comment.length() <= COMMENT_MAX_LENGTH;
     }
 
+    private boolean isOwnerIdValid(String ownerId) {
+        return ownerId != null && !ownerId.isEmpty();
+    }
+
+    private boolean isRequestTypeValid(RequestType requestType) {
+        return requestType != null;
+    }
+
     @Transactional
     public void updateRequest(Long id, RequestDto requestDto) {
         Request requestToUpdate = getRequestByRequestId(id).get();
         List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
+
+        if (!isRequestTypeValid(requestDto.getType())) {
+            throw new BadRequestException("Invalid request type.");
+        }
 
         if (!isDateRangeAvailable(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
@@ -95,7 +116,7 @@ public class RequestService {
         requestRepository.save(requestToUpdate);
     }
 
-//    TODO implement update only when NonNull and not empty string ""
+    //    TODO implement update only when NonNull and not empty string ""
     private void updateRequestParameters(RequestDto requestDto, Request requestToUpdate) {
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
@@ -104,7 +125,6 @@ public class RequestService {
         requestToUpdate.setRegistrationDate(LocalDate.now());
         requestToUpdate.setStatus(RequestStatus.PENDING);
     }
-
 
     private List<Request> getRequestsToCheckDateRange(Request request) {
         return getAllRequestsByType(request.getType()).stream()
