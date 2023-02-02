@@ -41,7 +41,8 @@ public class RequestService {
 
     public void addRequest(Request request) {
         Optional<String> userId = Optional.ofNullable(request.getOwnerId());
-        if (userId.isEmpty() || userId.get().equals("")) throw new BadRequestException("Unable to process request - request data is invalid.");
+        if (userId.isEmpty() || userId.get().equals(""))
+            throw new BadRequestException("Unable to process request - request data is invalid.");
         if (!isRequestValid(request, userId.get())) {
             throw new BadRequestException("Invalid date range.");
         }
@@ -84,12 +85,12 @@ public class RequestService {
     }
 
     @Transactional
-    public void updateRequest(Long id, RequestDto requestDto) {
+    public void updateRequest(String userId, Long id, RequestDto requestDto) {
         Request requestToUpdate = getRequestByRequestId(id).get();
         List<LocalDate> dateRange = RequestDateRange.getDateRange(requestDto.getStartDate(), requestDto.getEndDate());
         String comment = requestDto.getComment();
 
-        if (!isDateRangeAvailable(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
+        if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
 
@@ -103,14 +104,14 @@ public class RequestService {
             throw new BadRequestException("Invalid date range.");
         }
 
-        if (!isDateRangeAvailable(getRequestsToCheckDateRange(requestToUpdate), dateRange)) {
+        if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
 
         requestRepository.save(requestToUpdate);
     }
 
-//    TODO implement update only when NonNull and not empty string ""
+    //    TODO implement update only when NonNull and not empty string ""
     private void updateRequestParameters(RequestDto requestDto, Request requestToUpdate) {
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
@@ -121,10 +122,15 @@ public class RequestService {
     }
 
 
-    private List<Request> getRequestsToCheckDateRange(Request request) {
-        return getAllRequestsByType(request.getType()).stream()
+    private List<Request> getRequestsToCheckDateRange(String userId, Request request) {
+        return getRequestsByUserId(userId).stream()
+                .filter(r -> r.getType().equals(request.getType()))
                 .filter(Predicate.not(req -> req.getId().equals(request.getId())))
                 .collect(Collectors.toList());
+
+//                getAllRequestsByType(request.getType()).stream()
+//                .filter(Predicate.not(req -> req.getId().equals(request.getId())))
+//                .collect(Collectors.toList());
     }
 
     @Transactional
