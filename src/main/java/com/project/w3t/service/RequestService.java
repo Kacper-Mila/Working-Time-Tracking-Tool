@@ -34,7 +34,7 @@ public class RequestService {
     public List<Request> getAllRequests() {
         List<Request> tmpRequestList = requestRepository.findAll();
 
-//        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
+        if (tmpRequestList.isEmpty()) throw new BadRequestException("Could not find any requests.");
         return tmpRequestList;
     }
 
