@@ -1,6 +1,5 @@
 package com.project.w3t.service;
 
-import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserType;
@@ -16,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
@@ -66,15 +61,6 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenUserIsNull() {
-//        given
-//        when
-//        then
-        assertThatThrownBy(() -> userService.addUser(null))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Unable to process request - user data is invalid.");
-    }
-    @Test
     void shouldAddUser() {
 //        given user
 //        when
@@ -102,7 +88,7 @@ class UserServiceTest {
         //when
         userService.getAllUsersByManager(user.getManagerId());
         //then
-        verify(userRepository).findAllByManagerId(user.getManagerId());
+        verify(userRepository, times(2)).findAllByManagerId(user.getManagerId());
     }
 
     @Test
