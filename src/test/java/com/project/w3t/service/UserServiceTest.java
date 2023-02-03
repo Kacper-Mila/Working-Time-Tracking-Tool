@@ -1,7 +1,10 @@
 package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
+import com.project.w3t.exceptions.NotFound404.NotFoundException;
+import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.user.User;
+import com.project.w3t.model.user.UserDto;
 import com.project.w3t.model.user.UserType;
 import com.project.w3t.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,12 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +39,15 @@ class UserServiceTest {
             10,
             UserType.EMPLOYEE,
             "MANAGER1234",
-            "UNKNOWN");
+            "UNKNOWN",
+            null);
+
+    private final UserDto userDto = new UserDto(
+            UserType.MANAGER,
+            "MANAGER4321",
+            "NONE");
+
+    private final String userId = user.getUserId();
 
     @BeforeEach
     void setUp() {
@@ -42,13 +55,21 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException() {
-//        given
-//        when
-//        then
-        assertThatThrownBy(() -> userService.addUser(null))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Unable to process request - user data is invalid.");
+    void shouldReturnAllUsers() {
+        //given
+        List<User> allUsers = new ArrayList<>(Arrays.asList(user));
+        when(userRepository.findAll()).thenReturn(allUsers);
+        //when
+        userService.getAllUsers();
+        //then
+        verify(userRepository, times(2)).findAll();
+    }
+
+    @Test
+    void shouldThrowWhenUsersListIsEmpty() {
+        assertThatThrownBy(() -> userService.getAllUsers())
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Unable to process request - users list does not exist.");
     }
 
     @Test
@@ -58,6 +79,94 @@ class UserServiceTest {
         userService.addUser(user);
 //        then
         verify(userRepository).save(user);
+    }
+
+    @Test
+    void shouldThrowWhenEmailAlreadyExists() {
+        when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
+        assertThatThrownBy(() -> userService.addUser(user))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Unable to process request - email address is invalid.");
+    }
+
+    @Test
+    void shouldThrowWhenUserIdAlreadyExists() {
+        when(userRepository.existsByUserId(user.getUserId())).thenReturn(true);
+        assertThatThrownBy(() -> userService.addUser(user))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Unable to process request - user Id is invalid.");
+    }
+
+    @Test
+    void shouldUpdateUser() {
+        //given
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+
+        //when
+        userService.updateUser(userId, userDto);
+        //then
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void shouldThrowWhenUserTypeIsNullForUpdatingUser() {
+        //given
+        UserDto userDtoWithNullUserType = new UserDto(null, "MANAGER4321", "NONE");
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+        //when //then
+        assertThatThrownBy(() -> userService.updateUser(userId, userDtoWithNullUserType))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Invalid user type.");
+    }
+
+    @Test
+    void shouldThrowWhenManagerIdIsNullForUpdatingUser() {
+        //given
+        UserDto userDtoWithNullManagerId = new UserDto(UserType.EMPLOYEE, null, "NONE");
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+        //when //then
+        assertThatThrownBy(() -> userService.updateUser(userId, userDtoWithNullManagerId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Manager id is missing");
+    }
+
+    @Test
+    void shouldThrowWhenManagerIdIsEmptyForUpdatingUser() {
+        //given
+        UserDto userDtoWithEmptyManagerId = new UserDto(UserType.EMPLOYEE, "", "NONE");
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+        //when //then
+        assertThatThrownBy(() -> userService.updateUser(userId, userDtoWithEmptyManagerId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Manager id is missing");
+    }
+
+    @Test
+    void shouldThrowWhenTeamIdIsNullForUpdatingUser() {
+        //given
+        UserDto userDtoWithNullTeamId = new UserDto(UserType.EMPLOYEE, "MANAGER4321", null);
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+        //when //then
+        assertThatThrownBy(() -> userService.updateUser(userId, userDtoWithNullTeamId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Team id is missing");
+    }
+
+    @Test
+    void shouldThrowWhenTeamIdIsEmptyForUpdatingUser() {
+        //given
+        UserDto userDtoWithEmptyTeamId = new UserDto(UserType.EMPLOYEE, "MANAGER4321", "");
+        when(userRepository.existsByUserId(userId)).thenReturn(true);
+        when(userRepository.findByUserId(userId)).thenReturn(user);
+        //when //then
+        assertThatThrownBy(() -> userService.updateUser(userId, userDtoWithEmptyTeamId))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Team id is missing");
     }
 
     @Test
@@ -71,13 +180,36 @@ class UserServiceTest {
     }
 
     @Test
+    void shouldThrowWhenUserIdIsNotExistForDeletingUser() {
+        //given
+        when(userRepository.existsByUserId(user.getUserId())).thenReturn(false);
+        //when //then
+        assertThatThrownBy(() -> userService.deleteUser(userId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Unable to process request - user does not exist.");
+    }
+
+    @Test
     void shouldReturnAllUsersByManagerId() {
         //given
-        when(userRepository.existsByManagerId(user.getManagerId())).thenReturn(true);
+        List<User> tempList = new ArrayList<>();
+        tempList.add(user);
+        when(userRepository.findAllByManagerId(user.getManagerId())).thenReturn(tempList);
         //when
         userService.getAllUsersByManager(user.getManagerId());
         //then
-        verify(userRepository).findAllByManagerId(user.getManagerId());
+        verify(userRepository, times(2)).findAllByManagerId(user.getManagerId());
+    }
+
+    @Test
+    void shouldThrowWhenUsersListForManagerIsEmpty() {
+        //given
+        List<User> tempList = new ArrayList<>();
+        when(userRepository.findAllByManagerId(user.getManagerId())).thenReturn(tempList);
+        //when //then
+        assertThatThrownBy(() -> userService.getAllUsersByManager(user.getManagerId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Unable to process request - users list does not exist.");
     }
 
     @Test
@@ -88,5 +220,15 @@ class UserServiceTest {
         userService.getUserByUserId(user.getUserId());
         //then
         verify(userRepository).findByUserId(user.getUserId());
+    }
+
+    @Test
+    void shouldThrowWhenUserIdIsNotExistForGettingUserByUserId() {
+        //given
+        when(userRepository.existsByUserId(user.getUserId())).thenReturn(false);
+        //when //then
+        assertThatThrownBy(() -> userService.getUserByUserId(userId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Unable to process request - user does not exist.");
     }
 }

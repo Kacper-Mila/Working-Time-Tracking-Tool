@@ -30,15 +30,10 @@ class UserControllerTest {
             10,
             UserType.EMPLOYEE,
             "MANAGER1234",
-            "UNKNOWN");
+            "UNKNOWN",
+            null);
 
     private final UserDto userDto = new UserDto(
-            1L,
-            "mailon@gmail.com",
-            "USER4321",
-            "Janek",
-            "Kochanek",
-            15,
             UserType.MANAGER,
             "MANAGER4321",
             "NONE");
@@ -62,8 +57,8 @@ class UserControllerTest {
 
     @Test
     public void shouldUpdateExistingUser() {
-        userController.updateUser(userDto.getUserId(), userDto);
-        verify(userService).updateUser(userDto.getUserId(), userDto);
+        userController.updateUser(user.getUserId(), userDto);
+        verify(userService).updateUser(user.getUserId(), userDto);
     }
 
     @Test

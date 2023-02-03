@@ -1,5 +1,6 @@
 package com.project.w3t.model.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ public class RequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private RequestType type;
+    @NotNull
     private String comment;
 
     public RequestDto(LocalDate startDate, LocalDate endDate, RequestType type, String comment) {
