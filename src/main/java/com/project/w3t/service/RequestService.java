@@ -124,13 +124,14 @@ public class RequestService {
 
         updateRequestParameters(requestDto, requestToUpdate);
 
-        if (!isDateRangeValid(requestToUpdate)) {
-            throw new BadRequestException("Invalid date range.");
-        }
+//        if (!isDateRangeValid(requestToUpdate)) {
+//            throw new BadRequestException("Invalid date range.");
+//        }
 
         if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
+        reduceUserAvailableHolidays(requestToUpdate);
 
         requestRepository.save(requestToUpdate);
     }
@@ -156,33 +157,33 @@ public class RequestService {
     @Transactional
     public void deleteRequest(Long requestId) {
         if (!requestRepository.existsById(requestId)) {
-            throw new BadRequestException("Request with this id does not exists.");
+            throw new NotFoundException("Request with this id does not exists.");
         }
         requestRepository.deleteById(requestId);
     }
 
     public List<Request> getAllRequestsByType(RequestType requestType) {
         if (requestRepository.findAllByType(requestType).isEmpty())
-            throw new BadRequestException("Could not find any requests by this type.");
+            throw new NotFoundException("Could not find any requests by this type.");
         return requestRepository.findAllByType(requestType);
     }
 
 
     public Optional<Request> getRequestByRequestId(Long id) {
-        if (!requestRepository.existsById(id)) throw new BadRequestException("Request with this id does not exists.");
+        if (!requestRepository.existsById(id)) throw new NotFoundException("Request with this id does not exists.");
         return requestRepository.findById(id);
     }
 
     public List<Request> getRequestsByUserId(String userId) {
         if (!userRepository.existsByUserId(userId)) {
-            throw new BadRequestException("User with this id does not exist.");
+            throw new NotFoundException("User with this id does not exist.");
         }
         return requestRepository.getRequestsByUserUserId(userId);
     }
 
     public List<Request> getEmployeesRequestsByManagerId(String managerId) {
         if (!userRepository.existsByManagerId(managerId)) {
-            throw new BadRequestException("Manager with this id does not exist.");
+            throw new NotFoundException("Manager with this id does not exist.");
         }
         return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId);
     }
