@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "12045112-a782-4837-970e-8ac86b50a9d9",
-		"name": "w3t backend test schema",
+		"name": "w3t backend schema.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24872497"
 	},
@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ownerId\": \"123\",\r\n    \"type\": \"1\",\r\n    \"comment\": \"comment\",\r\n    \"startDate\": \"2022-01-10\",\r\n    \"endDate\": \"2022-01-11\"\r\n}",
+							"raw": "{\r\n    \"ownerId\": \"user1id\",\r\n    \"type\": \"REMOTE\",\r\n    \"comment\": \"\",\r\n    \"registrationDate\": \"2023-02-01\",\r\n    \"startDate\": \"2023-02-02\",\r\n    \"endDate\": \"2023-02-11\",\r\n    \"approvalDate\": \"2023-02-01\",\r\n    \"status\": \"PENDING\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,12 +89,68 @@
 					"response": []
 				},
 				{
+					"name": "Get requests by userId.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/requests/userId?userId=user1id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"requests",
+								"userId"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "user1id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get employees requests by managerId.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/requests/managerId?managerId=manager1id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"requests",
+								"managerId"
+							],
+							"query": [
+								{
+									"key": "managerId",
+									"value": "manager1id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get all requests by type.",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/requests/type?requestType=overtime",
+							"raw": "http://localhost:8080/api/v1/requests/type?requestType=REMOTE",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -109,7 +165,7 @@
 							"query": [
 								{
 									"key": "requestType",
-									"value": "overtime"
+									"value": "REMOTE"
 								}
 							]
 						}
@@ -117,13 +173,13 @@
 					"response": []
 				},
 				{
-					"name": "Update request by id.",
+					"name": "Update request.",
 					"request": {
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ownerId\": \"123\",\r\n    \"type\": \"2\",\r\n    \"comment\": \"JOBLA\",\r\n    \"startDate\": \"2022-01-21\",\r\n    \"endDate\": \"2022-01-23\"\r\n}",
+							"raw": "\r\n    {\r\n    \"type\": \"REMOTE\",\r\n    \"comment\": \"comment\",\r\n    \"startDate\": \"2023-02-12\",\r\n    \"endDate\": \"2023-02-13\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -131,7 +187,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/requests/update?requestId=1",
+							"raw": "http://localhost:8080/api/v1/requests/update?userId=user1id&requestId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,6 +201,10 @@
 							],
 							"query": [
 								{
+									"key": "userId",
+									"value": "user1id"
+								},
+								{
 									"key": "requestId",
 									"value": "1"
 								}
@@ -154,7 +214,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete request by id.",
+					"name": "Delete request.",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -168,7 +228,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/requests/delete?requestId=1",
+							"raw": "http://localhost:8080/api/v1/requests/delete?requestId=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -183,7 +243,7 @@
 							"query": [
 								{
 									"key": "requestId",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -202,7 +262,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"id\": 1,\r\n        \"email\": \"tempy_email@email.com\",\r\n        \"userId\": \"Klemok\",\r\n        \"firstName\": \"Klemens\",\r\n        \"lastName\": \"Konkolek\",\r\n        \"holidays\": null,\r\n        \"userType\": null,\r\n        \"managerId\": null,\r\n        \"teamId\": null\r\n    }",
+							"raw": "{\r\n    \"email\": \"user4@gmail.com\",\r\n    \"userId\": \"user4id\",\r\n    \"firstName\": \"Stannis\",\r\n    \"lastName\": \"Baratheon\",\r\n    \"holidays\": 10,\r\n    \"userType\": \"EMPLOYEE\",\r\n    \"managerId\": \"manager1id\",\r\n    \"teamId\": \"team2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,12 +307,12 @@
 					"response": []
 				},
 				{
-					"name": "Get request by userId.",
+					"name": "Get user by userId.",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/users/userid?userId=Klemok",
+							"raw": "http://localhost:8080/api/v1/users/userid?userId=user4id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -267,7 +327,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "Klemok"
+									"value": "user4id"
 								}
 							]
 						}
@@ -275,13 +335,41 @@
 					"response": []
 				},
 				{
-					"name": "Delete request by id. Copy",
+					"name": "Get user by managerId.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/manager?managerId=manager1id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"manager"
+							],
+							"query": [
+								{
+									"key": "managerId",
+									"value": "manager1id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user.",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ownerId\": \"123\",\r\n    \"type\": \"2\",\r\n    \"comment\": \"comment\",\r\n    \"startDate\": \"2022-01-20\",\r\n    \"endDate\": \"2022-01-23\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -289,7 +377,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/users/delete?userId=Klemok",
+							"raw": "http://localhost:8080/api/v1/users/delete?userId=user4id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -304,7 +392,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "Klemok"
+									"value": "user4id"
 								}
 							]
 						}
