@@ -45,6 +45,9 @@ class UserControllerAdviceTest {
     void setUp(){
         userservice = new UserService(userRepository);
     }
+
+//    TODO fix dem tests my friend!
+
     @Test
     void getAllUsersShouldThrowNotFoundException() throws Exception {
         String exceptionParam = "not_found";

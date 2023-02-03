@@ -132,7 +132,7 @@ public class RequestService {
             throw new BadRequestException("Invalid date range.");
         }
         reduceUserAvailableHolidays(requestToUpdate);
-
+        reduceUserAvailableHolidays(requestToUpdate);
         requestRepository.save(requestToUpdate);
     }
 

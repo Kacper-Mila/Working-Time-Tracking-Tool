@@ -34,6 +34,8 @@ class RequestControllerAdviceTest {
     @Autowired
     private ObjectMapper mapper;
 
+//    TODO fix dem tests my friend!
+
     @Test
     void getAllRequestsThrowsException() throws Exception {
         String exceptionParam = "bad_request";

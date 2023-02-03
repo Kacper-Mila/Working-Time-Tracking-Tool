@@ -46,6 +46,7 @@ class UserServiceTest {
 
     private final String userId = user.getUserId();
 
+//    TODO check if we need beforeAll?
     @BeforeEach
     void setUp() {
         userService = new UserService(userRepository);
@@ -71,13 +72,13 @@ class UserServiceTest {
 
     @Test
     void shouldAddUser() {
-//        given user
-//        when
+//        given/when
         userService.addUser(user);
 //        then
         verify(userRepository).save(user);
     }
 
+//    TODO check convention to be more descriptive
     @Test
     void shouldThrowBadRequestExceptionWhenEmailAlreadyExistsForAddingUser() {
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
@@ -99,7 +100,6 @@ class UserServiceTest {
         //given
         when(userRepository.existsByUserId(userId)).thenReturn(true);
         when(userRepository.findByUserId(userId)).thenReturn(user);
-
         //when
         userService.updateUser(userId, userDto);
         //then
