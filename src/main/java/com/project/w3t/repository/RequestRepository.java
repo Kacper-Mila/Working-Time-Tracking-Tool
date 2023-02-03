@@ -14,6 +14,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByType(RequestType requestType);
     List<Request> findAllByOwnerId(String ownerId);
 
+//    TODO do with DSL
     @Query("SELECT r FROM Request r WHERE r.user.managerId = :managerId AND r.status = 'PENDING'")
     List<Request> getEmployeesRequestsByManagerIdQuery(
             @Param("managerId") String managerId);
