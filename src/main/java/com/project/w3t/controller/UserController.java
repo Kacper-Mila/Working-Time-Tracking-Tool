@@ -43,7 +43,7 @@ public class UserController {
         return userService.getAllUsersByManager(managerId);
     }
 
-    @GetMapping("/userid")
+    @GetMapping("/userId")
     @ResponseBody
     public User getUserByUserId(@RequestParam String userId){
         return userService.getUserByUserId(userId);
