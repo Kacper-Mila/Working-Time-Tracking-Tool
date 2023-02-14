@@ -6,6 +6,7 @@ import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
+import groovy.json.JsonOutput;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,8 @@ class RequestControllerAdviceTest {
     @Autowired
     private ObjectMapper mapper;
 
-    RequestService requestService;
+//    TODO fix dem tests my friend!
+
     @Test
     void getAllRequestsThrowsException() throws Exception {
         String exceptionParam = "bad_request";
@@ -55,7 +57,7 @@ class RequestControllerAdviceTest {
                         "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor",
                 LocalDate.now(), LocalDate.of(2023, 3, 3),
                 LocalDate.of(2023, 3, 10), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
 
         mvc.perform(post("http://localhost:8080/api/v1/requests", exceptionParam)
                         .content(mapper.writeValueAsString(request).getBytes(StandardCharsets.UTF_8))
@@ -74,7 +76,7 @@ class RequestControllerAdviceTest {
                 "comment",
                 LocalDate.now(), LocalDate.of(2023, 3, 10),
                 LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),
-                RequestStatus.PENDING);
+                RequestStatus.PENDING, null);
 
         mvc.perform(post("http://localhost:8080/api/v1/requests", exceptionParam)
                         .content(toJson(request))
