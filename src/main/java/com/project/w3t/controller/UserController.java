@@ -1,10 +1,6 @@
 package com.project.w3t.controller;
 
-import com.project.w3t.exceptions.InvalidEmailException;
-import com.project.w3t.exceptions.InvalidUserIdException;
-import com.project.w3t.exceptions.UserNotFoundException;
 import com.project.w3t.model.user.User;
-import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +34,7 @@ public class UserController {
 //    }
 //
     @DeleteMapping("/delete")
-    public void deleteUser(@RequestParam String userId) throws UserNotFoundException {
+    public void deleteUser(@RequestParam String userId){
         userService.deleteUser(userId);
     }
 
