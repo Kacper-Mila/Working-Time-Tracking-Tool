@@ -7,6 +7,7 @@ import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
+import com.project.w3t.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,12 @@ import java.util.stream.Collectors;
 public class RequestService {
     private final static int COMMENT_MAX_LENGTH = 250;
     private final RequestRepository requestRepository;
+    private final UserRepository userRepository;
 
-    public RequestService(RequestRepository requestRepository) {
+    public RequestService(RequestRepository requestRepository,
+                          UserRepository userRepository) {
         this.requestRepository = requestRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Request> getAllRequests() {

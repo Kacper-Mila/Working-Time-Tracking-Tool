@@ -1,5 +1,8 @@
 package com.project.w3t.controller;
 
+import com.project.w3t.exceptions.InvalidEmailException;
+import com.project.w3t.exceptions.InvalidUserIdException;
+import com.project.w3t.exceptions.UserNotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
@@ -28,14 +31,14 @@ public class UserController {
     public void addUser(@RequestBody User user){
         userService.addUser(user);
     }
-
-    @PatchMapping("/update")
-    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
-        userService.updateUser(userId, userDto);
-    }
-
+//
+//    @PatchMapping("/update")
+//    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
+//        userService.updateUser(userId, userDto);
+//    }
+//
     @DeleteMapping("/delete")
-    public void deleteUser(@RequestParam String userId) {
+    public void deleteUser(@RequestParam String userId) throws UserNotFoundException {
         userService.deleteUser(userId);
     }
 

@@ -6,8 +6,7 @@ import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.repository.RequestRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.project.w3t.repository.UserRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,9 +21,19 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RequestServiceTest {
+    @TestConfiguration
+    static class RequestServiceImplTestContextConfiguration{
+        @Autowired
+        private RequestRepository requestRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Mock
-    private RequestRepository requestRepository;
+        @Bean
+        public RequestService requestService(){
+            return new RequestService(requestRepository, userRepository);
+        }
+    }
+
     private RequestService requestService;
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),

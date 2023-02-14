@@ -54,6 +54,7 @@ public class UserService {
         userRepository.deleteByUserId(userId);
     }
 
+
     public List<User> getAllUsersByManager(String managerId) {
         List<User> tempList = userRepository.findAllByManagerId(managerId);
 //        TODO proper exception and status code
