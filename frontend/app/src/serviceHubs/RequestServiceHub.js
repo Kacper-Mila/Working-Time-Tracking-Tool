@@ -14,7 +14,7 @@ const getAllRequests = async () => {
     return api.get('').then(r => r.data)
 }
 
-const addRequest = async ({requestJson}) => {
+const addRequest = async (requestJson) => {
     return api.post('', requestJson, postConf)
 }
 
@@ -22,23 +22,23 @@ const updateRequest = async ({userId, requestId, requestJson}) => {
     return api.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, postConf)
 }
 
-const deleteRequest = async ({requestId}) => {
+const deleteRequest = async (requestId) => {
     return api.delete(`/delete?requestId=${requestId}`)
 }
 
-const getAllRequestsByType = async ({requestType}) => {
+const getAllRequestsByType = async (requestType) => {
     return api.get(`/type?requestType=${requestType}`).then(r => r.data)
 }
 
-const getRequestById = async ({requestId}) => {
+const getRequestById = async (requestId) => {
     return api.get(`/id?requestId=${requestId}`).then(r => r.data)
 }
 
-const getRequestsByUserId = async ({userId}) => {
+const getRequestsByUserId = async (userId) => {
     return api.get(`/userId?userId=${userId}`).then(r => r.data)
 }
 
-const getEmployeesRequestsByManagerId = async ({managerId}) => {
+const getEmployeesRequestsByManagerId = async (managerId) => {
     return api.get(`/managerId?managerId=${managerId}`)
 }
 
