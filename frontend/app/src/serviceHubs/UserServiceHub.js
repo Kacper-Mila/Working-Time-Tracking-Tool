@@ -26,8 +26,8 @@ const getAllUsersByManager = async ({managerId}) => {
     return api.get(`/manager?managerId=${managerId}`).then(r => r.data)
 }
 
-const getUserByUserId = async ({userId}) => {
-    return api.get(`/userId?userId=${userId}`).then(r => r.data)
+const getUserByUserId = async () => {
+    return api.get(`/userId?userId=user4id`).then(r => r.data)
 }
 
 const UserService = {

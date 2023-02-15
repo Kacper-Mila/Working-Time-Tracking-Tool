@@ -34,20 +34,17 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 20px;
 }
 
+.user-details{
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
 
 .user-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-}
-
-.user-details {
-    display: grid;
-    list-style-type: none;
-    align-items: center;
 }
 
 .user-detail {
@@ -56,6 +53,7 @@
 
 .user-name {
     font-weight: bold;
+    text-align: center;
 }
 
 .hide-details {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import UserComponentService from "../services/userComponentService";
 import UserDetails from "./UserDetails";
 import image from "../images/image.jfif"
+import UserServiceHub from "../serviceHubs/UserServiceHub";
 
 function User() {
     const [userDetails, setUserDetails] = useState([]);
@@ -18,7 +18,7 @@ function User() {
     }, []);
 
     const prepareUserDetails = async () => {
-        let data = await UserComponentService.getUserById();
+        let data = await UserServiceHub.getUserByUserId();
         let result = [];
         result.push(data);
         setUserDetails(result);
