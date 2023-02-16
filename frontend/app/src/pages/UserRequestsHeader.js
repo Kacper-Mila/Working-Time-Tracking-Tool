@@ -6,19 +6,11 @@ export default function UserRequestsHeader() {
     return (
         <div className="header">
             <Link to="/add-request">
-                <RequestTypeButton color={'green'}
-                                   text={'Add New Request'}
-                />
+            <RequestTypeButton text={'Add New Request'}/>
             </Link>
-            <RequestTypeButton color={'blue'}
-                               text={'Holiday RequestsPage'}
-            />
-            <RequestTypeButton color={'red'}
-                               text={'Overtime RequestsPage'}
-            />
-            <RequestTypeButton color={'yellow'}
-                               text={'Home Office RequestsPage'}
-            />
+            <RequestTypeButton text={'Holiday Requests'}/>
+            <RequestTypeButton text={'Overtime Requests'}/>
+            <RequestTypeButton text={'Home Office Requests'}/>
         </div>
     )
 }

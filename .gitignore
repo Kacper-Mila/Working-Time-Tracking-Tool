@@ -193,7 +193,7 @@ HELP.md
 node_modules
 
 *.sublime*
-
+.idea
 psd
 thumb
 sketch

@@ -54,6 +54,8 @@ export default function UserRequests () {
                          requestType = {request.type}
                          requestStartDate = {request.startDate}
                          requestEndDate = {request.endDate}
+                         requestRegistrationDate ={request.registrationDate}
+                         requestComment = {request.comment}
                          // onEdit={RequestService.updateRequest(request.id)}
                          onDelete={deleteRequest}
                          ownerId = {request.ownerId}

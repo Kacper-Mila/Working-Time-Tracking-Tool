@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import UserService from "../serviceHubs/UserServiceHub";
 
-export default function LoginPageForm(){
+export default function LoginPageForm() {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
@@ -17,12 +17,12 @@ export default function LoginPageForm(){
     }
 
     const submitUser = () => {
-        if (userId !== '' && password !== ''){
+        if (userId !== '' && password !== '') {
             logIn(userId);
         }
     }
 
-    return(
+    return (
         <section className="vh-100">
             <div className="container py-5 h-100">
                 <div className="row d-flex align-items-center justify-content-center h-100">
@@ -37,7 +37,7 @@ export default function LoginPageForm(){
                                        className="form-control form-control-lg"
                                        required
                                        onChange={
-                                        e => setUserId(e.target.value)
+                                           e => setUserId(e.target.value)
                                        }
                                        value={userId}
                                 />
@@ -50,22 +50,18 @@ export default function LoginPageForm(){
                                        className="form-control form-control-lg"
                                        required
                                        onChange={
-                                        e => setPassword(e.target.value)
+                                           e => setPassword(e.target.value)
                                        }
                                        value={password}
                                 />
                                 <label className="form-label" htmlFor="form1Example23">Password</label>
                             </div>
-
-                            <div className="d-flex justify-content-around align-items-center mb-4">
-
-                            </div>
-
-
+                            <div className="d-flex justify-content-around align-items-center mb-4"></div>
                             <button type="button"
                                     className="btn btn-primary btn-lg btn-block"
                                     onClick={submitUser}
-                            >Sign in</button>
+                            >Sign in
+                            </button>
 
                             <div className="divider d-flex align-items-center justify-content-center my-4">
                                 <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>
@@ -75,7 +71,6 @@ export default function LoginPageForm(){
                                href=""
                                role="button">
                                 <i className="fab fa-twitter me-2"></i>Continue with Google</a>
-
                         </form>
                     </div>
                 </div>

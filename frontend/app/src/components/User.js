@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import UserDetails from "./UserDetails";
-import image from "../images/image.jfif"
+import image from "../images/xd.gif"
 import UserService from "../serviceHubs/UserServiceHub";
 import {useNavigate} from "react-router-dom";
 
@@ -42,7 +42,7 @@ function User() {
         <div className="user-details-container">
             <div className="user-details-container-wrapper">
                 <div className="user-details-inner-container">
-                    <h3 className="title"> w3t </h3>
+                    <div className='logo-span'> WTTT </div>
                     <div className="details">
                         <img className="user-image" src={image} alt="user-img"/>
                         {userDetails.map(user => {

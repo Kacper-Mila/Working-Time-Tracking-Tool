@@ -1,21 +1,17 @@
 import PropTypes from "prop-types";
+import '../user_requests/request.css';
 
-export default function RequestTypeButton ({color, text}) {
+export default function RequestTypeButton ({text}) {
     return (
         <button
-            style={{backgroundColor: color}}
-            className={'btn m-2'}>
+            style={{backgroundColor:"#DBDFFE"}}
+            className='btn mr-4 request-button'>
             {text}
         </button>
     );
 }
 
-RequestTypeButton.defaultProps = {
-    color: 'blue'
-}
-
 RequestTypeButton.propTypes = {
     text: PropTypes.string,
-    color: PropTypes.string,
     onClick: PropTypes.func
 }
