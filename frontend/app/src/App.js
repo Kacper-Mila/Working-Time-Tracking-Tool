@@ -8,7 +8,7 @@ export default function App() {
     return (
         <div className="App">
                 <Routes>
-                    <Route exact path="/" element={<MainPage/>}/>
+                    <Route exact path="*" element={<MainPage/>}/>
                     <Route exact path="/login" element={<LoginPage/>}/>
                 </Routes>
         </div>
@@ -27,7 +27,7 @@ export default function App() {
 //                 <div className='col-lg-9 col-md-9 col-sm-12 border' id='pages'>
 //                     <Routes>
 //                         <Route path='/' element={<Calendar/>}></Route>
-//                         <Route path='/requests' element={<Requests/>}></Route>
+//                         <Route path='/requests' element={<RequestsPage/>}></Route>
 //                     </Routes>
 //                 </div>
 //             </div>

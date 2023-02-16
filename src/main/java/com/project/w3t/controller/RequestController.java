@@ -37,8 +37,9 @@ public class RequestController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteRequest(@RequestParam Long requestId) {
-        requestService.deleteRequest(requestId);
+    public void deleteRequest(@RequestParam String requestId) {
+        Long requestIdLong = Long.parseLong(requestId);
+        requestService.deleteRequest(requestIdLong);
     }
 
 //    not needed

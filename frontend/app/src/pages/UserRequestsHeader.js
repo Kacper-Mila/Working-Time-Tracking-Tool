@@ -8,13 +8,13 @@ export default function UserRequestsHeader() {
                                text={'Add New Request'}
             />
             <RequestTypeButton color={'blue'}
-                               text={'Holiday Requests'}
+                               text={'Holiday RequestsPage'}
             />
             <RequestTypeButton color={'red'}
-                               text={'Overtime Requests'}
+                               text={'Overtime RequestsPage'}
             />
             <RequestTypeButton color={'yellow'}
-                               text={'Home Office Requests'}
+                               text={'Home Office RequestsPage'}
             />
         </div>
     )

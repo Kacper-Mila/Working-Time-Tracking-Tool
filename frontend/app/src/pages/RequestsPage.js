@@ -1,11 +1,12 @@
 import UserRequestsHeader from "./UserRequestsHeader";
+import UserRequests from "../components/user_requests/UserRequests";
 
-export default function Requests(){
+export default function RequestsPage(){
 
     return(
         <div>
             <UserRequestsHeader />
-            <h1>requests</h1>
+            <UserRequests />
         </div>
     );
 }
