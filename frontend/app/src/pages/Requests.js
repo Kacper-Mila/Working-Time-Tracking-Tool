@@ -1,6 +1,11 @@
+import UserRequestsHeader from "./UserRequestsHeader";
+
 export default function Requests(){
 
     return(
-        <h1>Requests</h1>
+        <div>
+            <UserRequestsHeader />
+            <h1>requests</h1>
+        </div>
     );
 }
