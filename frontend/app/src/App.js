@@ -2,7 +2,6 @@ import './App.css';
 import {Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
-import {Route, Routes} from "react-router-dom";
 
 export default function App() {
 
