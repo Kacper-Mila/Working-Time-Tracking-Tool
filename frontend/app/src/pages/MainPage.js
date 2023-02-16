@@ -2,7 +2,7 @@ import User from "../components/User";
 import {Route, Routes} from "react-router-dom";
 import AppNavbar from "../components/navbar/AppNavbar";
 import Calendar from "../components/Calendar";
-import Requests from "./Requests";
+import RequestsPage from "./RequestsPage";
 
 export default function MainPage() {
     return (
@@ -17,7 +17,7 @@ export default function MainPage() {
                         <div className='' id='pages'>
                             <Routes>
                                 <Route path='/' element={<Calendar/>}></Route>
-                                <Route path='/requests' element={<Requests/>}></Route>
+                                <Route path='/requests' element={<RequestsPage/>}></Route>
                             </Routes>
                         </div>
                     </div>
