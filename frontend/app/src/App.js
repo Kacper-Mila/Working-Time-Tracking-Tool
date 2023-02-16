@@ -8,8 +8,8 @@ export default function App() {
     return (
         <div className="App">
                 <Routes>
-                    <Route exact path="/" element={<MainPage/>}/>
                     <Route exact path="/login" element={<LoginPage/>}/>
+                    <Route exact path="*" element={<MainPage/>}/>
                 </Routes>
         </div>
     );

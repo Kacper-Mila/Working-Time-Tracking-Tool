@@ -7,18 +7,19 @@ import Requests from "./Requests";
 export default function MainPage() {
     return (
         <div>
-            <AppNavbar/>
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col-lg-3 col-md-3 col-sm-12 border' id='user-left'>
+                    <div className='' id='user-left'>
                         <User/>
                     </div>
-
-                    <div className='col-lg-9 col-md-9 col-sm-12 border' id='pages'>
-                        <Routes>
-                            <Route path='/' element={<Calendar/>}></Route>
-                            <Route path='/requests' element={<Requests/>}></Route>
-                        </Routes>
+                    <div className="col">
+                        <AppNavbar/>
+                        <div className='' id='pages'>
+                            <Routes>
+                                <Route path='/' element={<Calendar/>}></Route>
+                                <Route path='/requests' element={<Requests/>}></Route>
+                            </Routes>
+                        </div>
                     </div>
                 </div>
             </div>
