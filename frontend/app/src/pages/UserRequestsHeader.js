@@ -4,16 +4,16 @@ import './UserRequestsHeader.css';
 export default function UserRequestsHeader() {
     return (
         <div className="header">
-            <RequestTypeButton color={'green'}
+            <RequestTypeButton color={'rgb(22 163 74)'}
                                text={'Add New Request'}
             />
-            <RequestTypeButton color={'blue'}
+            <RequestTypeButton color={'rgb(8 145 178)'}
                                text={'Holiday Requests'}
             />
-            <RequestTypeButton color={'red'}
+            <RequestTypeButton color={'rgb(244 63 94)'}
                                text={'Overtime Requests'}
             />
-            <RequestTypeButton color={'yellow'}
+            <RequestTypeButton color={'rgb(250 204 21)'}
                                text={'Home Office Requests'}
             />
         </div>
