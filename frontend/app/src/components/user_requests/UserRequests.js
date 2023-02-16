@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import RequestService from "../../serviceHubs/RequestServiceHub";
 import Request from "./Request";
+import AddRequest from "./AddRequest";
 
 export default function UserRequests () {
     const [requests, setRequests] = useState([]);
@@ -26,6 +27,25 @@ export default function UserRequests () {
         await prepareUserRequests();
     }
 
+    // const addRequest = async (request) => {
+    //
+    //     setRequests([...requests, request]);
+    // }
+
+    const addRequest = async (request) => {
+        const res = await fetch('http://localhost:8080/api/v1/requests', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        })
+
+        const data = await res.json()
+
+        setRequests([...requests, data])
+    }
+
     return (
         <>
             {requests.map((request) =>(
@@ -36,6 +56,7 @@ export default function UserRequests () {
                          requestEndDate = {request.endDate}
                          // onEdit={RequestService.updateRequest(request.id)}
                          onDelete={deleteRequest}
+                         ownerId = {request.ownerId}
                 />
             ))}
         </>

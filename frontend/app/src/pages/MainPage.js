@@ -3,6 +3,7 @@ import AppNavbar from "../components/navbar/AppNavbar";
 import {Route, Routes} from "react-router-dom";
 import RequestsPage from "./RequestsPage";
 import Calendar from "./Calendar";
+import AddRequest from "../components/user_requests/AddRequest";
 
 export default function MainPage() {
     return (
@@ -18,6 +19,7 @@ export default function MainPage() {
                     <Routes>
                         <Route path='/' element={<Calendar/>}></Route>
                         <Route path='/requests' element={<RequestsPage/>}></Route>
+                        <Route path='/add-request' element={<AddRequest />}></Route>
                     </Routes>
                 </div>
             </div>
