@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import UserDetails from "./UserDetails";
-import image from "../images/image.jfif"
+import image from "../images/xd.gif"
 import UserService from "../serviceHubs/UserServiceHub";
 import {useNavigate} from "react-router-dom";
 
