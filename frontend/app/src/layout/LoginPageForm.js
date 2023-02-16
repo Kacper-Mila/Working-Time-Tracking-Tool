@@ -58,19 +58,19 @@ export default function LoginPageForm() {
                             </div>
                             <div className="d-flex justify-content-around align-items-center mb-4"></div>
                             <button type="button"
-                                    className="btn btn-primary btn-lg btn-block"
+                                    className="sign-in-button btn mr-4 btn-secondary btn-lg btn-block"
                                     onClick={submitUser}
                             >Sign in
                             </button>
 
-                            <div className="divider d-flex align-items-center justify-content-center my-4">
-                                <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>
-                            </div>
+                            {/*<div className="divider d-flex align-items-center justify-content-center my-4">*/}
+                            {/*    <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>*/}
+                            {/*</div>*/}
 
-                            <a className="btn btn-primary btn-lg btn-block"
-                               href=""
-                               role="button">
-                                <i className="fab fa-twitter me-2"></i>Continue with Google</a>
+                            {/*<a className="btn btn-primary btn-lg btn-block"*/}
+                            {/*   href=""*/}
+                            {/*   role="button">*/}
+                            {/*    <i className="google-button fab fa-twitter me-2"></i>Continue with Google</a>*/}
                         </form>
                     </div>
                 </div>

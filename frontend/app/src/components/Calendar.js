@@ -14,7 +14,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
-
+        document.body.style.overflow = "hidden";
         // load using remote HTTP endpoint.
         this.loadEvents();
     }
