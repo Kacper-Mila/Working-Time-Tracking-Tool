@@ -43,7 +43,8 @@ function User() {
         <div className="user-details-container">
             <div className="user-details-container-wrapper">
                 <div className="user-details-inner-container">
-                    <img src={logo} alt="logo" className='logo'/>
+                    {/*<img src={logo} alt="logo" className='logo'/>*/}
+                    <div className='logo-span'> WTTT </div>
                     <div className="details">
                         <img className="user-image" src={image} alt="user-img"/>
                         {userDetails.map(user => {
