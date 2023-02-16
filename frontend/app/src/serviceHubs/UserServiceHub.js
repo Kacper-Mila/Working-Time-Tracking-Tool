@@ -14,19 +14,19 @@ const getAllUsers = async () => {
     return api.get('').then(r => r.data)
 }
 
-const addUser = async ({userJson}) => {
+const addUser = async (userJson) => {
     return api.post('', userJson, postConf)
 }
 
-const deleteUser = async ({userId}) => {
+const deleteUser = async (userId) => {
     return api.delete(`/delete?userId=${userId}`)
 }
 
-const getAllUsersByManager = async ({managerId}) => {
+const getAllUsersByManager = async (managerId) => {
     return api.get(`/manager?managerId=${managerId}`).then(r => r.data)
 }
 
-const getUserByUserId = async ({userId}) => {
+const getUserByUserId = async (userId) => {
     return api.get(`/userId?userId=${userId}`).then(r => r.data)
 }
 

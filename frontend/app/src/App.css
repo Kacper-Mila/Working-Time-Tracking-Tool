@@ -1,0 +1,92 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.App {
+    min-height: 100vh;
+    background: #A0AEDD;
+}
+
+.user-details-container {
+    display: flex;
+    justify-content: center;
+    width: 250px;
+    height: 700px;
+}
+
+.user-details-container-wrapper {
+    border-radius: 30px;
+    background: #DBDFFE;
+    width: 200vw;
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 95vh;
+}
+
+.user-details-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+    height: 95vh;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.user-details{
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+
+.user-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.user-detail {
+    text-align: center;
+}
+
+.user-name {
+    font-weight: bold;
+    text-align: center;
+}
+
+.hide-details {
+    visibility: hidden;
+}
+
+.sign-out-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: auto;
+}
+
+.sign-out-items {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    cursor: pointer;
+    width: 90px;
+    height: 20px;
+}
+
+.sign-out-items:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.sign.out-icon {
+    width: 20px;
+    height: 20px;
+}
