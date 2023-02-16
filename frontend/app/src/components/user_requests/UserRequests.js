@@ -7,6 +7,7 @@ export default function UserRequests () {
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
+        document.body.style.overflow = "hidden";
         prepareUserRequests()
             .then(() => {
                 console.log("user requests loaded successfully")
@@ -19,7 +20,12 @@ export default function UserRequests () {
     const prepareUserRequests = async () => {
         let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
         setRequests(data);
-        console.log(requests);
+        console.log(data.hasOwnProperty('REMOTE'))
+    }
+
+    const prepareUserHolidayRequests = async () => {
+        let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
+        setRequests();
     }
 
     const deleteRequest = async (id) => {

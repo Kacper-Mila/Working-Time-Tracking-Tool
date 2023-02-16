@@ -5,7 +5,7 @@ export default function RequestTypeButton ({text}) {
     return (
         <button
             style={{backgroundColor:"#DBDFFE"}}
-            className='btn mr-4 request-button'>
+            className='req-button btn mr-4 btn-secondary text-dark'>
             {text}
         </button>
     );
