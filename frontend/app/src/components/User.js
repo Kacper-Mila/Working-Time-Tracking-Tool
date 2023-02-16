@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import UserDetails from "./UserDetails";
 import image from "../images/xd.gif"
+import logo from    '../images/working-time-tracking-tool-logo.png';
 import UserService from "../serviceHubs/UserServiceHub";
 import {useNavigate} from "react-router-dom";
 
@@ -42,7 +43,7 @@ function User() {
         <div className="user-details-container">
             <div className="user-details-container-wrapper">
                 <div className="user-details-inner-container">
-                    <h3 className="title"> w3t </h3>
+                    <img src={logo} alt="logo" className='logo'/>
                     <div className="details">
                         <img className="user-image" src={image} alt="user-img"/>
                         {userDetails.map(user => {
