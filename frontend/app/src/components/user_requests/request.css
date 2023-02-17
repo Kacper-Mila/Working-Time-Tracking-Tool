@@ -10,6 +10,7 @@
     margin-bottom: 2em;
     border-bottom: 1px black solid;
     padding: 1em;
+    background-color: whitesmoke;
 }
 .request>span{
     font-family: Bahnschrift;
@@ -23,9 +24,10 @@
     margin-left: 1em;
 }
 .request-button{
-    border: 1px solid #A0AEDD;
+    border: 1px solid #36454F;
+    background-color: whitesmoke;
  }
 .request-button:hover{
-    color: #A0AEDD;
+    /*color: #A0AEDD;*/
     font-size: 110%;
 }

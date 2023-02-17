@@ -21,7 +21,7 @@ function User() {
             console.error("error", err);
         });
 
-    }, []);
+    }, [userDetails]);
 
     const prepareUserDetails = async () => {
         let data = await UserService.getUserByUserId(localStorage.getItem("userId"));
