@@ -5,7 +5,7 @@ body{
 
 .App {
     min-height: 100vh;
-    background: #A0AEDD;
+    background: #36454F;
 }
 
 .user-details-container {
@@ -17,7 +17,7 @@ body{
 
 .user-details-container-wrapper {
     border-radius: 30px;
-    background: #DBDFFE;
+    background: whitesmoke;
     width: 200vw;
     margin-top: 20px;
     margin-left: 20px;
@@ -106,13 +106,13 @@ body{
 }
 
 .logo-span:hover{
-    color: black;
+    color: #36454F;
     text-decoration: none;
 }
 
 .logo-span{
    font-size: 5em;
-    color: black;
+    color: #36454F;
 }
 .logo-span::after{
     position: relative;
@@ -120,7 +120,7 @@ body{
     font-size: .2em;
     font-weight: bold;
     content: 'Working Time Tracking Tool';
-    background-color: #DBDFFE;
+    background-color: whitesmoke;
     top: -4.2em;
 }
 

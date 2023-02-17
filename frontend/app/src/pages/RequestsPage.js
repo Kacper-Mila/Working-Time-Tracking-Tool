@@ -7,7 +7,7 @@ export default function RequestsPage(){
     return(
         <div className='container wrapper'>
             <UserRequestsHeader />
-            <div className='container request-container' style={{backgroundColor:"#DBDFFE"}}>
+            <div className='container request-container' style={{backgroundColor:"whitesmoke"}}>
                 <div className='p-5'>
                     <UserRequests />
                 </div>

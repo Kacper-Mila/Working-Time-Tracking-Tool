@@ -4,11 +4,12 @@
     height: 100%;
     gap: 2rem;
     padding: 0 1rem;
+    color: #36454F;
 }
 .navbar{
     margin-top: 1em;
     margin-bottom: 1em;
     border-radius: 20px;
     font-weight: bold;
-    background-color: #DBDFFE;
+    background-color: whitesmoke;
 }
