@@ -29,7 +29,7 @@ export default function LoginPageForm() {
                     {/*<div className="col-md-8 col-lg-7 col-xl-6">*/}
                     {/*/!*Img here*!/*/}
                     {/*</div>*/}
-                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-light">
                         <form>
 
                             <div className="form-outline mb-4">

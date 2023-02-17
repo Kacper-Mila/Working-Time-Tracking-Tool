@@ -43,7 +43,7 @@ export default function AddRequest() {
     return (
         <form className='add-form' onSubmit={onSubmit}>
             <div className='form-controdel'>
-                <label>Request Type: </label>
+                <label className='text-light'>Request Type: </label>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
                     <option>-----------</option>
                     <option>HOLIDAY</option>
@@ -70,13 +70,21 @@ export default function AddRequest() {
 
             <div className='form-control'>
                 <label>Comment: </label>
-                <input type='text'
+                <input type='textarea'
                        value={comment}
                        onChange={(e) => setComment(e.target.value)}
                 />
+                {/*<textarea className='form-control'*/}
+                {/*    cols="30"*/}
+                {/*          rows="3"*/}
+                {/*          placeholder='comment'*/}
+                {/*          value={comment}*/}
+                {/*          onChange={(e) => setComment(e.target.value)}>*/}
+                {/*</textarea>*/}
             </div>
-
-            <input type='submit' value='Add Request' className='btn btn-block'/>
+            <div className='d-flex align-items-center justify-content-center mt-2'>
+                <button type='submit' className='btn bg-light'>Add request</button>
+            </div>
         </form>
     )
 }
