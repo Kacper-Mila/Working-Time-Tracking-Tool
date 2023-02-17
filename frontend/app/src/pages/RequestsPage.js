@@ -1,6 +1,6 @@
-import UserRequestsHeader from "./UserRequestsHeader";
-import UserRequests from "../components/user_requests/UserRequests";
-import '../components/user_requests/request.css'
+import UserRequestsHeader from "../layouts/userRequestHeader/UserRequestsHeader";
+import UserRequests from "../layouts/userRequests/UserRequests";
+import '../components/userRequests/request.css'
 
 export default function RequestsPage(){
 

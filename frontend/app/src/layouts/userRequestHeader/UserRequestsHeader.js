@@ -1,4 +1,4 @@
-import RequestTypeButton from "../components/buttons/RequestTypeButton";
+import RequestTypeButton from "../../components/buttons/RequestTypeButton";
 import './UserRequestsHeader.css';
 import {Link} from "react-router-dom";
 

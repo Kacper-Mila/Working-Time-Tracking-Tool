@@ -1,11 +1,15 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import UserService from "../serviceHubs/UserServiceHub";
+import UserService from "../../serviceHubs/UserServiceHub";
 
 export default function LoginPageForm() {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+    })
 
     const logIn = (userId) => {
         UserService.getUserByUserId(userId).then(() => {
@@ -31,7 +35,6 @@ export default function LoginPageForm() {
                     {/*</div>*/}
                     <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-light">
                         <form>
-
                             <div className="form-outline mb-4">
                                 <input type="text"
                                        className="form-control form-control-lg"
@@ -43,8 +46,6 @@ export default function LoginPageForm() {
                                 />
                                 <label className="form-label" htmlFor="form1Example13">ID</label>
                             </div>
-
-
                             <div className="form-outline mb-4">
                                 <input type="password"
                                        className="form-control form-control-lg"

@@ -1,9 +1,9 @@
-import User from "../components/User";
+import User from "../layouts/user/User";
 import {Route, Routes} from "react-router-dom";
-import AppNavbar from "../components/navbar/AppNavbar";
-import Calendar from "../components/Calendar";
+import AppNavbar from "../layouts/navbar/AppNavbar";
+import Calendar from "../layouts/calendar/Calendar";
 import RequestsPage from "./RequestsPage";
-import AddRequest from "../components/user_requests/AddRequest";
+import AddRequest from "../components/userRequests/AddRequest";
 
 
 

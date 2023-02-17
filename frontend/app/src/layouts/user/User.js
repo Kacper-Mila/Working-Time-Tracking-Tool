@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import UserDetails from "./UserDetails";
-import image from "../images/xd.gif"
-import UserService from "../serviceHubs/UserServiceHub";
+import UserDetails from "../../components/userDetails/UserDetails";
+import image from "../../images/xd.gif"
+import UserService from "../../serviceHubs/UserServiceHub";
 import {Link, useNavigate} from "react-router-dom";
 
 function User() {
@@ -21,7 +21,7 @@ function User() {
             console.error("error", err);
         });
 
-    }, [userDetails]);
+    }, []);
 
     const prepareUserDetails = async () => {
         let data = await UserService.getUserByUserId(localStorage.getItem("userId"));

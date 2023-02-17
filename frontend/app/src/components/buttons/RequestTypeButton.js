@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import '../user_requests/request.css';
+import '../userRequests/request.css';
 
 export default function RequestTypeButton ({text}) {
     return (

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {DayPilot, DayPilotMonth, DayPilotCalendar} from "@daypilot/daypilot-lite-react";
-import RequestService from "../serviceHubs/RequestServiceHub";
+import RequestService from "../../serviceHubs/RequestServiceHub";
 
 class Calendar extends Component {
 

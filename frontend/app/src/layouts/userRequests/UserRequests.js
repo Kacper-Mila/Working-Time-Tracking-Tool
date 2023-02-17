@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import RequestService from "../../serviceHubs/RequestServiceHub";
-import Request from "./Request";
-import AddRequest from "./AddRequest";
+import Request from "../../components/userRequests/Request";
+import AddRequest from "../../components/userRequests/AddRequest";
 
 export default function UserRequests () {
     const [requests, setRequests] = useState([]);

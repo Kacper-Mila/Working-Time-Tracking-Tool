@@ -14,6 +14,7 @@ const getAllRequests = async () => {
     return api.get('').then(r => r.data)
 }
 
+// TODO implement proper usage form
 // const addRequest = async (requestJson) => {
 //     return api.post('', requestJson, postConf)
 // }

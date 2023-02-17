@@ -1,3 +1,5 @@
+/*TODO to split into multiple CSS files for each component used*/
+
 body{
     margin: 0;
     padding: 0;
@@ -154,23 +156,23 @@ body{
     background-position: 0;
 }
 
-.sign-in-button::before {
-    content: '';
-    position: absolute;
-    top: 233px;
-    left: 15px;
-    height: 46px;
-    width: 15%;
-    border-radius: 10px;
-    background-image: linear-gradient(
-            90deg, #fff, transparent
-    );
-    transition: 1s ease-in-out;
-}
+/*.sign-in-button::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 233px;*/
+/*    left: 15px;*/
+/*    height: 46px;*/
+/*    width: 15%;*/
+/*    border-radius: 10px;*/
+/*    background-image: linear-gradient(*/
+/*            90deg, #fff, transparent*/
+/*    );*/
+/*    transition: 1s ease-in-out;*/
+/*}*/
 
-.sign-in-button:hover::before {
-    left: 82%;
-    background-image: linear-gradient(
-            90deg, transparent, #fff
-    );
-}
+/*.sign-in-button:hover::before {*/
+/*    left: 82%;*/
+/*    background-image: linear-gradient(*/
+/*            90deg, transparent, #fff*/
+/*    );*/
+/*}*/
