@@ -10,6 +10,10 @@ export default function AddRequest() {
     const [ownerId, setOwnerId] = useState(localStorage.getItem("userId"));
     const navigate = useNavigate();
 
+    const cancel = () => {
+        navigate('/requests')
+    }
+
     const onSubmit = async (e) => {
         e.preventDefault()
 
@@ -22,11 +26,9 @@ export default function AddRequest() {
             ownerId: ownerId,
             type: type,
             comment: comment,
-            registrationDate: "2023-02-17",
             startDate: startDate,
             endDate: endDate,
             approvalDate: "2023-05-01",
-            status: "PENDING"
         });
 
         navigate('/requests');
@@ -42,7 +44,7 @@ export default function AddRequest() {
 
     return (
         <form className='add-form' onSubmit={onSubmit}>
-            <div className='form-controdel'>
+            <div className='form-controller'>
                 <label className='text-light'>Request Type: </label>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
                     <option>-----------</option>
@@ -83,7 +85,8 @@ export default function AddRequest() {
                 {/*</textarea>*/}
             </div>
             <div className='d-flex align-items-center justify-content-center mt-2'>
-                <button type='submit' className='btn bg-light'>Add request</button>
+                <button type='submit' className='btn bg-light mx-2'>Add request</button>
+                <button value='cancel' className='btn btn-danger mx-2' onClick={cancel}>Cancel</button>
             </div>
         </form>
     )

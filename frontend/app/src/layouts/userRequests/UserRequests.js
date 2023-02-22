@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import RequestService from "../../serviceHubs/RequestServiceHub";
+import RequestService from "../../serviceHubs/request-service-hub";
 import Request from "../../components/userRequests/Request";
 import AddRequest from "../../components/userRequests/AddRequest";
 
@@ -20,9 +20,9 @@ export default function UserRequests () {
     const prepareUserRequests = async () => {
         let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
         setRequests(data);
-        console.log(data.hasOwnProperty('REMOTE'))
     }
 
+    // TODO
     const prepareUserHolidayRequests = async () => {
         let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
         setRequests();
@@ -38,6 +38,7 @@ export default function UserRequests () {
     //     setRequests([...requests, request]);
     // }
 
+    // TODO clean using addRequest routing from request-service-hub
     const addRequest = async (request) => {
         const res = await fetch('http://localhost:8080/api/v1/requests', {
             method: 'POST',

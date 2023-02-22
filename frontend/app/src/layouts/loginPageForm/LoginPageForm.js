@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import UserService from "../../serviceHubs/UserServiceHub";
+import UserService from "../../serviceHubs/user-service-hub";
 
 export default function LoginPageForm() {
     const navigate = useNavigate();
@@ -63,7 +63,6 @@ export default function LoginPageForm() {
                                     onClick={submitUser}
                             >Sign in
                             </button>
-
                             {/*<div className="divider d-flex align-items-center justify-content-center my-4">*/}
                             {/*    <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>*/}
                             {/*</div>*/}
