@@ -28,7 +28,6 @@ function User() {
         let result = [];
         result.push(data);
         setUserDetails(result);
-        console.log(data);
     }
 
     // const prepareAllUsers = async () => {

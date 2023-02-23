@@ -176,3 +176,48 @@ body{
 /*            90deg, transparent, #fff*/
 /*    );*/
 /*}*/
+
+
+
+.month_default_event {
+    overflow: hidden;
+    border-radius: 15px;
+}
+.month_default_event_inner {
+    background: #636363;
+    border-color: #777777;
+    /*color: white !important;*/
+    padding-left: 35px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.month_default_event_bar {
+    left: 0px;
+    width: 30px;
+}
+.month_default_event_bar_inner {
+    background-color: #36454F !important;
+    border-radius: 15px;
+    width: 30px;
+}
+
+.square-pattern {
+    background-color: #f9f9fd !important;
+    opacity: 0.8 !important;
+    background-image:  repeating-linear-gradient(45deg, #444cf7 25%, transparent 25%, transparent 75%, #444cf7 75%, #444cf7), repeating-linear-gradient(45deg, #444cf7 25%, #f9f9fd 25%, #f9f9fd 75%, #444cf7 75%, #444cf7) !important;
+    background-position: 0 0, 10px 10px !important;
+    background-size: 20px 20px !important;
+}
+
+.line-pattern {
+    background-color: #f9f9fd !important;
+    opacity: 0.8 !important;
+    background-image: linear-gradient(to right, #444cf7, #444cf7 4px, #f9f9fd 4px, #f9f9fd ) !important;
+    background-size: 8px 100% !important;
+}
+
+
+
+
+

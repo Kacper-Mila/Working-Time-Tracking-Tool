@@ -23,9 +23,28 @@ const incrementDate = (endDate) => {
     return addOneDay(date)
 }
 
-function addOneDay(date) {
+const addOneDay = (date) => {
     date.setDate(date.getDate() + 1);
     return date;
+}
+
+const requestStyles = (type) => {
+    switch (type.text) {
+        case "HOLIDAY":
+            return {}
+        break
+        case "OVERTIME":
+            return {}
+        break
+        case "REMOTE":
+            return {}
+        break
+    }
+}
+
+const requestColor = (stats) => {
+    if (stats) return {color: "green"}
+    else return {color: "yellow"}
 }
 
 class Calendar extends Component {
@@ -34,6 +53,16 @@ class Calendar extends Component {
         super(props);
         this.calendarRef = React.createRef();
         this.state = {
+            eventHeight: 25,
+            headerHeight: 25,
+            cellHeaderHeight: 25,
+            // TODO method that switches styles for requests (colors and patterns)
+            onBeforeEventRender: args => {
+                // args.data.borderColor = "darker";
+                if (args.data.text === "HOLIDAY") {
+                    args.data.barColor = DayPilot.ColorUtil.darker("#ffaaff", 1);
+                }
+            },
             locale: "en-us",
             viewType: "Month",
             showWeekend: true,
@@ -57,11 +86,11 @@ class Calendar extends Component {
                 deleteRequest(args.e.id())
                 args.control.message("Event deleted: " + args.e.text());
             },
-            // eventMoveHandling: "Update",
+            eventMoveHandling: "Disabled", //set Update to activate
             // onEventMoved: (args) => {
             //     args.control.message("Event moved: " + args.e.text());
             // },
-            // eventResizeHandling: "Update",
+            eventResizeHandling: "Disabled", //set Update to activate
             // onEventResized: (args) => {
             //     args.control.message("Event resized: " + args.e.text());
             // },
@@ -92,6 +121,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
+        document.body.style.overflow = "hidden";
         requestArrayBuilder()
             .then(d => {
                 this.setState({
