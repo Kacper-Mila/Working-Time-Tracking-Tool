@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import UserService from "../../serviceHubs/user-service-hub";
+import './loginPageForm.css';
 
 export default function LoginPageForm() {
     const navigate = useNavigate();
