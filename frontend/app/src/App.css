@@ -5,26 +5,35 @@ body{
 
 .App {
     min-height: 100vh;
-    background: #36454F;
+    background: #ffffff;
 }
+
+@media screen and (max-width: 1280px) {
+    .logo-span{
+        font-size: 4em;
+        color: #bf6602;
+    }
+}
+@media screen and (min-width: 1281px){
+    .logo-span{
+        font-size: 5em;
+        color: #bf6602;
+    }
+}
+
+    .logo-span::after{
+        position: relative;
+        display: block;
+        font-size: .2em;
+        font-weight: bold;
+        content: 'Working Time Tracking Tool';
+        background-color: #264143;
+        top: -4.2em;
+    }
 
 .logo-span:hover{
-    color: #36454F;
+    color: #bf6602;
     text-decoration: none;
-}
-
-.logo-span{
-    font-size: 5em;
-    color: #36454F;
-}
-.logo-span::after{
-    position: relative;
-    display: block;
-    font-size: .2em;
-    font-weight: bold;
-    content: 'Working Time Tracking Tool';
-    background-color: whitesmoke;
-    top: -4.2em;
 }
 
 .req-button {

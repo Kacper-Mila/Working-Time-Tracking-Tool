@@ -1,0 +1,32 @@
+.main-container{
+    background-color: #264143;
+    width: 85vw;
+    height: 100vh;
+}
+.page-container{
+    height: 100%;
+    background-color: #f2ebe9;
+}
+.wrapper{
+    margin: 1.5em 1em 0 .5em ;
+    border-radius: 50px;
+    overflow: hidden;
+    height: 95vh;
+ }
+
+@media screen and (max-width: 1280px) {
+    .wrapper{
+        margin: 1em 3.5em 0.5em 3.5em ;
+        border-radius: 50px;
+        overflow: hidden;
+        height: 95vh;
+    }
+}
+@media screen and (min-width: 1281px){
+    .wrapper{
+        margin: 1.5em 1em 0 .5em ;
+        border-radius: 50px;
+        overflow: hidden;
+        height: 95vh;
+    }
+}

@@ -1,8 +1,6 @@
 .request-button{
-    border: 1px solid #36454F;
-    background-color: whitesmoke;
+    background-color: #bf6602a3;
 }
 .request-button:hover{
-    /*color: #A0AEDD;*/
-    font-size: 110%;
+    background-color: #bf6602e6;
 }

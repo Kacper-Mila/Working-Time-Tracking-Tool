@@ -2,10 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
     overflow: hidden;
     height: 4em;
-    width: 65em;
-    background-color: whitesmoke;
-    border-radius: 30px 0 0 0;
+    background-color: #f2ebe9;
 }

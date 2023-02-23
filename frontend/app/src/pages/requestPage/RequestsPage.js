@@ -5,10 +5,10 @@ import './requestPage.css';
 export default function RequestsPage(){
 
     return(
-        <div className='container wrapper'>
+        <div>
             <UserRequestsHeader />
-            <div className='container request-container' style={{backgroundColor:"whitesmoke"}}>
-                <div className='p-5'>
+            <div className='request-container'>
+                <div>
                     <UserRequests />
                 </div>
             </div>
