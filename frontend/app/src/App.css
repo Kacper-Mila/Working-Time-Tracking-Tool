@@ -5,20 +5,23 @@ body{
 
 .App {
     min-height: 100vh;
-    background: #ffffff;
+    background-image: url("images/white-wall.jpg");
+    background-position: top;
 }
 
 @media screen and (max-width: 1280px) {
     .logo-span{
         font-size: 4em;
-        color: #bf6602;
     }
 }
 @media screen and (min-width: 1281px){
     .logo-span{
         font-size: 5em;
-        color: #bf6602;
     }
+}
+
+.logo-span{
+    color: #707076;
 }
 
     .logo-span::after{
@@ -27,7 +30,7 @@ body{
         font-size: .2em;
         font-weight: bold;
         content: 'Working Time Tracking Tool';
-        background-color: #264143;
+        text-shadow: 0px 0px 6px rgba(0,0,0,1);
         top: -4.2em;
     }
 
