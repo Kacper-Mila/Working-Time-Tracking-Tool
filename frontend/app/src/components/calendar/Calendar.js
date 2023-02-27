@@ -12,6 +12,7 @@ const requestArrayBuilder = async () => {
     return data.map(val => ({
         id: val.id,
         text: val.type,
+        status: val.status,
         start: val.startDate + "T00:00:00",
         end: incrementDate(val.endDate)
     }))
@@ -32,19 +33,25 @@ const requestStyles = (type) => {
     switch (type.text) {
         case "HOLIDAY":
             return {}
-        break
+            break
         case "OVERTIME":
             return {}
-        break
+            break
         case "REMOTE":
             return {}
-        break
+            break
     }
 }
 
-const requestColor = (stats) => {
-    if (stats) return {color: "green"}
-    else return {color: "yellow"}
+const requestColor = (status) => {
+    switch (status) {
+        case "PENDING":
+            return "yellow"
+        case "ACCEPTED":
+            return "green"
+        case "DECLINED":
+            return "red"
+    }
 }
 
 class Calendar extends Component {
@@ -58,10 +65,7 @@ class Calendar extends Component {
             cellHeaderHeight: 25,
             // TODO method that switches styles for requests (colors and patterns)
             onBeforeEventRender: args => {
-                // args.data.borderColor = "darker";
-                if (args.data.text === "HOLIDAY") {
-                    args.data.barColor = DayPilot.ColorUtil.darker("#ffaaff", 1);
-                }
+                // args.data.classList = "squarePattern";
             },
             locale: "en-us",
             viewType: "Month",

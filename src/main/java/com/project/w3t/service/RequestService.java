@@ -185,6 +185,9 @@ public class RequestService {
         if (!userRepository.existsByManagerId(managerId)) {
             throw new NotFoundException("Manager with this id does not exist.");
         }
-        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId);
+        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId)
+                .stream()
+                .filter(r -> r.getStatus().equals(RequestStatus.PENDING))
+                .collect(Collectors.toList());
     }
 }
