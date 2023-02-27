@@ -9,6 +9,8 @@ export default function AddRequest() {
     const [comment, setComment] = useState('');
     const [ownerId, setOwnerId] = useState(localStorage.getItem("userId"));
     const navigate = useNavigate();
+    let currentDate = new Date().toISOString().slice(0,10);
+
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -22,22 +24,12 @@ export default function AddRequest() {
             ownerId: ownerId,
             type: type,
             comment: comment,
-            registrationDate: "2023-02-17",
             startDate: startDate,
             endDate: endDate,
-            approvalDate: "2023-05-01",
-            status: "PENDING"
+            approvalDate: "2023-05-01"
         });
 
         navigate('/requests');
-
-        // props.onAdd({ownerId, type, startDate, endDate})
-
-        // RequestService.addRequest(JSON.stringify({ownerId: ownerId, type: type, comment: 'comment', registrationDate: startDate, startDate: startDate, endDate: endDate, approvalDate: endDate, status: "PENDING"}))
-        //     .then(r => r.data)
-        //     .then(r => {console.log("Request added successfully", r)}).catch((error) => {
-        //     console.log("Adding request failed!", error);
-        // });
     }
 
     return (
@@ -55,6 +47,7 @@ export default function AddRequest() {
             <div className='form-control'>
                 <label>Start Date: </label>
                 <input type='date'
+                       min={currentDate}
                        value={startDate}
                        onChange={(e) => setStartDate(e.target.value)}
                 />
@@ -63,6 +56,7 @@ export default function AddRequest() {
             <div className='form-control'>
                 <label>End Date: </label>
                 <input type='date'
+                       min={currentDate}
                        value={endDate}
                        onChange={(e) => setEndDate(e.target.value)}
                 />
