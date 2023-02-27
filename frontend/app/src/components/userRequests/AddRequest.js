@@ -1,6 +1,7 @@
 import {useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
+import './addRequest.css'
 
 export default function AddRequest() {
     const [type, setType] = useState('');
@@ -73,6 +74,7 @@ export default function AddRequest() {
             <div className='form-control'>
                 <label>Comment: </label>
                 <input type='textarea'
+                       className='text-area'
                        value={comment}
                        onChange={(e) => setComment(e.target.value)}
                 />
