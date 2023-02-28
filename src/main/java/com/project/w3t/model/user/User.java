@@ -23,11 +23,13 @@ public class User {
     private Long id;
     private String email;
     private String userId;
+    private String password;
     private String firstName;
     private String lastName;
     private Integer holidays;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+    private String role;
     private String managerId;
     private String teamId;
     @JsonIgnore

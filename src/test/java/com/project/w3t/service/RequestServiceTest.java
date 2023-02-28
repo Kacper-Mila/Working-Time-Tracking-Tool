@@ -37,7 +37,7 @@ public class RequestServiceTest {
     private RequestService requestService;
     private final String userId = "123";
     private final String managerId = "MANAGERID";
-    private final User user = new User(1L, "email@email.com", userId, null, null, 10, UserType.EMPLOYEE, managerId, "TEAMID", null);
+    private final User user = new User(1L, "email@email.com", userId, "password", null, null, 10, UserType.EMPLOYEE, "ROLE_EMPLOYEE", managerId, "TEAMID", null);
     private final Request request = new Request(1L, "123", RequestType.HOLIDAY,
             "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
             LocalDate.of(2023, 3, 3), LocalDate.of(2023, 3, 10),

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -12,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUserId(String userId);
     boolean existsByManagerId(String managerId);
     void deleteByUserId(String userId);
-    User findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
     User findByManagerId(String managerId);
     List<User> findAllByManagerId(String managerId);
 }
