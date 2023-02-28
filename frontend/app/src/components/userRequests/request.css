@@ -15,11 +15,18 @@
     justify-content: end;
 }
 .delete-button{
-    color: darkred;
+    color: red;
     height: 3em;
-    margin: 0 3em 0 0;
+    margin: 0 2em 0 0;
 }
-.delete-button:hover{
+
+.edit-button {
+    color: white;
+    height: 3em;
+    margin: 0 2em 0 0;
+}
+
+.delete-button:hover, .edit-button:hover{
     cursor: pointer;
 }
 
