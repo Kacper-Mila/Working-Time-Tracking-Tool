@@ -1,0 +1,23 @@
+@media screen and (max-width: 1280px) {
+    .user-details{
+        border-spacing: 0 1rem;
+    }
+    .calendar{
+        width: 76vw;
+    }
+}
+@media screen and (min-width: 1281px){
+    .user-details{
+        border-collapse: separate;
+        border-spacing: 0 1rem;
+    }
+}
+
+.user-name {
+    font-weight: bold;
+    text-align: center;
+}
+
+.user-detail {
+    text-align: center;
+}

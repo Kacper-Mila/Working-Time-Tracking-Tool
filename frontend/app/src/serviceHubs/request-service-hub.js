@@ -14,9 +14,10 @@ const getAllRequests = async () => {
     return api.get('').then(r => r.data)
 }
 
-const addRequest = async (requestJson) => {
-    return api.post('', requestJson, postConf)
-}
+// TODO implement proper usage form
+// const addRequest = async (requestJson) => {
+//     return api.post('', requestJson, postConf)
+// }
 
 const updateRequest = async ({userId, requestId, requestJson}) => {
     return api.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, postConf)
@@ -44,7 +45,7 @@ const getEmployeesRequestsByManagerId = async (managerId) => {
 
 const RequestService = {
     getAllRequests,
-    addRequest, // @RequestBody Request request
+    // addRequest, // @RequestBody Request request
     updateRequest, // /update @RequestParam String userId, @RequestParam Long requestId, @RequestBody RequestDto requestDto
     deleteRequest, // /delete @RequestParam Long requestId
     getAllRequestsByType, // /type @RequestParam RequestType requestType

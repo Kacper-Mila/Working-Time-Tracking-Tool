@@ -1,6 +1,7 @@
 import React from "react";
+import './userDetail.css';
 
-function UserDetails(props) {
+export default function UserDetails(props) {
 
     return (
         (props.userId) &&
@@ -53,15 +54,6 @@ function UserDetails(props) {
                 </td>
             </tr>
             </tbody>
-
-
-            {/*<tr className="user-detail"><em>user type: </em>{props.userType.toLowerCase()}</tr>*/}
-            {/*<p className="user-detail"><em>user id:</em> {props.userId}</p>*/}
-            {/*<p className="user-detail"><em>team id: </em>{props.teamId}</p>*/}
-            {/*<p className="user-detail"><em>manager id:</em> {props.managerId}</p>*/}
-            {/*<p className="user-detail"><em>holidays available: </em>{props.holidays}</p>*/}
         </table>
     )
 }
-
-export default UserDetails;
