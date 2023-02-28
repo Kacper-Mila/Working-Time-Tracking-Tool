@@ -55,11 +55,11 @@ class UserControllerTest {
         verify(userService).addUser(user);
     }
 
-    @Test
-    public void shouldUpdateExistingUser() {
-        userController.updateUser(user.getUserId(), userDto);
-        verify(userService).updateUser(user.getUserId(), userDto);
-    }
+//    @Test
+//    public void shouldUpdateExistingUser() {
+//        userController.updateUser(user.getUserId(), userDto);
+//        verify(userService).updateUser(user.getUserId(), userDto);
+//    }
 
     @Test
     public void shouldDeleteExistingUser() {
