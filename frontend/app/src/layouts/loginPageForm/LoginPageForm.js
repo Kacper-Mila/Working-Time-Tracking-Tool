@@ -1,11 +1,16 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import UserService from "../serviceHubs/UserServiceHub";
+import UserService from "../../serviceHubs/user-service-hub";
+import './loginPageForm.css';
 
 export default function LoginPageForm() {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+    })
 
     const logIn = (userId) => {
         UserService.getUserByUserId(userId).then(() => {
@@ -29,9 +34,8 @@ export default function LoginPageForm() {
                     {/*<div className="col-md-8 col-lg-7 col-xl-6">*/}
                     {/*/!*Img here*!/*/}
                     {/*</div>*/}
-                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-light">
                         <form>
-
                             <div className="form-outline mb-4">
                                 <input type="text"
                                        className="form-control form-control-lg"
@@ -43,8 +47,6 @@ export default function LoginPageForm() {
                                 />
                                 <label className="form-label" htmlFor="form1Example13">ID</label>
                             </div>
-
-
                             <div className="form-outline mb-4">
                                 <input type="password"
                                        className="form-control form-control-lg"
@@ -58,19 +60,18 @@ export default function LoginPageForm() {
                             </div>
                             <div className="d-flex justify-content-around align-items-center mb-4"></div>
                             <button type="button"
-                                    className="btn btn-primary btn-lg btn-block"
+                                    className="sign-in-button btn mr-4 btn-secondary btn-lg btn-block"
                                     onClick={submitUser}
                             >Sign in
                             </button>
+                            {/*<div className="divider d-flex align-items-center justify-content-center my-4">*/}
+                            {/*    <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>*/}
+                            {/*</div>*/}
 
-                            <div className="divider d-flex align-items-center justify-content-center my-4">
-                                <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>
-                            </div>
-
-                            <a className="btn btn-primary btn-lg btn-block"
-                               href=""
-                               role="button">
-                                <i className="fab fa-twitter me-2"></i>Continue with Google</a>
+                            {/*<a className="btn btn-primary btn-lg btn-block"*/}
+                            {/*   href=""*/}
+                            {/*   role="button">*/}
+                            {/*    <i className="google-button fab fa-twitter me-2"></i>Continue with Google</a>*/}
                         </form>
                     </div>
                 </div>

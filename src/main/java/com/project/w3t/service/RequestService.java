@@ -57,7 +57,9 @@ public class RequestService {
         Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
         if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
         request.setUser(userToSet.get());
-        reduceUserAvailableHolidays(request);
+        if (request.getType().equals(RequestType.HOLIDAY)) {
+            reduceUserAvailableHolidays(request.getUser(), request.getRequestDateRange().size());
+        }
         requestRepository.save(request);
     }
 
@@ -94,15 +96,17 @@ public class RequestService {
         return requestType != null;
     }
 
-    private void reduceUserAvailableHolidays(Request request) {
-        if (request.getType().equals(RequestType.HOLIDAY)) {
-            User user = request.getUser();
-            if (user.getHolidays() < request.getRequestDateRange().size()) {
-                throw new BadRequestException("User does not have enough available holidays");
-            }
-            user.setHolidays(user.getHolidays() - request.getRequestDateRange().size());
-            userRepository.save(user);
+    private void reduceUserAvailableHolidays(User user, int daysAmount) {
+        if (user.getHolidays() < daysAmount) {
+            throw new BadRequestException("User does not have enough available holidays");
         }
+        user.setHolidays(user.getHolidays() - daysAmount);
+        userRepository.save(user);
+    }
+
+    private void increaseUserAvailableHolidays(User user, int daysAmount) {
+        user.setHolidays(user.getHolidays() + daysAmount);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -122,17 +126,25 @@ public class RequestService {
             throw new BadRequestException("Comment is too long.");
         }
 
+        if (requestToUpdate.getType().equals(RequestType.HOLIDAY) && !requestDto.getType().equals(RequestType.HOLIDAY)) {
+            increaseUserAvailableHolidays(requestToUpdate.getUser(), requestToUpdate.getRequestDateRange().size());
+        } else if (requestToUpdate.getType().equals(RequestType.HOLIDAY) && requestDto.getType().equals(RequestType.HOLIDAY)) {
+            increaseUserAvailableHolidays(requestToUpdate.getUser(), requestToUpdate.getRequestDateRange().size());
+            reduceUserAvailableHolidays(requestToUpdate.getUser(), dateRange.size());
+        } else if (!requestToUpdate.getType().equals(RequestType.HOLIDAY) && requestDto.getType().equals(RequestType.HOLIDAY)) {
+            reduceUserAvailableHolidays(requestToUpdate.getUser(), dateRange.size());
+        }
+
         updateRequestParameters(requestDto, requestToUpdate);
 
-//        if (!isDateRangeValid(requestToUpdate)) {
-//            throw new BadRequestException("Invalid date range.");
-//        }
+        if (!isDateRangeValid(requestToUpdate)) {
+            throw new BadRequestException("Invalid date range.");
+        }
 
         if (!isDateRangeAvailable(getRequestsToCheckDateRange(userId, requestToUpdate), dateRange)) {
             throw new BadRequestException("Invalid date range.");
         }
-        reduceUserAvailableHolidays(requestToUpdate);
-        reduceUserAvailableHolidays(requestToUpdate);
+
         requestRepository.save(requestToUpdate);
     }
 
@@ -158,6 +170,10 @@ public class RequestService {
     public void deleteRequest(Long requestId) {
         if (!requestRepository.existsById(requestId)) {
             throw new NotFoundException("Request with this id does not exists.");
+        }
+        Request requestToDelete = requestRepository.findById(requestId).get();
+        if (requestToDelete.getType().equals(RequestType.HOLIDAY)) {
+            increaseUserAvailableHolidays(requestToDelete.getUser(), requestToDelete.getRequestDateRange().size());
         }
         requestRepository.deleteById(requestId);
     }
@@ -185,6 +201,9 @@ public class RequestService {
         if (!userRepository.existsByManagerId(managerId)) {
             throw new NotFoundException("Manager with this id does not exist.");
         }
-        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId);
+        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId)
+                .stream()
+                .filter(r -> r.getStatus().equals(RequestStatus.PENDING))
+                .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 import './App.css';
 import {Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import MainPage from "./pages/MainPage";
+import MainPage from "./pages/mainPage/MainPage";
 
 export default function App() {
 

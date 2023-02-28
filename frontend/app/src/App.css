@@ -5,114 +5,113 @@ body{
 
 .App {
     min-height: 100vh;
-    background: #A0AEDD;
-}
-
-.user-details-container {
-    display: flex;
-    justify-content: center;
-    width: 250px;
-    height: 700px;
-}
-
-.user-details-container-wrapper {
-    border-radius: 30px;
-    background: #DBDFFE;
-    width: 200vw;
-    margin-top: 20px;
-    margin-left: 20px;
-    height: 95vh;
-    overflow: hidden;
-}
-
-.user-details-inner-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 95vh;
-}
-
-.details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-image: url("images/white-wall.jpg");
+    background-position: center;
+    background-size: 100%;
 }
 
 @media screen and (max-width: 1280px) {
-    .user-image {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin-bottom: .5em;
-    }
-    .user-details{
-        border-spacing: 0 1rem;
-    }
-    .calendar{
-        width: 76vw;
+    .logo-span{
+        font-size: 4em;
     }
 }
 @media screen and (min-width: 1281px){
-    .user-image{
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-    }
-
-    .user-details{
-        border-collapse: separate;
-        border-spacing: 0 1rem;
+    .logo-span{
+        font-size: 5em;
     }
 }
 
-.user-detail {
-    text-align: center;
-}
-
-.user-name {
-    font-weight: bold;
-    text-align: center;
-}
-
-.hide-details {
-    visibility: hidden;
-}
-
-.sign-out-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin: auto;
-}
-
-.sign-out-items {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    cursor: pointer;
-    width: 90px;
-    height: 20px;
-}
-
-.sign-out-items:hover {
-    cursor: pointer;
-    color: red;
-}
-
-.sign.out-icon {
-    width: 20px;
-    height: 20px;
-}
 .logo-span{
-   font-size: 5em;
+    color: #707076;
 }
-.logo-span::after{
-    position: relative;
-    display: block;
-    font-size: .2em;
+
+    .logo-span::after{
+        position: relative;
+        display: block;
+        font-size: .2em;
+        font-weight: bold;
+        content: 'Working Time Tracking Tool';
+        text-shadow: 0px 0px 6px rgba(0,0,0,1);
+        top: -4.2em;
+    }
+
+.logo-span:hover{
+    color: #bf6602;
+    text-decoration: none;
+}
+
+.req-button {
+    background-image: linear-gradient(
+        45deg,
+        hsla(169, 100%, 50%, 0.5),
+        hsla(289, 100%, 50%, 0.5) 100%
+);
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: .2s ease-in-out;
+}
+
+.req-button:hover {
+    background-position: 0;
+}
+
+/*.sign-in-button::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 233px;*/
+/*    left: 15px;*/
+/*    height: 46px;*/
+/*    width: 15%;*/
+/*    border-radius: 10px;*/
+/*    background-image: linear-gradient(*/
+/*            90deg, #fff, transparent*/
+/*    );*/
+/*    transition: 1s ease-in-out;*/
+/*}*/
+
+/*.sign-in-button:hover::before {*/
+/*    left: 82%;*/
+/*    background-image: linear-gradient(*/
+/*            90deg, transparent, #fff*/
+/*    );*/
+/*}*/
+
+
+
+.month_default_event {
+    overflow: hidden;
+    border-radius: 15px;
+}
+.month_default_event_inner {
+    background: #636363;
+    border-color: #777777;
+    /*color: white !important;*/
+    padding-left: 35px;
+    border-radius: 15px;
     font-weight: bold;
-    content: 'Working Time Tracking Tool';
-    background-color: #DBDFFE;
-    top: -4.2em;
+}
+
+.month_default_event_bar {
+    left: 0;
+    width: 30px;
+}
+.month_default_event_bar_inner {
+    background-color: #36454F !important;
+    border-radius: 15px;
+    width: 30px;
+}
+
+.square-pattern {
+    background-color: #f9f9fd !important;
+    opacity: 0.8 !important;
+    background-image:  repeating-linear-gradient(45deg, #444cf7 25%, transparent 25%, transparent 75%, #444cf7 75%, #444cf7), repeating-linear-gradient(45deg, #444cf7 25%, #f9f9fd 25%, #f9f9fd 75%, #444cf7 75%, #444cf7) !important;
+    background-position: 0 0, 10px 10px !important;
+    background-size: 20px 20px !important;
+}
+
+.line-pattern {
+    background-color: #f9f9fd !important;
+    opacity: 0.8 !important;
+    background-image: linear-gradient(to right, #444cf7, #444cf7 4px, #f9f9fd 4px, #f9f9fd ) !important;
+    background-size: 8px 100% !important;
 }
