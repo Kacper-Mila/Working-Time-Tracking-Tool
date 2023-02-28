@@ -1,21 +1,12 @@
 import {useState} from "react";
-import axios from 'axios';
-import {useNavigate} from "react-router-dom";
-import './addRequest.css'
+import axios from "axios";
 
-export default function AddRequest() {
+export default function EditRequest(props) {
     const [type, setType] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [comment, setComment] = useState('');
-    const [ownerId, setOwnerId] = useState(localStorage.getItem("userId"));
-    const navigate = useNavigate();
-    let currentDate = new Date().toISOString().slice(0,10);
-
-
-    const cancel = () => {
-        navigate('/requests')
-    }
+    let currentDate = new Date().toISOString().slice(0, 10);
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -25,31 +16,28 @@ export default function AddRequest() {
             return
         }
 
-        await axios.post('http://localhost:8080/api/v1/requests', {
-            ownerId: ownerId,
+        await axios.patch(`http://localhost:8080/api/v1/requests/update?userId=${props.ownerId}&requestId=${props.requestId}`, {
             type: type,
             comment: comment,
             startDate: startDate,
-            endDate: endDate,
-            approvalDate: "2023-05-01",
+            endDate: endDate
         });
 
-        navigate('/requests');
+        props.onEdit();
     }
 
     return (
-        <form className='add-form' onSubmit={onSubmit}>
-            <div className='form-controller'>
-                <label className='text-light'>Request Type: </label>
+        <form className='edit-form'>
+            <div>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
                     <option>-----------</option>
                     <option>HOLIDAY</option>
                     <option>OVERTIME</option>
                     <option>REMOTE</option>
                 </select>
-
             </div>
-            <div className='form-control'>
+
+            <div>
                 <label>Start Date: </label>
                 <input type='date'
                        min={currentDate}
@@ -58,7 +46,7 @@ export default function AddRequest() {
                 />
             </div>
 
-            <div className='form-control'>
+            <div>
                 <label>End Date: </label>
                 <input type='date'
                        min={currentDate}
@@ -67,24 +55,16 @@ export default function AddRequest() {
                 />
             </div>
 
-            <div className='form-control'>
+            <div>
                 <label>Comment: </label>
                 <input type='textarea'
-                       className='text-area'
                        value={comment}
                        onChange={(e) => setComment(e.target.value)}
                 />
-                {/*<textarea className='form-control'*/}
-                {/*    cols="30"*/}
-                {/*          rows="3"*/}
-                {/*          placeholder='comment'*/}
-                {/*          value={comment}*/}
-                {/*          onChange={(e) => setComment(e.target.value)}>*/}
-                {/*</textarea>*/}
             </div>
             <div className='d-flex align-items-center justify-content-center mt-2'>
-                <button type='submit' className='btn bg-light mx-2'>Add request</button>
-                <button value='cancel' className='btn btn-danger mx-2' onClick={cancel}>Cancel</button>
+                <button type='submit' className='btn bg-light mr-2' onClick={onSubmit}>Save</button>
+                <button type='submit' className='btn bg-light' onClick={props.onEdit}>Cancel</button>
             </div>
         </form>
     )
