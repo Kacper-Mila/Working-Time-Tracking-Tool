@@ -1,4 +1,3 @@
-// import 'bootstrap/dist/css/bootstrap.css'; // TODO this gives error here!
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
