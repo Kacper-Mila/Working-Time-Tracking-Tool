@@ -45,7 +45,7 @@ export default function LoginPageForm() {
                                        }
                                        value={userId}
                                 />
-                                <label className="form-label" htmlFor="form1Example13">ID</label>
+                                <label className="form-label" htmlFor="form1Example13">User ID</label>
                             </div>
                             <div className="form-outline mb-4">
                                 <input type="password"

@@ -19,6 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("/login")
+    public void loginUser(@RequestParam String userId, @RequestParam String password) {
+
+    }
+
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
