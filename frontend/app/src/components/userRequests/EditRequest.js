@@ -30,7 +30,7 @@ export default function EditRequest(props) {
         <form className='edit-form'>
             <div>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
-                    <option>-----------</option>
+                    <option>SELECT</option>
                     <option>HOLIDAY</option>
                     <option>OVERTIME</option>
                     <option>REMOTE</option>
