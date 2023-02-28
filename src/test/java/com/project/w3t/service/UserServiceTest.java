@@ -2,7 +2,6 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.exceptions.NotFound404.NotFoundException;
-import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.model.user.UserType;
@@ -13,11 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
@@ -49,6 +46,7 @@ class UserServiceTest {
 
     private final String userId = user.getUserId();
 
+//    TODO check if we need beforeAll?
     @BeforeEach
     void setUp() {
         userService = new UserService(userRepository);
@@ -66,7 +64,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUsersListIsEmpty() {
+    void shouldThrowNotFoundExceptionWhenUsersListIsEmpty() {
         assertThatThrownBy(() -> userService.getAllUsers())
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Unable to process request - users list does not exist.");
@@ -74,15 +72,15 @@ class UserServiceTest {
 
     @Test
     void shouldAddUser() {
-//        given user
-//        when
+//        given/when
         userService.addUser(user);
 //        then
         verify(userRepository).save(user);
     }
 
+//    TODO check convention to be more descriptive
     @Test
-    void shouldThrowWhenEmailAlreadyExists() {
+    void shouldThrowBadRequestExceptionWhenEmailAlreadyExistsForAddingUser() {
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
         assertThatThrownBy(() -> userService.addUser(user))
                 .isInstanceOf(BadRequestException.class)
@@ -90,7 +88,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUserIdAlreadyExists() {
+    void shouldThrowBadRequestExceptionWhenUserIdAlreadyExistsForAddingUser() {
         when(userRepository.existsByUserId(user.getUserId())).thenReturn(true);
         assertThatThrownBy(() -> userService.addUser(user))
                 .isInstanceOf(BadRequestException.class)
@@ -102,7 +100,6 @@ class UserServiceTest {
         //given
         when(userRepository.existsByUserId(userId)).thenReturn(true);
         when(userRepository.findByUserId(userId)).thenReturn(user);
-
         //when
         userService.updateUser(userId, userDto);
         //then
@@ -110,7 +107,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUserTypeIsNullForUpdatingUser() {
+    void shouldThrowBadRequestExceptionWhenUserTypeIsNullForUpdatingUser() {
         //given
         UserDto userDtoWithNullUserType = new UserDto(null, "MANAGER4321", "NONE");
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -122,7 +119,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenManagerIdIsNullForUpdatingUser() {
+    void shouldThrowBadRequestExceptionWhenManagerIdIsNullForUpdatingUser() {
         //given
         UserDto userDtoWithNullManagerId = new UserDto(UserType.EMPLOYEE, null, "NONE");
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -134,7 +131,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenManagerIdIsEmptyForUpdatingUser() {
+    void shouldThrowBadRequestExceptionWhenManagerIdIsEmptyForUpdatingUser() {
         //given
         UserDto userDtoWithEmptyManagerId = new UserDto(UserType.EMPLOYEE, "", "NONE");
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -146,7 +143,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenTeamIdIsNullForUpdatingUser() {
+    void shouldThrowBadRequestExceptionWhenTeamIdIsNullForUpdatingUser() {
         //given
         UserDto userDtoWithNullTeamId = new UserDto(UserType.EMPLOYEE, "MANAGER4321", null);
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -158,7 +155,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenTeamIdIsEmptyForUpdatingUser() {
+    void shouldThrowBadRequestExceptionWhenTeamIdIsEmptyForUpdatingUser() {
         //given
         UserDto userDtoWithEmptyTeamId = new UserDto(UserType.EMPLOYEE, "MANAGER4321", "");
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -180,7 +177,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUserIdIsNotExistForDeletingUser() {
+    void shouldThrowNotFoundExceptionWhenUserIdIsNotExistForDeletingUser() {
         //given
         when(userRepository.existsByUserId(user.getUserId())).thenReturn(false);
         //when //then
@@ -202,7 +199,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUsersListForManagerIsEmpty() {
+    void shouldThrowNotFoundExceptionWhenUsersListForManagerIsEmpty() {
         //given
         List<User> tempList = new ArrayList<>();
         when(userRepository.findAllByManagerId(user.getManagerId())).thenReturn(tempList);
@@ -223,7 +220,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUserIdIsNotExistForGettingUserByUserId() {
+    void shouldThrowNotFoundExceptionWhenUserIdIsNotExistForGettingUserByUserId() {
         //given
         when(userRepository.existsByUserId(user.getUserId())).thenReturn(false);
         //when //then

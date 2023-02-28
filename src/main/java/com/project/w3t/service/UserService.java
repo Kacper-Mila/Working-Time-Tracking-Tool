@@ -71,6 +71,7 @@ public class UserService {
         userRepository.deleteByUserId(userId);
     }
 
+
     public List<User> getAllUsersByManager(String managerId) {
 //        TODO proper exception and status code
         if (userRepository.findAllByManagerId(managerId).isEmpty()) {

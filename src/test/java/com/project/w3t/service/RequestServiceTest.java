@@ -1,6 +1,7 @@
 package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
+import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
 import com.project.w3t.model.request.RequestStatus;
@@ -65,7 +66,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestsListIsEmpty() {
+    void shouldThrowBadRequestExceptionWhenRequestsListIsEmpty() {
         assertThatThrownBy(() -> requestService.getAllRequests())
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Could not find any requests.");
@@ -86,7 +87,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenOwnerIdIsNullForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenOwnerIdIsNullForAddingRequest() {
         //given
         Request requestWithNullOwnerId = new Request(2L, null, RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
@@ -99,7 +100,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestTypeIsNullForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenRequestTypeIsNullForAddingRequest() {
         //given
         Request requestWithNullRequestType = new Request(2L, "123", null,
                 "comment", LocalDate.now(), LocalDate.of(2023, 3, 1),
@@ -112,7 +113,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenOwnerIdIsEmptyStringForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenOwnerIdIsEmptyStringForAddingRequest() {
         //given
         Request requestWithOwnerIdAsEmptyString = new Request(2L, "", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), null,
@@ -126,7 +127,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenStartDateIsNullForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenStartDateIsNullForAddingRequest() {
         //given
         Request requestWithNullStartDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), null,
@@ -139,7 +140,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenEndDateIsNullForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenEndDateIsNullForAddingRequest() {
         //given
         Request requestWithNullEndDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(),
@@ -152,7 +153,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenEndDateIsBeforeStartDateForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenEndDateIsBeforeStartDateForAddingRequest() {
         //given
         Request requestWithStartDateAfterEndDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 3, 10),
@@ -165,7 +166,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenDateRangeIsBeforeRegistrationDateForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenDateRangeIsBeforeRegistrationDateForAddingRequest() {
         //given
         Request requestWithDateRangeBeforeRegistrationDate = new Request(2L, "123", RequestType.HOLIDAY,
                 "comment", LocalDate.now(), LocalDate.of(2023, 1, 1),
@@ -178,7 +179,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLongForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenCommentIsTooLongForAddingRequest() {
         //given
         request.setComment("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 "Praesent rutrum, massa eget iaculis mollis, neque magna lacinia mi, id feugiat tellus lectus quis tortor" +
@@ -191,7 +192,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsNullForAddingRequest() {
+    void shouldThrowBadRequestExceptionWhenCommentIsNullForAddingRequest() {
         //given
         request.setComment(null);
         //when //then
@@ -214,7 +215,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestTypeIsNullForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenRequestTypeIsNullForUpdatingRequest() {
         //given
         RequestDto requestDtoWithNullRequestType = new RequestDto(LocalDate.of(2023, 4, 10),
                 LocalDate.of(2023, 4, 13), null, "comment");
@@ -227,7 +228,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenEndDateIsBeforeStartDateForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenEndDateIsBeforeStartDateForUpdatingRequest() {
         //given
         RequestDto requestDtoWithStartDateAfterEndDate = new RequestDto(LocalDate.of(2023, 4, 10),
                 LocalDate.of(2023, 4, 3), RequestType.OVERTIME, "comment");
@@ -240,7 +241,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenDateRangeIsBeforeRegistrationDateForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenDateRangeIsBeforeRegistrationDateForUpdatingRequest() {
         //given
         RequestDto requestDtoWithDateRangeBeforeRegistrationDate = new RequestDto(LocalDate.of(2023, 1, 1),
                 LocalDate.of(2023, 1, 3), RequestType.OVERTIME, "comment");
@@ -256,7 +257,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenStartDateIsNullForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenStartDateIsNullForUpdatingRequest() {
         //given
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
@@ -268,7 +269,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenEndDateIsNullForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenEndDateIsNullForUpdatingRequest() {
         //given
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
@@ -280,7 +281,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenStartAndEndDateAreNullForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenStartAndEndDateAreNullForUpdatingRequest() {
         //given
         Long requestId = 1L;
         when(requestRepository.existsById(requestId)).thenReturn(true);
@@ -294,7 +295,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenCommentIsTooLongForUpdatingRequest() {
+    void shouldThrowBadRequestExceptionWhenCommentIsTooLongForUpdatingRequest() {
         //given
         when(requestRepository.existsById(requestId)).thenReturn(true);
         when(requestService.getRequestByRequestId(requestId)).thenReturn(Optional.ofNullable(request));
@@ -324,14 +325,14 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestsWithGivenTypeNotExist() {
+    void shouldThrowNotFoundExceptionWhenRequestsWithGivenTypeNotExist() {
         //given
         RequestType requestTypeHoliday = RequestType.HOLIDAY;
         List<Request> tempList = new ArrayList<>();
         when(requestRepository.findAllByType(requestTypeHoliday)).thenReturn(tempList);
         //when //then
         assertThatThrownBy(() -> requestService.getAllRequestsByType(requestTypeHoliday))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Could not find any requests by this type.");
     }
 
@@ -348,13 +349,13 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestExceptionWhenThereIsNoRequestWithGivenId() throws BadRequestException {
+    void shouldThrowNotFoundExceptionWhenThereIsNoRequestWithGivenId() {
         //given
         when(requestRepository.existsById(requestId)).thenReturn(false);
 
         //when //then
         assertThatThrownBy(() -> requestService.deleteRequest(requestId))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Request with this id does not exists.");
     }
 
@@ -369,12 +370,12 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestNotExist() {
+    void shouldThrowNotFoundExceptionWhenRequestNotExist() {
         //given
         Long requestId = -1L;
         //when //then
         assertThatThrownBy(() -> requestService.getRequestByRequestId(requestId))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Request with this id does not exists.");
     }
 
@@ -390,22 +391,22 @@ public class RequestServiceTest {
     }
 
     @Test
-    void shouldThrowWhenUserWithGivenIdNotExist() {
+    void shouldThrowNotFoundExceptionWhenUserWithGivenIdNotExist() {
         //given
         String userId = "9876";
         //when //then
         assertThatThrownBy(() -> requestService.getRequestsByUserId(userId))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("User with this id does not exist.");
     }
 
     @Test
-    void shouldThrowWhenManagerWithGivenIdNotExist() {
+    void shouldThrowNotFoundExceptionWhenManagerWithGivenIdNotExist() {
         //given
         String managerId = "9876";
         //when //then
         assertThatThrownBy(() -> requestService.getEmployeesRequestsByManagerId(managerId))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Manager with this id does not exist.");
     }
 

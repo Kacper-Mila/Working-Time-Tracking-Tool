@@ -1,7 +1,6 @@
 package com.project.w3t.controller;
 
 import com.project.w3t.model.user.User;
-import com.project.w3t.model.user.UserDto;
 import com.project.w3t.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -28,14 +28,14 @@ public class UserController {
     public void addUser(@RequestBody User user){
         userService.addUser(user);
     }
-
-    @PatchMapping("/update")
-    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
-        userService.updateUser(userId, userDto);
-    }
+//
+//    @PatchMapping("/update")
+//    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
+//        userService.updateUser(userId, userDto);
+//    }
 
     @DeleteMapping("/delete")
-    public void deleteUser(@RequestParam String userId) {
+    public void deleteUser(@RequestParam String userId){
         userService.deleteUser(userId);
     }
 
@@ -44,7 +44,7 @@ public class UserController {
         return userService.getAllUsersByManager(managerId);
     }
 
-    @GetMapping("/userid")
+    @GetMapping("/userId")
     @ResponseBody
     public User getUserByUserId(@RequestParam String userId){
         return userService.getUserByUserId(userId);
