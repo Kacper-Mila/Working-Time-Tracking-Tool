@@ -1,5 +1,3 @@
-/*TODO to split into multiple CSS files for each component used*/
-
 body{
     margin: 0;
     padding: 0;
@@ -7,123 +5,39 @@ body{
 
 .App {
     min-height: 100vh;
-    background: #36454F;
-}
-
-.user-details-container {
-    display: flex;
-    justify-content: center;
-    width: 250px;
-    height: 700px;
-}
-
-.user-details-container-wrapper {
-    border-radius: 30px;
-    background: whitesmoke;
-    width: 200vw;
-    margin-top: 20px;
-    margin-left: 20px;
-    height: 95vh;
-    overflow: hidden;
-}
-
-.user-details-inner-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 95vh;
-}
-
-.details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-image: url("images/white-wall.jpg");
+    background-position: center;
+    background-size: 100%;
 }
 
 @media screen and (max-width: 1280px) {
-    .user-image {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin-bottom: .5em;
-    }
-    .user-details{
-        border-spacing: 0 1rem;
-    }
-    .calendar{
-        width: 76vw;
+    .logo-span{
+        font-size: 4em;
     }
 }
 @media screen and (min-width: 1281px){
-    .user-image{
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
+    .logo-span{
+        font-size: 5em;
     }
-
-    .user-details{
-        border-collapse: separate;
-        border-spacing: 0 1rem;
-    }
-}
-
-.user-detail {
-    text-align: center;
-}
-
-.user-name {
-    font-weight: bold;
-    text-align: center;
-}
-
-.hide-details {
-    visibility: hidden;
-}
-
-.sign-out-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin: auto;
-}
-
-.sign-out-items {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    cursor: pointer;
-    width: 90px;
-    height: 20px;
-}
-
-.sign-out-items:hover {
-    cursor: pointer;
-    color: red;
-}
-
-.sign.out-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.logo-span:hover{
-    color: #36454F;
-    text-decoration: none;
 }
 
 .logo-span{
-   font-size: 5em;
-    color: #36454F;
+    color: #707076;
 }
-.logo-span::after{
-    position: relative;
-    display: block;
-    font-size: .2em;
-    font-weight: bold;
-    content: 'Working Time Tracking Tool';
-    background-color: whitesmoke;
-    top: -4.2em;
+
+    .logo-span::after{
+        position: relative;
+        display: block;
+        font-size: .2em;
+        font-weight: bold;
+        content: 'Working Time Tracking Tool';
+        text-shadow: 0px 0px 6px rgba(0,0,0,1);
+        top: -4.2em;
+    }
+
+.logo-span:hover{
+    color: #bf6602;
+    text-decoration: none;
 }
 
 .req-button {
@@ -138,21 +52,6 @@ body{
 }
 
 .req-button:hover {
-    background-position: 0;
-}
-
-.sign-in-button {
-    background-image: linear-gradient(
-            90deg,
-            hsla(189, 100%, 54%, 0.5),
-            hsla(289, 100%, 50%, 0.5) 100%
-    );
-    background-size: 200% 100%;
-    background-position: 100%;
-    transition: 1s ease-in-out;
-}
-
-.sign-in-button:hover {
     background-position: 0;
 }
 
@@ -193,7 +92,7 @@ body{
 }
 
 .month_default_event_bar {
-    left: 0px;
+    left: 0;
     width: 30px;
 }
 .month_default_event_bar_inner {
@@ -216,8 +115,3 @@ body{
     background-image: linear-gradient(to right, #444cf7, #444cf7 4px, #f9f9fd 4px, #f9f9fd ) !important;
     background-size: 8px 100% !important;
 }
-
-
-
-
-

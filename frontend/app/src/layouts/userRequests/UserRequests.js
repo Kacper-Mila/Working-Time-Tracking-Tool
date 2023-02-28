@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import RequestService from "../../serviceHubs/request-service-hub";
 import Request from "../../components/userRequests/Request";
-import AddRequest from "../../components/userRequests/AddRequest";
 
 export default function UserRequests () {
     const [requests, setRequests] = useState([]);
@@ -25,7 +24,7 @@ export default function UserRequests () {
     // TODO
     const prepareUserHolidayRequests = async () => {
         let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
-        setRequests();
+        setRequests(data);
     }
 
     const deleteRequest = async (id) => {

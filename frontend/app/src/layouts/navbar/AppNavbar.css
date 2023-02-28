@@ -1,0 +1,11 @@
+.navbar-link {
+    color: whitesmoke;
+}
+.navbar{
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+
+}
