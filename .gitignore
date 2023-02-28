@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,react,node,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,react,node,maven
-
+secrets.properties
+.idea
 ### Java ###
 # Compiled class file
 *.class
@@ -193,7 +194,7 @@ HELP.md
 node_modules
 
 *.sublime*
-
+.idea
 psd
 thumb
 sketch

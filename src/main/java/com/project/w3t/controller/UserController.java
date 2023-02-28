@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -32,7 +33,7 @@ public class UserController {
 //    public void updateUser(@RequestParam String userId, @RequestBody UserDto userDto) {
 //        userService.updateUser(userId, userDto);
 //    }
-//
+
     @DeleteMapping("/delete")
     public void deleteUser(@RequestParam String userId){
         userService.deleteUser(userId);
@@ -43,7 +44,7 @@ public class UserController {
         return userService.getAllUsersByManager(managerId);
     }
 
-    @GetMapping("/userid")
+    @GetMapping("/userId")
     @ResponseBody
     public User getUserByUserId(@RequestParam String userId){
         return userService.getUserByUserId(userId);
