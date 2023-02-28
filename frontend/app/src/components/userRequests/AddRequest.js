@@ -42,7 +42,7 @@ export default function AddRequest() {
             <div className='form-controller'>
                 <label className='text-light'>Request Type: </label>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
-                    <option>-----------</option>
+                    <option>SELECT</option>
                     <option>HOLIDAY</option>
                     <option>OVERTIME</option>
                     <option>REMOTE</option>
