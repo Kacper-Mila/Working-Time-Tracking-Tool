@@ -9,6 +9,7 @@ export default function AppNavbar() {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/" className='navbar-link'>My Calendar</Nav.Link>
                         <Nav.Link as={Link} to="/requests" className='navbar-link'>My Requests</Nav.Link>
+                        <Nav.Link as={Link} to="/employees-requests" className='navbar-link'>My Employees Requests</Nav.Link>
                     </Nav>
             </Navbar>
     );
