@@ -32,7 +32,9 @@ export default function Request(props) {
                 <FaTimes
                     className='delete-button'
                     onClick={() => {
-                        props.onDelete(props.requestId)
+                        if (window.confirm("Do you want to delete this request?")) {
+                            props.onDelete(props.requestId)
+                        }
                     }
                     }
                 />
@@ -43,7 +45,7 @@ export default function Request(props) {
                         </ModalTitle>
                     </ModalHeader>
                     <ModalBody>
-                        <EditRequest ownerId={props.ownerId} requestId={props.requestId} onEdit={handleClose}/>
+                        <EditRequest ownerId={props.ownerId} requestId={props.requestId} onCancel={handleClose}/>
                     </ModalBody>
                 </Modal>
             </div>
