@@ -84,6 +84,6 @@ public class UserService {
         //        TODO proper exception and status code
         if (!userRepository.existsByUserId(userId))
             throw new NotFoundException("Unable to process request - user does not exist.");
-        return userRepository.findByUserId(userId);
+        return userRepository.findByUserId(userId).get();
     }
 }
