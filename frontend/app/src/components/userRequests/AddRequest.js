@@ -7,9 +7,8 @@ export default function AddRequest(props) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [comment, setComment] = useState('');
-    const [ownerId, setOwnerId] = useState(localStorage.getItem("userId"));
-    let currentDate = new Date().toISOString().slice(0,10);
-
+    const [ownerId] = useState(localStorage.getItem("userId"));
+    let currentDate = new Date().toISOString().slice(0, 10);
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -27,6 +26,7 @@ export default function AddRequest(props) {
         });
 
         props.onCancel();
+        window.location.reload();
     }
 
     return (
