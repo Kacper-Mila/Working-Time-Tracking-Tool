@@ -34,16 +34,16 @@
 
 @media screen and (max-width: 1280px) {
     .user-image {
-        width: 150px;
-        height: 150px;
+        width: 11em;
+        height: 11em;
         border-radius: 50%;
         margin-bottom: .5em;
     }
 }
 @media screen and (min-width: 1281px){
     .user-image{
-        width: 150px;
-        height: 150px;
+        width: 11em;
+        height: 11em;
         border-radius: 50%;
     }
 }
