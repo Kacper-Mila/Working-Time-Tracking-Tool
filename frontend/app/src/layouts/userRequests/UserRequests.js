@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import RequestService from "../../serviceHubs/request-service-hub";
 import Request from "../../components/userRequests/Request";
-import {map} from "react-bootstrap/ElementChildren";
 
 export default function UserRequests({requestType}) {
     const [requests, setRequests] = useState([]);
@@ -45,6 +44,7 @@ export default function UserRequests({requestType}) {
                          requestComment={request.comment}
                          onDelete={deleteRequest}
                          ownerId={request.ownerId}
+                         requestStatus={request.status}
                 />
             ))}
         </>
