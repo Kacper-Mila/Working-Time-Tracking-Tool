@@ -33,7 +33,7 @@ export default function AddRequest(props) {
         <form className='add-form' onSubmit={onSubmit}>
             <div className='form-control'>
                 <label className="description">Request Type: </label>
-                <select value={type} onChange={(e) => setType(e.target.value)} required style={{cursor:"pointer"}}>
+                <select value={type} onChange={(e) => setType(e.target.value)} required style={{cursor: "pointer"}}>
                     <option value='' selected>SELECT</option>
                     <option>HOLIDAY</option>
                     <option>OVERTIME</option>
@@ -72,7 +72,7 @@ export default function AddRequest(props) {
             </div>
             <div className='d-flex align-items-center justify-content-center mt-2'>
                 <button type='submit' className='btn btn-outline-success mx-2'>Add request</button>
-                <button value='cancel' className='btn btn-outline-danger mx-2' onClick={props.onCancel}>Cancel</button>
+                <button type='reset' className='btn btn-outline-danger mx-2' onClick={props.onCancel}>Cancel</button>
             </div>
         </form>
     )

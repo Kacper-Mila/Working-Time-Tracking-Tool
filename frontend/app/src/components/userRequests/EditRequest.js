@@ -29,7 +29,7 @@ export default function EditRequest(props) {
         <form className='edit-form' onSubmit={onSubmit}>
             <div className='form-control'>
                 <label className="description">Request Type: </label>
-                <select value={type} onChange={(e) => setType(e.target.value)} required style={{cursor:"pointer"}}>
+                <select value={type} onChange={(e) => setType(e.target.value)} required style={{cursor: "pointer"}}>
                     <option value=''>SELECT</option>
                     <option>HOLIDAY</option>
                     <option>OVERTIME</option>
@@ -66,7 +66,7 @@ export default function EditRequest(props) {
             </div>
             <div className='d-flex align-items-center justify-content-center mt-2'>
                 <button type='submit' className='btn btn-outline-success mx-2'>Save</button>
-                <button className='btn btn-outline-danger mx-2' onClick={props.onCancel}>Cancel</button>
+                <button type='reset' className='btn btn-outline-danger mx-2' onClick={props.onCancel}>Cancel</button>
             </div>
         </form>
     )
