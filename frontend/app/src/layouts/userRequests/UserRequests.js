@@ -29,7 +29,7 @@ export default function UserRequests({requestType}) {
 
     const deleteRequest = async (id) => {
         await RequestService.deleteRequest(id);
-        await prepareUserRequests();
+        window.location.reload();
     }
 
     return (
