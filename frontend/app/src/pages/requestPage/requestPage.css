@@ -1,3 +1,29 @@
 .request-container{
     overflow-y: auto;
+    margin-bottom: 1em;
 }
+
+::-webkit-scrollbar{
+    width: 0.6em;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track{
+    background: rgba(227, 226, 218, 0.84);
+    border-radius: 2em;
+}
+
+
+::-webkit-scrollbar-thumb{
+    background: #666;
+    border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: #555;
+    border-radius: 2em;
+}
+
+
+
+
