@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
+@CrossOrigin("https://w3tfrontend-production.up.railway.app/")
 @RequestMapping("api/v1/requests")
 public class RequestController {
 

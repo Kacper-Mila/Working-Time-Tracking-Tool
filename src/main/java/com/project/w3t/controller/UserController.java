@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://w3tfrontend-production.up.railway.app/")
 @RequestMapping("api/v1/users")
 public class UserController {
 
