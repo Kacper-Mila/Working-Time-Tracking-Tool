@@ -22,6 +22,7 @@ export default function EditRequest(props) {
         });
 
         props.onCancel();
+        window.location.reload();
     }
 
     return (
