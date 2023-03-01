@@ -2,6 +2,7 @@ package com.project.w3t.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.request.Request;
+import com.project.w3t.security.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -33,6 +34,8 @@ public class User implements UserDetails {
     private Integer holidays;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
     private String managerId;
     private String teamId;
     @JsonIgnore
