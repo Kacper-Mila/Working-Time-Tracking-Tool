@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/requests")
 public class RequestController {
 
