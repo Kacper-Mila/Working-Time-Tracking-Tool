@@ -1,5 +1,6 @@
 package com.project.w3t.security.config;
 
+import com.project.w3t.security.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,27 +22,32 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    )throws ServletException, IOException {
+    ) throws ServletException, IOException {
 
         final String AUTHENTICATION_HEADER = request.getHeader("Authorization");
         final String jwtToken;
         final String username;
-        if (AUTHENTICATION_HEADER == null || !AUTHENTICATION_HEADER.startsWith("Bearer ")){
+        if (AUTHENTICATION_HEADER == null || !AUTHENTICATION_HEADER.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
         jwtToken = AUTHENTICATION_HEADER.substring(7);
-        //TODO Extract username from JWT token
+        //TODO Extract username from JWT token - userId?
         username = jwtService.extractUsername(jwtToken);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (jwtService.isTokenValid(jwtToken, userDetails)){
+            var isTokenValid = tokenRepository.findByToken(jwtToken)
+                    .map(t -> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
+            if (jwtService.isTokenValid(jwtToken, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
