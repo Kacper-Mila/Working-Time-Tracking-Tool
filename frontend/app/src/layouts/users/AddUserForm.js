@@ -70,6 +70,8 @@ export default function AddUserForm(props) {
                                    required
                             />
                         </Col>
+                    </Row>
+                    <Row>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13">User
                                 ID </label>
@@ -80,8 +82,6 @@ export default function AddUserForm(props) {
                                    required
                             />
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
                             <label className="form-label"
                                    htmlFor="form1Example13">Password </label>
@@ -92,6 +92,8 @@ export default function AddUserForm(props) {
                                    required
                             />
                         </Col>
+                    </Row>
+                    <Row>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13"> User
                                 Type </label>
@@ -105,8 +107,6 @@ export default function AddUserForm(props) {
                                 <option>ADMIN</option>
                             </select>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13">Team
                                 ID </label>
@@ -117,6 +117,8 @@ export default function AddUserForm(props) {
                                    required
                             />
                         </Col>
+                    </Row>
+                    <Row>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13">Manager
                                 ID </label>
@@ -127,16 +129,14 @@ export default function AddUserForm(props) {
                                    required
                             />
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
-                        <label className="form-label" htmlFor="form1Example13">Holidays </label>
-                        <input type="number"
-                               className="form-control form-control-lg"
-                               value={holidays}
-                               onChange={(e) => setHolidays(e.target.value)}
-                               required
-                        />
+                            <label className="form-label" htmlFor="form1Example13">Holidays </label>
+                            <input type="number"
+                                   className="form-control form-control-lg"
+                                   value={holidays}
+                                   onChange={(e) => setHolidays(e.target.value)}
+                                   required
+                            />
                         </Col>
                     </Row>
                     <Row className='mt-4'>
