@@ -56,6 +56,10 @@ public class UserService {
         userToUpdate.setUserType(userDto.getUserType());
         userToUpdate.setManagerId(userDto.getManagerId());
         userToUpdate.setTeamId(userDto.getTeamId());
+        userToUpdate.setHolidays(userDto.getHolidays());
+        userToUpdate.setEmail(userDto.getEmail());
+        userToUpdate.setFirstName(userDto.getFirstName());
+        userToUpdate.setLastName(userDto.getLastName());
         userRepository.save(userToUpdate);
     }
 

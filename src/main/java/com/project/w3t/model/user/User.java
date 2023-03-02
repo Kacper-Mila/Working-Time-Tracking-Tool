@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.request.Request;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+
 
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class User {
     private String userId;
     private String firstName;
     private String lastName;
+    private String password;
     private Integer holidays;
     @Enumerated(EnumType.STRING)
     private UserType userType;
