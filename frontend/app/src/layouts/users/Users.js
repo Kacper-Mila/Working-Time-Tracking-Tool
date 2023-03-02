@@ -3,7 +3,7 @@ import UserService from "../../serviceHubs/user-service-hub";
 import UserForAdminPage from "../../components/userForAdminaPage/UserForAdminPage";
 
 
-export default function Users() {
+export default function Users({userType}) {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -15,12 +15,17 @@ export default function Users() {
             console.error("error", err);
         });
 
-    }, []);
+    }, [userType]);
 
     const prepareAllUsers = async () => {
         let data = await UserService.getAllUsers();
-        setUsers(data);
-        console.log(data);
+        if (userType === "ALL") {
+            setUsers(data)
+        } else {
+            setUsers(data.filter((user) => (
+                user.userType === userType
+            )))
+        }
     }
 
     const deleteUser = async (userId) => {
