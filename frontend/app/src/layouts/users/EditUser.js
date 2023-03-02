@@ -3,14 +3,13 @@ import axios from "axios";
 import {Col, Container, Row} from "react-bootstrap";
 
 export default function EditUser(props) {
-    const [userType, setUserType] = useState('');
-    const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [password, setPassword] = useState('');
-    const [managerId, setManagerId] = useState('');
-    const [teamId, setTeamId] = useState('');
-    const [holidays, setHolidays] = useState('');
+    const [userType, setUserType] = useState(props.userType);
+    const [email, setEmail] = useState(props.email);
+    const [firstName, setFirstName] = useState(props.name);
+    const [lastName, setLastName] = useState(props.lastname);
+    const [managerId, setManagerId] = useState(props.managerId);
+    const [teamId, setTeamId] = useState(props.teamId);
+    const [holidays, setHolidays] = useState(props.holidays);
 
 
     const onSubmit = async (e) => {
@@ -21,7 +20,6 @@ export default function EditUser(props) {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            password: password,
             holidays: holidays,
             userType: userType,
             managerId: managerId,
@@ -59,7 +57,7 @@ export default function EditUser(props) {
                             />
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className='mt-2'>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13">Email </label>
                             <input type="email"
@@ -69,17 +67,8 @@ export default function EditUser(props) {
                                    required
                             />
                         </Col>
-                        <Col>
-                            <label className="form-label" htmlFor="form1Example13">Password </label>
-                            <input type="password"
-                                   className="form-control form-control-lg"
-                                   value={password}
-                                   onChange={(e) => setPassword(e.target.value)}
-                                   required
-                            />
-                        </Col>
                     </Row>
-                    <Row>
+                    <Row className='mt-2'>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13"> User
                                 Type </label>
@@ -104,7 +93,7 @@ export default function EditUser(props) {
                             />
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className='mt-2'>
                         <Col>
                             <label className="form-label" htmlFor="form1Example13">Manager
                                 ID </label>

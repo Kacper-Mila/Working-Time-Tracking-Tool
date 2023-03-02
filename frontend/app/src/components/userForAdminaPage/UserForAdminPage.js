@@ -50,7 +50,15 @@ export default function UserForAdminPage(props) {
                     </ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                    <EditUser userId={props.userId} onCancel={handleClose}/>
+                    <EditUser userId={props.userId}
+                              name={props.firstName}
+                              lastname={props.lastName}
+                              email={props.email}
+                              userType={props.userType}
+                              teamId={props.teamId}
+                              managerId={props.managerId}
+                              holidays={props.holidays}
+                              onCancel={handleClose}/>
                 </ModalBody>
             </Modal>
         </div>
