@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
+
 const API = axios.create({
-    baseURL: `http://localhost:8080/api/v1/requests`
+    baseURL: `http://localhost:8080/api/v1/auth`
 })
 
 const register = (username, email, password) => {
@@ -12,33 +14,51 @@ const register = (username, email, password) => {
     });
 };
 
-const login = (username, password) => {
-    return axios
-        .post(API + "signin", {
+class AuthenticationService {
+
+    executeJwtAuthenticationService(username, password) {
+        console.log(username);
+        return axios.post(API + "/authenticate", {
             username,
-            password,
+            password
         })
-        .then((response) => {
-            if (response.data.accessToken) {
-                localStorage.setItem("user", JSON.stringify(response.data));
+    }
+
+    registerSuccessfulLoginForJwt(username, token) {
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+        this.setupAxiosInterceptors(this.createJWTToken(token))
+    }
+
+    createJWTToken(token) {
+        return 'Bearer ' + token
+    }
+
+    logout() {
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    }
+
+    isUserLoggedIn() {
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+        if (user === null) return false
+        return true
+    }
+
+    getLoggedInUserName() {
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+        if (user === null) return ''
+        return user
+    }
+
+    setupAxiosInterceptors(token) {
+        axios.interceptors.request.use(
+            (config) => {
+                if (this.isUserLoggedIn()) {
+                    config.headers.authorization = token
+                }
+                return config
             }
-            return response.data;
-        });
-};
+        )
+    }
+}
 
-const logout = () => {
-    localStorage.removeItem("user");
-};
-
-const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("user"));
-};
-
-const AuthService = {
-    register,
-    login,
-    logout,
-    getCurrentUser,
-};
-
-export default AuthService;
+export default new AuthenticationService()
