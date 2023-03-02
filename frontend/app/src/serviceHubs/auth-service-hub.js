@@ -14,7 +14,7 @@ const register = (username, email, password) => {
     });
 };
 
-class AuthenticationService {
+class AuthServiceHub {
 
     executeJwtAuthenticationService(username, password) {
         console.log(username);
@@ -61,4 +61,4 @@ class AuthenticationService {
     }
 }
 
-export default new AuthenticationService()
+export default new AuthServiceHub()

@@ -9,6 +9,7 @@ export default function App() {
         <div className="App">
                 <Routes>
                     <Route exact path="/login" element={<LoginPage/>}/>
+                    {/*<Route exact path="/logout" element={<LogoutPage/>}/>*/}
                     <Route exact path="*" element={<MainPage/>}/>
                 </Routes>
         </div>
