@@ -29,9 +29,11 @@ public class User {
     private UserType userType;
     private String managerId;
     private String teamId;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Request> requestList;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",

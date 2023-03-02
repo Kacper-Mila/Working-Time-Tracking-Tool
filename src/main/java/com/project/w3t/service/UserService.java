@@ -2,15 +2,14 @@ package com.project.w3t.service;
 
 import com.project.w3t.exceptions.BadRequest400.BadRequestException;
 import com.project.w3t.exceptions.NotFound404.NotFoundException;
-import com.project.w3t.model.user.RoleName;
-import com.project.w3t.model.user.User;
-import com.project.w3t.model.user.UserDto;
-import com.project.w3t.model.user.UserType;
+import com.project.w3t.model.user.*;
 import com.project.w3t.repository.RoleRepository;
 import com.project.w3t.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,11 +97,12 @@ public class UserService {
     }
 
     public void assignUserRoles(User user) {
-
+        user.setRoles(new ArrayList<>());
         switch (user.getUserType()) {
-            case EMPLOYEE -> user.getRoles().add(roleRepository.findByRoleName(RoleName.ROLE_USER));
-            case MANAGER -> user.getRoles().add(roleRepository.findByRoleName(RoleName.ROLE_MANAGER));
-            case ADMIN -> user.getRoles().add(roleRepository.findByRoleName(RoleName.ROLE_ADMIN));
+            case EMPLOYEE -> user.getRoles().add(roleRepository.findByName("ROLE_USER"));
+            case MANAGER -> user.getRoles().add(roleRepository.findByName("ROLE_MANAGER"));
+            case ADMIN -> user.getRoles().add(roleRepository.findByName("ROLE_ADMIN"));
         }
+        System.out.println(user.getRoles());
     }
 }
