@@ -7,7 +7,6 @@ import AddRequest from "../../components/userRequests/AddRequest";
 import './mainPage.css';
 import EmployeesRequestsPage from "../employeesRequestPage/EmployeesRequestsPage";
 import AdminPage from "../adminPage/AdminPage";
-import AddUserForm from "../../layouts/users/AddUserForm";
 
 
 
@@ -32,7 +31,6 @@ export default function MainPage() {
                                     <Route path='/add-request' element={<AddRequest />}></Route>
                                     <Route path='/employees-requests' element={<EmployeesRequestsPage/>}></Route>
                                     <Route path='/admin-panel' element={<AdminPage/>}></Route>
-                                    <Route path='/add-user' element={<AddUserForm/>}></Route>
                                 </Routes>
                             </div>
                         </div>

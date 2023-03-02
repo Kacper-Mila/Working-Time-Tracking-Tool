@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 
-export default function AddUserForm() {
+export default function AddUserForm(props) {
     const [userType, setUserType] = useState('');
     const [email, setEmail] = useState('');
     const [userId, serUserId] = useState('');
@@ -12,7 +11,6 @@ export default function AddUserForm() {
     const [managerId, setManagerId] = useState('');
     const [teamId, setTeamId] = useState('');
     const [holidays, setHolidays] = useState('');
-    const navigate = useNavigate();
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -31,7 +29,8 @@ export default function AddUserForm() {
             let response = JSON.parse(err.request.response);
             alert(response.message);
         });
-        navigate('/admin-panel');
+        props.onCancel();
+        window.location.reload();
     }
 
     return (
@@ -136,9 +135,7 @@ export default function AddUserForm() {
                             </button>
                             <button type="reset"
                                     className="btn mr-4 btn-secondary btn-lg btn-block"
-                                    onClick={() => {
-                                        navigate('/admin-panel')
-                                    }}
+                                    onClick={props.onCancel}
                             >Cancel
                             </button>
                         </form>
