@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.request.Request;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -23,6 +21,7 @@ public class User {
     private Long id;
     private String email;
     private String userId;
+    private String password;
     private String firstName;
     private String lastName;
     private Integer holidays;
@@ -33,6 +32,14 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Request> requestList;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id"))
+    private Collection<Role> roles;
 
     public User() {
         this.userType = UserType.EMPLOYEE;
