@@ -1,5 +1,5 @@
 import {FaRegEdit, FaTrashAlt} from "react-icons/fa";
-import EditUser from "../layouts/users/EditUser";
+import EditUser from "../../layouts/users/EditUser";
 import {Modal, ModalBody, ModalHeader, ModalTitle} from "react-bootstrap";
 import {useState} from "react";
 

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import UserService from "../../serviceHubs/user-service-hub";
-import UserForAdminPage from "../../components/UserForAdminPage";
+import UserForAdminPage from "../../components/userForAdminaPage/UserForAdminPage";
 
 
 export default function Users({userType}) {
