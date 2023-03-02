@@ -1,0 +1,11 @@
+.admin-user{
+    color: whitesmoke;
+    margin-bottom: 2em;
+    border-bottom: 1px black solid;
+    padding: 0 2em 1em 2em;
+    display: flex;
+}
+.edit-modal{
+    width:90%;
+    max-width: none!important;
+}

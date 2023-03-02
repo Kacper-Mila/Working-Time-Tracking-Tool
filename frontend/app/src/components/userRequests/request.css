@@ -1,21 +1,23 @@
-.request{
+.request {
     color: whitesmoke;
     margin-bottom: 2em;
     border-bottom: 1px black solid;
     padding: 0 2em 1em 2em;
     display: flex;
 }
-.main-request{
+
+.main-request {
     width: 80%;
 }
 
-.request-buttons{
+.request-buttons {
     width: 20%;
     display: flex;
     justify-content: end;
 }
-.delete-button{
-    color: red;
+
+.delete-button {
+    color: white;
     height: 3em;
     margin: 0 2em 0 0;
 }
@@ -24,20 +26,35 @@
     color: white;
     height: 3em;
     margin: 0 2em 0 0;
+
 }
 
-.delete-button:hover, .edit-button:hover{
+.accept-button {
+    color: green;
+    height: 3em;
+    margin: 0 2em 0 0;
+}
+
+.reject-button {
+    color: red;
+    height: 3em;
+    margin: 0 2em 0 0;
+}
+
+.delete-button:hover, .edit-button:hover, .accept-button:hover, .reject-button:hover {
     cursor: pointer;
 }
 
-.request>div>span{
+.request > div > span {
     font-family: Bahnschrift;
     font-size: x-small;
 }
-.request>div>h3{
+
+.request > div > h3 {
     margin-bottom: 1em;
 }
-.comment{
+
+.comment {
     margin-bottom: 1em;
     margin-left: 1em;
 }
