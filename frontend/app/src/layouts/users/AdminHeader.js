@@ -23,7 +23,7 @@ export default function AdminHeader({setSelectedUserType}){
                 </button>
             </div>
 
-            <Modal show={show}>
+            <Modal show={show} size='xl'>
                 <ModalHeader>
                     <ModalTitle>
                         Add new user
