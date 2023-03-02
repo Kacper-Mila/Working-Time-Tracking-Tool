@@ -5,6 +5,7 @@ import com.project.w3t.exceptions.NotFound404.NotFoundException;
 import com.project.w3t.model.user.User;
 import com.project.w3t.model.user.UserDto;
 import com.project.w3t.model.user.UserType;
+import com.project.w3t.repository.RoleRepository;
 import com.project.w3t.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     private UserService userService;
+    private RoleRepository roleRepository;
     private final User user = new User(
             1L,
             "email@gmail.com",
@@ -49,7 +51,7 @@ class UserServiceTest {
 //    TODO check if we need beforeAll?
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, roleRepository);
     }
 
     @Test

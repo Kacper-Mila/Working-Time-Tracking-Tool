@@ -12,7 +12,7 @@ public class Role {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+    private RoleName roleName;
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
     @ManyToMany
@@ -25,12 +25,12 @@ public class Role {
     private Collection<Privilege> privileges;
 
 
-    public String getName() {
-        return name;
+    public RoleName getRoleName() {
+        return roleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public Collection<Privilege> getPrivileges() {

@@ -1,7 +1,8 @@
-package com.project.w3t;
+package com.project.w3t.service;
 
 import com.project.w3t.model.user.Privilege;
 import com.project.w3t.model.user.Role;
+import com.project.w3t.model.user.RoleName;
 import com.project.w3t.repository.PrivilegeRepository;
 import com.project.w3t.repository.RoleRepository;
 import jakarta.transaction.Transactional;
@@ -35,9 +36,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Privilege myEmployeesRequestsPrivilege = createPrivilegeIfNotFound("MY-EMPLOYEES-REQUESTS_PRIVILEGE");
         Privilege manageUsersPrivilege = createPrivilegeIfNotFound("MANAGE-USERS_PRIVILEGE");
 
-        Role userRole = createRoleifNotFound("ROLE_USER", Arrays.asList(myCalendarPrivilege, myRequests));
-        Role managerRole = createRoleifNotFound("ROLE_MANAGER", Arrays.asList(myEmployeesRequestsPrivilege));
-        Role adminRole = createRoleifNotFound("ROLE_ADMIN", Arrays.asList(manageUsersPrivilege));
+        Role userRole = createRoleifNotFound(RoleName.ROLE_USER, Arrays.asList(myCalendarPrivilege, myRequests));
+        Role managerRole = createRoleifNotFound(RoleName.ROLE_MANAGER, Arrays.asList(myCalendarPrivilege, myRequests, myEmployeesRequestsPrivilege));
+        Role adminRole = createRoleifNotFound(RoleName.ROLE_ADMIN, Arrays.asList(manageUsersPrivilege));
 
         alreadySetup = true;
     }
@@ -54,11 +55,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     @Transactional
-    Role createRoleifNotFound(String name, Collection<Privilege> privileges) {
-        Role role = roleRepository.findByName(name);
+    Role createRoleifNotFound(RoleName roleName, Collection<Privilege> privileges) {
+        Role role = roleRepository.findByRoleName(roleName);
         if (role == null) {
             role = new Role();
-            role.setName(name);
+            role.setRoleName(roleName);
             role.setPrivileges(privileges);
             roleRepository.save(role);
         }
