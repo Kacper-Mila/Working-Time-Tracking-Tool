@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
+import {Col, Container, Row} from "react-bootstrap";
 
-export default function EditUser(props){
+export default function EditUser(props) {
     const [userType, setUserType] = useState('');
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -35,104 +36,113 @@ export default function EditUser(props){
 
     return (
         <div>
-            <div className="container py-5 h-100">
-                <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                        <form className='pb-5' onSubmit={onSubmit}>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">First
-                                    Name </label>
-                                <input type="text"
-                                       className="form-control form-control-lg"
-                                       value={firstName}
-                                       onChange={(e) => setFirstName(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Last Name </label>
-                                <input type="text"
-                                       className="form-control form-control-lg"
-                                       value={lastName}
-                                       onChange={(e) => setLastName(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Email </label>
-                                <input type="email"
-                                       className="form-control form-control-lg"
-                                       value={email}
-                                       onChange={(e) => setEmail(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Password </label>
-                                <input type="password"
-                                       className="form-control form-control-lg"
-                                       value={password}
-                                       onChange={(e) => setPassword(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13"> User
-                                    Type </label>
-                                <select className="form-control form-control-lg"
-                                        value={userType}
-                                        onChange={(e) => setUserType(e.target.value)}
-                                        required style={{cursor: "pointer"}}>
-                                    <option>SELECT</option>
-                                    <option>EMPLOYEE</option>
-                                    <option>MANAGER</option>
-                                    <option>ADMIN</option>
+            <form onSubmit={onSubmit}>
+                <Container>
+                    <Row>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">First
+                                Name </label>
+                            <input type="text"
+                                   className="form-control form-control-lg"
+                                   value={firstName}
+                                   onChange={(e) => setFirstName(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Last Name </label>
+                            <input type="text"
+                                   className="form-control form-control-lg"
+                                   value={lastName}
+                                   onChange={(e) => setLastName(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Email </label>
+                            <input type="email"
+                                   className="form-control form-control-lg"
+                                   value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Password </label>
+                            <input type="password"
+                                   className="form-control form-control-lg"
+                                   value={password}
+                                   onChange={(e) => setPassword(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13"> User
+                                Type </label>
+                            <select className="form-control form-control-lg"
+                                    value={userType}
+                                    onChange={(e) => setUserType(e.target.value)}
+                                    required style={{cursor: "pointer"}}>
+                                <option>SELECT</option>
+                                <option>EMPLOYEE</option>
+                                <option>MANAGER</option>
+                                <option>ADMIN</option>
 
-                                </select>
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Team ID </label>
-                                <input type="text"
-                                       className="form-control form-control-lg"
-                                       value={teamId}
-                                       onChange={(e) => setTeamId(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Manager
-                                    ID </label>
-                                <input type="text"
-                                       className="form-control form-control-lg"
-                                       value={managerId}
-                                       onChange={(e) => setManagerId(e.target.value)}
-                                       required
-                                />
-                            </div>
-                            <div className="form-outline mb-4">
-                                <label className="form-label" htmlFor="form1Example13">Holidays </label>
-                                <input type="number"
-                                       className="form-control form-control-lg"
-                                       value={holidays}
-                                       onChange={(e) => setHolidays(e.target.value)}
-                                       required
-                                />
-                            </div>
-
-                            <div className="d-flex mb-4"></div>
+                            </select>
+                        </Col>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Team ID </label>
+                            <input type="text"
+                                   className="form-control form-control-lg"
+                                   value={teamId}
+                                   onChange={(e) => setTeamId(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Manager
+                                ID </label>
+                            <input type="text"
+                                   className="form-control form-control-lg"
+                                   value={managerId}
+                                   onChange={(e) => setManagerId(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                        <Col>
+                            <label className="form-label" htmlFor="form1Example13">Holidays </label>
+                            <input type="number"
+                                   className="form-control form-control-lg"
+                                   value={holidays}
+                                   onChange={(e) => setHolidays(e.target.value)}
+                                   required
+                            />
+                        </Col>
+                    </Row>
+                    <Row className='mt-4'>
+                        <Col>
                             <button type="submit"
                                     className="btn mr-4 btn-outline-success btn-lg btn-block"
                             >Save
                             </button>
+                        </Col>
+                        <Col>
                             <button type="reset"
                                     className="btn mr-4 btn-outline-danger btn-lg btn-block"
                                     onClick={props.onCancel}
                             >Cancel
                             </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </form>
+
         </div>
     );
 }
