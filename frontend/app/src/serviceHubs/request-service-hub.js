@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({
+const API = axios.create({
     baseURL: `http://localhost:8080/api/v1/requests`
 })
 
@@ -11,7 +11,7 @@ let postConf = {
 };
 
 const getAllRequests = async () => {
-    return api.get('').then(r => r.data)
+    return API.get('').then(r => r.data)
 }
 
 // TODO implement proper usage form
@@ -20,27 +20,27 @@ const getAllRequests = async () => {
 // }
 
 const updateRequest = async ({userId, requestId, requestJson}) => {
-    return api.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, postConf)
+    return API.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, postConf)
 }
 
 const deleteRequest = async (requestId) => {
-    return api.delete(`/delete?requestId=${requestId}`)
+    return API.delete(`/delete?requestId=${requestId}`)
 }
 
 const getAllRequestsByType = async (requestType) => {
-    return api.get(`/type?requestType=${requestType}`).then(r => r.data)
+    return API.get(`/type?requestType=${requestType}`).then(r => r.data)
 }
 
 const getRequestById = async (requestId) => {
-    return api.get(`/id?requestId=${requestId}`).then(r => r.data)
+    return API.get(`/id?requestId=${requestId}`).then(r => r.data)
 }
 
 const getRequestsByUserId = async (userId) => {
-    return api.get(`/userId?userId=${userId}`).then(r => r.data)
+    return API.get(`/userId?userId=${userId}`).then(r => r.data)
 }
 
 const getEmployeesRequestsByManagerId = async (managerId) => {
-    return api.get(`/managerId?managerId=${managerId}`)
+    return API.get(`/managerId?managerId=${managerId}`).then(r => r.data)
 }
 
 const RequestService = {
