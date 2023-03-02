@@ -43,6 +43,10 @@ const getEmployeesRequestsByManagerId = async (managerId) => {
     return API.get(`/managerId?managerId=${managerId}`).then(r => r.data)
 }
 
+const acceptOrRejectEmployeeRequest = async ({requestId, requestStatus}) => {
+    return API.patch(`/updateRequestStatus?requestId=${requestId}&requestStatus=${requestStatus}`)
+}
+
 const RequestService = {
     getAllRequests,
     // addRequest, // @RequestBody Request request
@@ -51,7 +55,8 @@ const RequestService = {
     getAllRequestsByType, // /type @RequestParam RequestType requestType
     getRequestById, // /id @RequestParam Long requestId
     getRequestsByUserId, // /userId @RequestParam String userId
-    getEmployeesRequestsByManagerId // /managerId @RequestParam String managerId
+    getEmployeesRequestsByManagerId, // /managerId @RequestParam String managerId
+    acceptOrRejectEmployeeRequest
 }
 
 export default RequestService
