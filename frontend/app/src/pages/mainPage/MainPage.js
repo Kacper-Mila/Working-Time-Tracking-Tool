@@ -6,6 +6,7 @@ import RequestsPage from "../requestPage/RequestsPage";
 import AddRequest from "../../components/userRequests/AddRequest";
 import './mainPage.css';
 import EmployeesRequestsPage from "../employeesRequestPage/EmployeesRequestsPage";
+import AuthRoute from "../../serviceHubs/auth-route";
 import AdminPage from "../adminPage/AdminPage";
 
 
@@ -30,7 +31,6 @@ export default function MainPage() {
                                     <Route path='/requests' element={<RequestsPage/>}></Route>
                                     <Route path='/add-request' element={<AddRequest />}></Route>
                                     <Route path='/employees-requests' element={<EmployeesRequestsPage/>}></Route>
-                                    <Route path='/admin-panel' element={<AdminPage/>}></Route>
                                 </Routes>
                             </div>
                         </div>

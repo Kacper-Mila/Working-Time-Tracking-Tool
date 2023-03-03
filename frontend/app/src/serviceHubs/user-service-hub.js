@@ -1,33 +1,28 @@
 import axios from "axios";
+import AuthHeader from "./auth-header";
 
-const api = axios.create({
+const API = axios.create({
     baseURL: `http://localhost:8080/api/v1/users`
 })
 
-let postConf = {
-    headers: {
-        'Content-Type': 'application/json'
-    }
-}
-
 const getAllUsers = async () => {
-    return api.get('').then(r => r.data)
+    return API.get('', { headers: AuthHeader() }).then(r => r.data)
 }
 
 const addUser = async (userJson) => {
-    return api.post('', userJson, postConf)
+    return API.post('', userJson, { headers: AuthHeader() })
 }
 
 const deleteUser = async (userId) => {
-    return api.delete(`/delete?userId=${userId}`)
+    return API.delete(`/delete?userId=${userId}`, { headers: AuthHeader() })
 }
 
 const getAllUsersByManager = async (managerId) => {
-    return api.get(`/manager?managerId=${managerId}`).then(r => r.data)
+    return API.get(`/manager?managerId=${managerId}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const getUserByUserId = async (userId) => {
-    return api.get(`/userId?userId=${userId}`).then(r => r.data)
+    return API.get(`/userId?userId=${userId}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const UserService = {
