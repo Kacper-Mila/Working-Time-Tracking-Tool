@@ -11,7 +11,7 @@ export default function AddRequest(props) {
     const [ownerId] = useState(localStorage.getItem("userId"));
     let currentDate = new Date().toISOString().slice(0, 10);
 
-
+    // TODO rewrite to use request service hub
     const onSubmit = async (e) => {
         e.preventDefault()
 
