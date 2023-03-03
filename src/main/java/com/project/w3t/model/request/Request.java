@@ -46,7 +46,7 @@ public class Request {
     private LocalDate approvalDate;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
