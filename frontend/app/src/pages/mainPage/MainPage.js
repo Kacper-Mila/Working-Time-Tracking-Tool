@@ -31,6 +31,7 @@ export default function MainPage() {
                                     <Route path='/requests' element={<RequestsPage/>}></Route>
                                     <Route path='/add-request' element={<AddRequest />}></Route>
                                     <Route path='/employees-requests' element={<EmployeesRequestsPage/>}></Route>
+                                    <Route path='/admin-panel' element={<AdminPage/>}></Route>
                                 </Routes>
                             </div>
                         </div>

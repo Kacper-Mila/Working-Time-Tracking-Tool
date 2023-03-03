@@ -6,10 +6,10 @@ import com.project.w3t.model.user.*;
 import com.project.w3t.repository.RoleRepository;
 import com.project.w3t.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +19,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -43,6 +45,9 @@ public class UserService {
             throw new BadRequestException("Unable to process request - user Id is invalid.");
 
         assignUserRoles(user);
+
+        String password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
     }

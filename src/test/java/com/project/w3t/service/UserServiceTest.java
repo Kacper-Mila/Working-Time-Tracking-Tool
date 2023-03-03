@@ -51,7 +51,7 @@ class UserServiceTest {
 //    TODO check if we need beforeAll?
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, roleRepository);
+        userService = new UserService(userRepository, roleRepository, passwordEncoder);
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.project.w3t.service;
 
 import com.project.w3t.model.user.Privilege;
 import com.project.w3t.model.user.Role;
-import com.project.w3t.model.user.RoleName;
 import com.project.w3t.repository.PrivilegeRepository;
 import com.project.w3t.repository.RoleRepository;
 import jakarta.transaction.Transactional;

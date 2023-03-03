@@ -40,7 +40,7 @@ class UserControllerAdviceTest {
     private RoleRepository roleRepository;
     @BeforeEach
     void setUp(){
-        userservice = new UserService(userRepository, roleRepository);
+        userservice = new UserService(userRepository, roleRepository, passwordEncoder);
     }
 
 //    TODO fix dem tests my friend!
