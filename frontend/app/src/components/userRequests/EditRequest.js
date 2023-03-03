@@ -1,5 +1,6 @@
 import {useState} from "react";
 import axios from "axios";
+import AuthHeader from "../../serviceHubs/auth-header";
 
 export default function EditRequest(props) {
     const [type, setType] = useState('');
@@ -16,7 +17,7 @@ export default function EditRequest(props) {
             comment: comment,
             startDate: startDate,
             endDate: endDate
-        }).catch(err => {
+        }, { headers: AuthHeader() }).catch(err => {
             let response = JSON.parse(err.request.response);
             alert(response.message);
         });
