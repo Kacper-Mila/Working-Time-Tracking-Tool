@@ -39,7 +39,7 @@ const getEmployeesRequestsByManagerId = async (managerId) => {
 }
 
 const acceptOrRejectEmployeeRequest = async ({requestId, requestStatus}) => {
-    return API.patch(`/updateRequestStatus?requestId=${requestId}&requestStatus=${requestStatus}`, { headers: AuthHeader() })
+    return API.patch(`/updateRequestStatus?requestId=${requestId}&requestStatus=${requestStatus}`, null, { headers: AuthHeader() })
 }
 
 const RequestService = {
