@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private Integer holidays;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
     private String managerId;

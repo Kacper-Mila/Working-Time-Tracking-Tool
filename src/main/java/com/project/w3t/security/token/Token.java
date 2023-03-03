@@ -1,5 +1,6 @@
 package com.project.w3t.security.token;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
