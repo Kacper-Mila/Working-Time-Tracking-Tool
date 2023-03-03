@@ -24,9 +24,9 @@ export default function Request(props) {
                 <span><i>Comment:</i></span>
                 <p className='comment'>{props.requestComment}</p>
                 <span><i>Start date:</i></span>
-                <p>{props.requestStartDate}</p>
+                <p className='comment'>{props.requestStartDate}</p>
                 <span><i>End date:</i></span>
-                <p>{props.requestEndDate}</p>
+                <p className='comment'>{props.requestEndDate}</p>
 
             </div>
             <div className='request-buttons'>
