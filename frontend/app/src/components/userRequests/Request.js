@@ -11,19 +11,22 @@ export default function Request(props) {
     const handleClose = () => setShow(false);
 
     return (
+        //TODO zmiana na flex z 3 kolumnami
         <div className='request'>
             <div className='main-request'>
                 <span className='text-muted'>
                 <i>{props.requestRegistrationDate}</i></span>
                 <h3 className=''>
-                    {props.requestId}: {props.requestType}
+                    {props.requestType}
                 </h3>
                 <span><i>Status:</i></span>
                 <p className='comment'>{props.requestStatus}</p>
                 <span><i>Comment:</i></span>
                 <p className='comment'>{props.requestComment}</p>
-                <span><i>When:</i></span>
-                <p>{props.requestStartDate} - {props.requestEndDate}</p>
+                <span><i>Start date:</i></span>
+                <p className='comment'>{props.requestStartDate}</p>
+                <span><i>End date:</i></span>
+                <p className='comment'>{props.requestEndDate}</p>
 
             </div>
             <div className='request-buttons'>
@@ -59,7 +62,10 @@ export default function Request(props) {
                         </ModalTitle>
                     </ModalHeader>
                     <ModalBody>
-                        <EditRequest ownerId={props.ownerId} requestId={props.requestId} onCancel={handleClose}/>
+                        <EditRequest startDate={props.requestStartDate} endDate={props.requestEndDate}
+                                     type={props.requestType} comment={props.requestComment}
+                                     ownerId={props.ownerId} requestId={props.requestId}
+                                     onCancel={handleClose}/>
                     </ModalBody>
                 </Modal>
             </div>
