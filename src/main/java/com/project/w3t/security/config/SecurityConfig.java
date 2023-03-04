@@ -1,5 +1,6 @@
 package com.project.w3t.security.config;
 
+import com.project.w3t.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +27,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable()
+        httpSecurity
+                .cors()
+                .and()
+                .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/managerId").hasRole("ROLE_MANAGER")
+//                .requestMatchers("/api/v1/requests/managerId/**").hasRole(UserService.ROLE_MANAGER)
+//                .requestMatchers("/api/v1/users/**").hasRole(UserService.ROLE_ADMIN)
                 .anyRequest()
                 .authenticated()
                 .and()

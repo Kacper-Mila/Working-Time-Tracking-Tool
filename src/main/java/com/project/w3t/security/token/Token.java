@@ -1,18 +1,19 @@
 package com.project.w3t.security.token;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "tokens")
 public class Token {
 
     @Id
@@ -32,4 +33,17 @@ public class Token {
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Token token = (Token) o;
+        return getId() != null && Objects.equals(getId(), token.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

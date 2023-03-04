@@ -20,6 +20,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER_ = "Bearer ";
+    public static final int BEGIN_INDEX = 7;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
@@ -31,14 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String AUTHENTICATION_HEADER = request.getHeader("Authorization");
+        final String AUTHENTICATION_HEADER = request.getHeader(AUTHORIZATION);
         final String jwtToken;
         final String username;
-        if (AUTHENTICATION_HEADER == null || !AUTHENTICATION_HEADER.startsWith("Bearer ")) {
+        if (AUTHENTICATION_HEADER == null || !AUTHENTICATION_HEADER.startsWith(BEARER_)) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwtToken = AUTHENTICATION_HEADER.substring(7);
+        jwtToken = AUTHENTICATION_HEADER.substring(BEGIN_INDEX);
         //TODO Extract username from JWT token - userId?
         username = jwtService.extractUsername(jwtToken);
 

@@ -24,10 +24,4 @@ public class RequestDto {
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
 
-//    public RequestDto(LocalDate startDate, LocalDate endDate, RequestType type, String comment) {
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//        this.type = type;
-//        this.comment = comment;
-//    }
 }

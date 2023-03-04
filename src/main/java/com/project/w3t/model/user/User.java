@@ -5,17 +5,19 @@ import com.project.w3t.model.request.Request;
 import com.project.w3t.security.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Collection;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
@@ -37,12 +39,14 @@ public class User implements UserDetails {
     private UserType userType;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
+    @ToString.Exclude
     private List<Token> tokens;
     private String managerId;
     private String teamId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @ToString.Exclude
     private List<Request> requestList;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -52,11 +56,8 @@ public class User implements UserDetails {
                     name = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id"))
+    @ToString.Exclude
     private Collection<Role> roles;
-
-    public User() {
-        this.userType = UserType.EMPLOYEE;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -91,5 +92,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return getId() != null && Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

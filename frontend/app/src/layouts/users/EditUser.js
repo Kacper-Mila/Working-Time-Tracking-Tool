@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Col, Container, Row} from "react-bootstrap";
+import AuthHeader from "../../serviceHubs/auth-header";
 
 export default function EditUser(props) {
     const [userType, setUserType] = useState(props.userType);
@@ -24,7 +25,7 @@ export default function EditUser(props) {
             userType: userType,
             managerId: managerId,
             teamId: teamId,
-        }).catch(err => {
+        }, { headers: AuthHeader() }).catch(err => {
             let response = JSON.parse(err.request.response);
             alert(response.message);
         });

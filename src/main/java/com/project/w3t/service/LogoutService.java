@@ -1,5 +1,8 @@
 package com.project.w3t.service;
 
+import com.project.w3t.security.auth.SetupDataLoader;
+import com.project.w3t.security.config.JwtAuthenticationFilter;
+import com.project.w3t.security.config.JwtService;
 import com.project.w3t.security.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,12 +23,12 @@ public class LogoutService implements LogoutHandler {
                        HttpServletResponse response,
                        Authentication authentication) {
 
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(JwtAuthenticationFilter.AUTHORIZATION);
         final String jwt;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(JwtAuthenticationFilter.BEARER_)) {
             return;
         }
-        jwt = authHeader.substring(7);
+        jwt = authHeader.substring(JwtAuthenticationFilter.BEGIN_INDEX);
         var storedToken = tokenRepository.findByToken(jwt).orElse(null);
         if (storedToken != null) {
             storedToken.setExpired(true);
