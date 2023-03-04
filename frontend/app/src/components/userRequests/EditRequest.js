@@ -1,11 +1,12 @@
 import {useState} from "react";
 import axios from "axios";
+import AuthHeader from "../../serviceHubs/auth-header";
 
 export default function EditRequest(props) {
-    const [type, setType] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [comment, setComment] = useState('');
+    const [type, setType] = useState(props.type);
+    const [startDate, setStartDate] = useState(props.startDate);
+    const [endDate, setEndDate] = useState(props.endDate);
+    const [comment, setComment] = useState(props.comment);
     let currentDate = new Date().toISOString().slice(0, 10);
 
     const onSubmit = async (e) => {
@@ -16,7 +17,7 @@ export default function EditRequest(props) {
             comment: comment,
             startDate: startDate,
             endDate: endDate
-        }).catch(err => {
+        }, { headers: AuthHeader() }).catch(err => {
             let response = JSON.parse(err.request.response);
             alert(response.message);
         });

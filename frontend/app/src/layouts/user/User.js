@@ -31,13 +31,6 @@ function User() {
         setUserDetails(result);
     }
 
-    // const prepareAllUsers = async () => {
-    //     let data = await UserComponentService.getAllUsers();
-    //     setUserDetails(data);
-    //     console.log(data);
-    //
-    // }
-
     return (
         <div className="user-details-container">
             <div className="user-details-container-wrapper">

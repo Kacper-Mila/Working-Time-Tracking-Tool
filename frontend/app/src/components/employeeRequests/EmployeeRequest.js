@@ -13,7 +13,7 @@ export default function EmployeeRequest(props) {
                 <span className='text-muted'>
                 <i>{props.requestRegistrationDate}</i></span>
                 <h3 className=''>
-                    {props.requestId}: {props.requestType}
+                    {props.requestType}
                 </h3>
                 <span><i>Status:</i></span>
                 <p className='comment'>{props.requestStatus}</p>
@@ -21,8 +21,10 @@ export default function EmployeeRequest(props) {
                 <p className='comment'>{props.ownerId}</p>
                 <span><i>Comment:</i></span>
                 <p className='comment'>{props.requestComment}</p>
-                <span><i>When:</i></span>
-                <p>{props.requestStartDate} - {props.requestEndDate}</p>
+                <span><i>Start date:</i></span>
+                <p className='comment'>{props.requestStartDate}</p>
+                <span><i>End date:</i></span>
+                <p className='comment'>{props.requestEndDate}</p>
 
             </div>
             <div className='request-buttons'>
@@ -30,8 +32,10 @@ export default function EmployeeRequest(props) {
                     className='accept-button'
                     size={18}
                     onClick={() => {
-                        acceptOrRejectRequest(props.requestId, "ACCEPTED")
-                            .then()
+                        if (window.confirm("Do you want to accept this request?")) {
+                            acceptOrRejectRequest(props.requestId, "ACCEPTED")
+                                .then()
+                        }
                     }}
                 />
 
@@ -39,7 +43,9 @@ export default function EmployeeRequest(props) {
                     className='reject-button'
                     size={15}
                     onClick={() => {
-                        acceptOrRejectRequest(props.requestId, "DECLINED").then()
+                        if (window.confirm("Do you want to reject this request?")) {
+                            acceptOrRejectRequest(props.requestId, "DECLINED").then()
+                        }
                     }}
                 />
             </div>

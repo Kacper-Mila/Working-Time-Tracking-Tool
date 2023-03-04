@@ -1,17 +1,12 @@
 import axios from "axios";
+import AuthHeader from "./auth-header";
 
-const api = axios.create({
+const API = axios.create({
     baseURL: `http://localhost:8080/api/v1/requests`
 })
 
-let postConf = {
-    headers: {
-        'Content-Type': 'application/json'
-    }
-};
-
 const getAllRequests = async () => {
-    return api.get('').then(r => r.data)
+    return API.get('', { headers: AuthHeader() }).then(r => r.data)
 }
 
 // TODO implement proper usage form
@@ -20,31 +15,31 @@ const getAllRequests = async () => {
 // }
 
 const updateRequest = async ({userId, requestId, requestJson}) => {
-    return api.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, postConf)
+    return API.patch(`/update?userId=${userId}&requestId=${requestId}`, requestJson, { headers: AuthHeader() })
 }
 
 const deleteRequest = async (requestId) => {
-    return api.delete(`/delete?requestId=${requestId}`)
+    return API.delete(`/delete?requestId=${requestId}`, { headers: AuthHeader() })
 }
 
 const getAllRequestsByType = async (requestType) => {
-    return api.get(`/type?requestType=${requestType}`).then(r => r.data)
+    return API.get(`/type?requestType=${requestType}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const getRequestById = async (requestId) => {
-    return api.get(`/id?requestId=${requestId}`).then(r => r.data)
+    return API.get(`/id?requestId=${requestId}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const getRequestsByUserId = async (userId) => {
-    return api.get(`/userId?userId=${userId}`).then(r => r.data)
+    return API.get(`/userId?userId=${userId}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const getEmployeesRequestsByManagerId = async (managerId) => {
-    return api.get(`/managerId?managerId=${managerId}`).then(r => r.data)
+    return API.get(`/managerId?managerId=${managerId}`, { headers: AuthHeader() }).then(r => r.data)
 }
 
 const acceptOrRejectEmployeeRequest = async ({requestId, requestStatus}) => {
-    return api.patch(`/updateRequestStatus?requestId=${requestId}&requestStatus=${requestStatus}`)
+    return API.patch(`/updateRequestStatus?requestId=${requestId}&requestStatus=${requestStatus}`, null, { headers: AuthHeader() })
 }
 
 const RequestService = {

@@ -1,5 +1,6 @@
 package com.project.w3t.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.w3t.model.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,6 +46,7 @@ public class Request {
     private LocalDate approvalDate;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;

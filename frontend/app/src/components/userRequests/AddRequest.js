@@ -1,6 +1,7 @@
 import {useState} from "react";
 import axios from 'axios';
 import './addRequest.css'
+import AuthHeader from "../../serviceHubs/auth-header";
 
 export default function AddRequest(props) {
     const [type, setType] = useState('');
@@ -10,6 +11,7 @@ export default function AddRequest(props) {
     const [ownerId] = useState(localStorage.getItem("userId"));
     let currentDate = new Date().toISOString().slice(0, 10);
 
+    // TODO rewrite to use request service hub
     const onSubmit = async (e) => {
         e.preventDefault()
 
@@ -17,12 +19,14 @@ export default function AddRequest(props) {
             ownerId: ownerId,
             type: type,
             comment: comment,
+            registrationDate: currentDate,
             startDate: startDate,
             endDate: endDate,
-            approvalDate: "2023-05-01",
-        }).catch(err => {
-            let response = JSON.parse(err.request.response);
-            alert(response.message);
+            approvalDate: null,
+            status: "PENDING",
+        }, { headers: AuthHeader() }).catch(err => {
+            let response = err.request.response;
+            console.log(response.message);
         });
 
         props.onCancel();

@@ -10,6 +10,7 @@ export default function AppNavbar() {
                         <Nav.Link as={Link} to="/" className='navbar-link'>My Calendar</Nav.Link>
                         <Nav.Link as={Link} to="/requests" className='navbar-link'>My Requests</Nav.Link>
                         <Nav.Link as={Link} to="/employees-requests" className='navbar-link'>My Employees Requests</Nav.Link>
+                        <Nav.Link as={Link} to="/admin-panel" className='navbar-link'>Admin Panel</Nav.Link>
                     </Nav>
             </Navbar>
     );

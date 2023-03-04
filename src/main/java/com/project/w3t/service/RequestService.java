@@ -54,7 +54,7 @@ public class RequestService {
         if (!isCommentLengthValid(request.getComment())) {
             throw new BadRequestException("Comment is not valid.");
         }
-        Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
+        Optional<User> userToSet = userRepository.findByUserId(userId.get());
         if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
         request.setUser(userToSet.get());
         if (request.getType().equals(RequestType.HOLIDAY)) {
