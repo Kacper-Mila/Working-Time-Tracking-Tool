@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import RequestService from "../../serviceHubs/request-service-hub";
 import Request from "../../components/userRequests/Request";
 
-export default function UserRequests() {
+export default function UserRequests({requestType}) {
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
@@ -14,22 +14,22 @@ export default function UserRequests() {
             console.error("error", err);
         });
 
-    }, []);
+    }, [requestType]);
 
     const prepareUserRequests = async () => {
         let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
-        setRequests(data);
-    }
-
-    // TODO
-    const prepareUserHolidayRequests = async () => {
-        let data = await RequestService.getRequestsByUserId(localStorage.getItem("userId"));
-        setRequests(data);
+        if (requestType === "ALL") {
+            setRequests(data)
+        } else {
+            setRequests(data.filter((request) => (
+                request.type === requestType
+            )))
+        }
     }
 
     const deleteRequest = async (id) => {
         await RequestService.deleteRequest(id);
-        await prepareUserRequests();
+        window.location.reload();
     }
 
     return (
@@ -44,6 +44,7 @@ export default function UserRequests() {
                          requestComment={request.comment}
                          onDelete={deleteRequest}
                          ownerId={request.ownerId}
+                         requestStatus={request.status}
                 />
             ))}
         </>

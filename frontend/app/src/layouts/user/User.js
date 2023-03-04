@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import UserDetails from "../../components/userDetails/UserDetails";
-import image from "../../images/xd.gif"
+import image from "../../images/em.png"
 import UserService from "../../serviceHubs/user-service-hub";
 import {Link, useNavigate} from "react-router-dom";
 import './user.css';
@@ -30,13 +30,6 @@ function User() {
         result.push(data);
         setUserDetails(result);
     }
-
-    // const prepareAllUsers = async () => {
-    //     let data = await UserComponentService.getAllUsers();
-    //     setUserDetails(data);
-    //     console.log(data);
-    //
-    // }
 
     return (
         <div className="user-details-container">

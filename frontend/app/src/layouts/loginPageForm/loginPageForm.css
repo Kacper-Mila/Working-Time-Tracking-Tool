@@ -12,3 +12,7 @@
 .sign-in-button:hover {
     background-position: 0;
 }
+
+.form-label{
+    color: #555;
+}

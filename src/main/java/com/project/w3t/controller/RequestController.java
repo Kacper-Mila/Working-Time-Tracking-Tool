@@ -2,14 +2,23 @@ package com.project.w3t.controller;
 
 import com.project.w3t.model.request.Request;
 import com.project.w3t.model.request.RequestDto;
+import com.project.w3t.model.request.RequestStatus;
 import com.project.w3t.model.request.RequestType;
 import com.project.w3t.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/requests")
 public class RequestController {
@@ -41,13 +50,13 @@ public class RequestController {
         requestService.deleteRequest(requestId);
     }
 
-//    not needed
+    //    not needed
     @GetMapping("/type")
     public List<Request> getAllRequestsByType(@RequestParam RequestType requestType) {
         return requestService.getAllRequestsByType(requestType);
     }
 
-//    not needed?
+    //    not needed?
     @GetMapping("/id")
     @ResponseBody
     public Object getRequestById(@RequestParam Long requestId) {
@@ -62,5 +71,10 @@ public class RequestController {
     @GetMapping("/managerId")
     public List<Request> getEmployeesRequestsByManagerId(@RequestParam String managerId) {
         return requestService.getEmployeesRequestsByManagerId(managerId);
+    }
+
+    @PatchMapping("/updateRequestStatus")
+    public void updateRequestStatus(@RequestParam Long requestId, @RequestParam RequestStatus requestStatus) {
+        requestService.acceptOrRejectEmployeeRequest(requestId, requestStatus);
     }
 }

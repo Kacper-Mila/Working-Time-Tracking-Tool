@@ -1,81 +1,137 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import UserService from "../../serviceHubs/user-service-hub";
+import React, {useEffect, useState, useRef} from "react";
+import {useNavigate} from 'react-router-dom';
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import AuthService from "../../serviceHubs/auth-service-hub";
 import './loginPageForm.css';
 
-export default function LoginPageForm() {
-    const navigate = useNavigate();
-    const [userId, setUserId] = useState('');
-    const [password, setPassword] = useState('');
+const required = (value) => {
+    if (!value) {
+        return (
+            <div className="alert alert-danger" role="alert">
+                This field is required!
+            </div>
+        );
+    }
+};
+
+const Login = () => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
     })
 
-    const logIn = (userId) => {
-        UserService.getUserByUserId(userId).then(() => {
-            localStorage.setItem("userId", userId);
-            navigate('/');
-        }).catch(err => {
-            console.error('error', err);
-        })
-    }
+    const navigate = useNavigate();
 
-    const submitUser = () => {
-        if (userId !== '' && password !== '') {
-            logIn(userId);
+    const form = useRef();
+    const checkBtn = useRef();
+
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const onChangeUserId = (e) => {
+        const userId = e.target.value;
+        setUserId(userId);
+    };
+
+    const onChangePassword = (e) => {
+        const password = e.target.value;
+        setPassword(password);
+    };
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+
+        setMessage("");
+        setLoading(true);
+
+        // form.current.validateAll();
+
+        if (checkBtn.current.context._errors.length === 0) {
+            AuthService.login(userId, password).then(
+                () => {
+                    localStorage.setItem("userId", userId);
+                    navigate("/");
+                    // window.location.reload();
+                },
+                (error) => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+
+                    setLoading(false);
+                    setMessage(resMessage);
+                }
+            );
+        } else {
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <section className="vh-100">
             <div className="container py-5 h-100">
                 <div className="row d-flex align-items-center justify-content-center h-100">
-                    {/*<div className="col-md-8 col-lg-7 col-xl-6">*/}
-                    {/*/!*Img here*!/*/}
-                    {/*</div>*/}
-                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-light">
-                        <form>
-                            <div className="form-outline mb-4">
-                                <input type="text"
-                                       className="form-control form-control-lg"
-                                       required
-                                       onChange={
-                                           e => setUserId(e.target.value)
-                                       }
-                                       value={userId}
-                                />
-                                <label className="form-label" htmlFor="form1Example13">ID</label>
-                            </div>
-                            <div className="form-outline mb-4">
-                                <input type="password"
-                                       className="form-control form-control-lg"
-                                       required
-                                       onChange={
-                                           e => setPassword(e.target.value)
-                                       }
-                                       value={password}
-                                />
-                                <label className="form-label" htmlFor="form1Example23">Password</label>
-                            </div>
-                            <div className="d-flex justify-content-around align-items-center mb-4"></div>
-                            <button type="button"
-                                    className="sign-in-button btn mr-4 btn-secondary btn-lg btn-block"
-                                    onClick={submitUser}
-                            >Sign in
-                            </button>
-                            {/*<div className="divider d-flex align-items-center justify-content-center my-4">*/}
-                            {/*    <p className="text-center fw-bold mx-3 mb-0 text-secondary">OR</p>*/}
-                            {/*</div>*/}
+                    <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-light text-center">
+                        <Form onSubmit={handleLogin} ref={form}>
 
-                            {/*<a className="btn btn-primary btn-lg btn-block"*/}
-                            {/*   href=""*/}
-                            {/*   role="button">*/}
-                            {/*    <i className="google-button fab fa-twitter me-2"></i>Continue with Google</a>*/}
-                        </form>
+                            <div className="form-outline mb-4">
+                                <label className="form-label" htmlFor="username">Username</label>
+                                <Input
+                                    type="text"
+                                    className="form-control form-control-lg"
+                                    name="username"
+                                    value={userId}
+                                    required
+                                    onChange={onChangeUserId}
+                                    validations={[required]}
+                                />
+                            </div>
+
+                            <div className="form-outline mb-4">
+                                <label className="form-label" htmlFor="password">Password</label>
+                                <Input
+                                    type="password"
+                                    className="form-control form-control-lg"
+                                    name="password"
+                                    value={password}
+                                    required
+                                    onChange={onChangePassword}
+                                    validations={[required]}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <button className="btn btn-dark btn-block" disabled={loading}>
+                                    {loading && (
+                                        <span className="spinner-border spinner-border-sm"></span>
+                                    )}
+                                    <span>Login</span>
+                                </button>
+                            </div>
+
+                            {message && (
+                                <div className="form-group">
+                                    <div className="alert alert-danger" role="alert">
+                                        {message}
+                                    </div>
+                                </div>
+                            )}
+                            <CheckButton style={{display: "none"}} ref={checkBtn}/>
+                        </Form>
                     </div>
                 </div>
             </div>
         </section>
     );
-}
+};
+
+export default Login;
+

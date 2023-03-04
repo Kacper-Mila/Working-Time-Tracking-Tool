@@ -54,7 +54,7 @@ public class RequestService {
         if (!isCommentLengthValid(request.getComment())) {
             throw new BadRequestException("Comment is not valid.");
         }
-        Optional<User> userToSet = Optional.ofNullable(userRepository.findByUserId(userId.get()));
+        Optional<User> userToSet = userRepository.findByUserId(userId.get());
         if (userToSet.isEmpty()) throw new NotFoundException("Unable to process request - user does not exist.");
         request.setUser(userToSet.get());
         if (request.getType().equals(RequestType.HOLIDAY)) {
@@ -150,6 +150,9 @@ public class RequestService {
 
     //    TODO implement update only when NonNull and not empty string ""
     private void updateRequestParameters(RequestDto requestDto, Request requestToUpdate) {
+        if (!requestToUpdate.getStatus().equals(RequestStatus.PENDING)) {
+            throw new BadRequestException("You cannot edit accepted or declined request.");
+        }
         requestToUpdate.setType(requestDto.getType());
         requestToUpdate.setStartDate(requestDto.getStartDate());
         requestToUpdate.setEndDate(requestDto.getEndDate());
@@ -172,6 +175,11 @@ public class RequestService {
             throw new NotFoundException("Request with this id does not exists.");
         }
         Request requestToDelete = requestRepository.findById(requestId).get();
+
+        if (!requestToDelete.getStatus().equals(RequestStatus.PENDING)) {
+            throw new BadRequestException("You cannot delete accepted or declined request.");
+        }
+
         if (requestToDelete.getType().equals(RequestType.HOLIDAY)) {
             increaseUserAvailableHolidays(requestToDelete.getUser(), requestToDelete.getRequestDateRange().size());
         }
@@ -201,9 +209,12 @@ public class RequestService {
         if (!userRepository.existsByManagerId(managerId)) {
             throw new NotFoundException("Manager with this id does not exist.");
         }
-        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId)
-                .stream()
-                .filter(r -> r.getStatus().equals(RequestStatus.PENDING))
-                .collect(Collectors.toList());
+        return requestRepository.getEmployeesRequestsByManagerIdQuery(managerId);
+    }
+
+    public void acceptOrRejectEmployeeRequest(Long requestId, RequestStatus requestStatus) {
+        Request request = getRequestByRequestId(requestId).get();
+        request.setStatus(requestStatus);
+        requestRepository.save(request);
     }
 }
